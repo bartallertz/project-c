@@ -1,0 +1,11 @@
+C:\Users\barta\source\repos\projectC\bin\Debug\netcoreapp2.0\projectC.deps.json
+C:\Users\barta\source\repos\projectC\bin\Debug\netcoreapp2.0\projectC.runtimeconfig.json
+C:\Users\barta\source\repos\projectC\bin\Debug\netcoreapp2.0\projectC.runtimeconfig.dev.json
+C:\Users\barta\source\repos\projectC\bin\Debug\netcoreapp2.0\projectC.dll
+C:\Users\barta\source\repos\projectC\bin\Debug\netcoreapp2.0\projectC.pdb
+C:\Users\barta\source\repos\projectC\obj\Debug\netcoreapp2.0\projectC.csprojAssemblyReference.cache
+C:\Users\barta\source\repos\projectC\obj\Debug\netcoreapp2.0\projectC.csproj.CoreCompileInputs.cache
+C:\Users\barta\source\repos\projectC\obj\Debug\netcoreapp2.0\projectC.AssemblyInfoInputs.cache
+C:\Users\barta\source\repos\projectC\obj\Debug\netcoreapp2.0\projectC.AssemblyInfo.cs
+C:\Users\barta\source\repos\projectC\obj\Debug\netcoreapp2.0\projectC.dll
+C:\Users\barta\source\repos\projectC\obj\Debug\netcoreapp2.0\projectC.pdb
