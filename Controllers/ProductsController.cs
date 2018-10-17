@@ -10,27 +10,30 @@ namespace projectC.Controllers
     [Route("api/[controller]")]
     public class ProductsController : Controller
     {
+
         ProjectContext _context;
 
         public ProductsController(ProjectContext context)
         {
             this._context = context;
         }
-        // GET api/Products
+        // GET api/values
         [HttpGet]
         public IQueryable<Product> Get()
         {
-            var result = from m in this._context.Products select m;
+            var result = from m in this._context.products select m;
 
             return result;
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-    //     public IQueryable<Product> Get(int id)
-    //     {
-            
-    //    }
+        public IQueryable<Product> Get(int id)
+        {
+            var result = from m in this._context.products where m.Id == id select m;
+
+            return result;
+        }
 
         // POST api/values
         [HttpPost]
