@@ -12,7 +12,7 @@ namespace projectC.model
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Favourite>()
-            .HasKey(k => new {k.ProductId, k.UserId});
+            .HasKey(k => new { k.ProductId, k.UserId });
             modelBuilder.Entity<Favourite>()
             .HasOne(k => k.User)
             .WithMany(k2 => k2.Product)
@@ -29,7 +29,7 @@ namespace projectC.model
         public DbSet<Product> products { get; set; }
         public DbSet<Category> categories { get; set; }
         public DbSet<User> users { get; set; }
-
+        public DbSet<ImageURL> imageURLs { get; set; }
         public DbSet<Role> roles { get; set; }
         public DbSet<Favourite> favourites { get; set; }
 
