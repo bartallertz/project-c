@@ -13,34 +13,41 @@ namespace projectC.model
         {   
 
         }
-    public DbSet<Product> products{get; set;}
+        public DbSet<Product> products{get; set;}
+        public DbSet<Category> categories {get; set; }
+        public DbSet<User> users{get; set;}
+
+        public DbSet<Role> roles{get; set;}
+        public DbSet<Favourite> favourites{get; set;}
+
 
 
     }
 
     public class User
     {
-        [Key]
+        public int Id {get; set;}
         public string Name { get; set; }
         public string LastName { get; set; }
         public int Age { get; set; }
         public string Password { get; set; }
-        public Role Role { get; set; }
-        public List<Favourite> Favourites { get; set; }
+        public int RoleId {get; set; }
+         public Role Role { get; set; }
+        //public List<Favourite> Favourites { get; set; }
     }
 
     public class Role
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<User> Users { get; set; }
+        //public List<User> Users { get; set; }
     }
 
     public class Favourite
     {
         public int Id { get; set; }
         public User User { get; set; }
-        public Product Product { get; set; }
+        //public Product Product { get; set; }
     }
 
     public class Product
@@ -49,7 +56,7 @@ namespace projectC.model
         public string Name { get; set; }
         public string Description { get; set; }
         public float Price { get; set; }
-        public Category Category { get; set; }
+
     }
 
     public class Category
