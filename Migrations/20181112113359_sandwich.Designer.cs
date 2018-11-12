@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using projectC.model;
@@ -9,9 +10,10 @@ using projectC.model;
 namespace projectC.Migrations
 {
     [DbContext(typeof(ProjectContext))]
-    partial class ProjectContextModelSnapshot : ModelSnapshot
+    [Migration("20181112113359_sandwich")]
+    partial class sandwich
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,11 +35,12 @@ namespace projectC.Migrations
 
             modelBuilder.Entity("projectC.model.Favourite", b =>
                 {
-                    b.Property<int>("ProductId");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
 
-                    b.Property<int>("UserId");
+                    b.Property<int?>("UserId");
 
-                    b.HasKey("ProductId", "UserId");
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
@@ -49,13 +52,9 @@ namespace projectC.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("productId");
-
                     b.Property<string>("url");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("productId");
 
                     b.ToTable("ImageURL");
                 });
@@ -69,13 +68,19 @@ namespace projectC.Migrations
 
                     b.Property<string>("Description");
 
+                    b.Property<int>("ImageURL");
+
                     b.Property<string>("Name");
 
                     b.Property<float>("Price");
 
+                    b.Property<int?>("imageURLId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("imageURLId");
 
                     b.ToTable("products");
                 });
@@ -116,22 +121,9 @@ namespace projectC.Migrations
 
             modelBuilder.Entity("projectC.model.Favourite", b =>
                 {
-                    b.HasOne("projectC.model.Product", "Product")
-                        .WithMany("Users")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("projectC.model.User", "User")
-                        .WithMany("Product")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("projectC.model.ImageURL", b =>
-                {
-                    b.HasOne("projectC.model.Product", "product")
-                        .WithMany("imageURLs")
-                        .HasForeignKey("productId");
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("projectC.model.Product", b =>
@@ -139,6 +131,10 @@ namespace projectC.Migrations
                     b.HasOne("projectC.model.Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId");
+
+                    b.HasOne("projectC.model.ImageURL", "imageURL")
+                        .WithMany("products")
+                        .HasForeignKey("imageURLId");
                 });
 
             modelBuilder.Entity("projectC.model.User", b =>

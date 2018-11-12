@@ -9,3 +9,14 @@ C:\Users\barta\source\repos\projectC\obj\Debug\netcoreapp2.0\projectC.AssemblyIn
 C:\Users\barta\source\repos\projectC\obj\Debug\netcoreapp2.0\projectC.AssemblyInfo.cs
 C:\Users\barta\source\repos\projectC\obj\Debug\netcoreapp2.0\projectC.dll
 C:\Users\barta\source\repos\projectC\obj\Debug\netcoreapp2.0\projectC.pdb
+C:\Users\salee\source\repos\project-c\bin\Debug\netcoreapp2.0\projectC.deps.json
+C:\Users\salee\source\repos\project-c\bin\Debug\netcoreapp2.0\projectC.runtimeconfig.json
+C:\Users\salee\source\repos\project-c\bin\Debug\netcoreapp2.0\projectC.runtimeconfig.dev.json
+C:\Users\salee\source\repos\project-c\bin\Debug\netcoreapp2.0\projectC.dll
+C:\Users\salee\source\repos\project-c\bin\Debug\netcoreapp2.0\projectC.pdb
+C:\Users\salee\source\repos\project-c\obj\Debug\netcoreapp2.0\projectC.csprojAssemblyReference.cache
+C:\Users\salee\source\repos\project-c\obj\Debug\netcoreapp2.0\projectC.csproj.CoreCompileInputs.cache
+C:\Users\salee\source\repos\project-c\obj\Debug\netcoreapp2.0\projectC.AssemblyInfoInputs.cache
+C:\Users\salee\source\repos\project-c\obj\Debug\netcoreapp2.0\projectC.AssemblyInfo.cs
+C:\Users\salee\source\repos\project-c\obj\Debug\netcoreapp2.0\projectC.dll
+C:\Users\salee\source\repos\project-c\obj\Debug\netcoreapp2.0\projectC.pdb

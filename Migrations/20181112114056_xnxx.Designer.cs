@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using projectC.model;
@@ -9,9 +10,10 @@ using projectC.model;
 namespace projectC.Migrations
 {
     [DbContext(typeof(ProjectContext))]
-    partial class ProjectContextModelSnapshot : ModelSnapshot
+    [Migration("20181112114056_xnxx")]
+    partial class xnxx
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,11 +35,12 @@ namespace projectC.Migrations
 
             modelBuilder.Entity("projectC.model.Favourite", b =>
                 {
-                    b.Property<int>("ProductId");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
 
-                    b.Property<int>("UserId");
+                    b.Property<int?>("UserId");
 
-                    b.HasKey("ProductId", "UserId");
+                    b.HasKey("Id");
 
                     b.HasIndex("UserId");
 
@@ -49,13 +52,13 @@ namespace projectC.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("productId");
+                    b.Property<int?>("ProductId");
 
                     b.Property<string>("url");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("productId");
+                    b.HasIndex("ProductId");
 
                     b.ToTable("ImageURL");
                 });
@@ -116,22 +119,16 @@ namespace projectC.Migrations
 
             modelBuilder.Entity("projectC.model.Favourite", b =>
                 {
-                    b.HasOne("projectC.model.Product", "Product")
-                        .WithMany("Users")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("projectC.model.User", "User")
-                        .WithMany("Product")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("projectC.model.ImageURL", b =>
                 {
-                    b.HasOne("projectC.model.Product", "product")
+                    b.HasOne("projectC.model.Product")
                         .WithMany("imageURLs")
-                        .HasForeignKey("productId");
+                        .HasForeignKey("ProductId");
                 });
 
             modelBuilder.Entity("projectC.model.Product", b =>
