@@ -17,15 +17,7 @@ namespace projectC.Controllers
         {
             this._context = context;
         }
-        // GET api/values
-        [HttpGet]
-        public IQueryable<Product> Get()
-        {
-            var result = from m in this._context.products select m;
-
-            return result;
-        }
-
+        
         // GET api/values/5
         [HttpGet("{id}")]
         public IQueryable<Product> Get(int id)

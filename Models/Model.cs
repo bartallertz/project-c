@@ -9,16 +9,29 @@ namespace projectC.model
 {
     public class ProjectContext : DbContext
     {
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Favourite>()
+            .HasKey(k => new {k.ProductId, k.UserId});
+            modelBuilder.Entity<Favourite>()
+            .HasOne(k => k.User)
+            .WithMany(k2 => k2.Product)
+            .HasForeignKey(k => k.UserId);
+            modelBuilder.Entity<Favourite>()
+            .HasOne(k => k.Product)
+            .WithMany(k2 => k2.Users)
+            .HasForeignKey(k => k.ProductId);
+        }
         public ProjectContext(DbContextOptions<ProjectContext> options) : base(options)
-        {   
+        {
 
         }
-        public DbSet<Product> products{get; set;}
-        public DbSet<Category> categories {get; set; }
-        public DbSet<User> users{get; set;}
-
-        public DbSet<Role> roles{get; set;}
-        public DbSet<Favourite> favourites{get; set;}
+        public DbSet<Product> products { get; set; }
+        public DbSet<Category> categories { get; set; }
+        public DbSet<User> users { get; set; }
+        public DbSet<SubCategory> SubCategories { get; set; }
+        public DbSet<Role> roles { get; set; }
+        public DbSet<Favourite> favourites { get; set; }
 
 
 
@@ -26,14 +39,14 @@ namespace projectC.model
 
     public class User
     {
-        public int Id {get; set;}
+        public int Id { get; set; }
         public string Name { get; set; }
         public string LastName { get; set; }
         public int Age { get; set; }
         public string Password { get; set; }
-        public int RoleId {get; set; }
-         public Role Role { get; set; }
-        //public List<Favourite> Favourites { get; set; }
+        public int RoleId { get; set; }
+        public Role Role { get; set; }
+        public List<Favourite> Product { get; set; }
     }
 
     public class Role
@@ -45,9 +58,10 @@ namespace projectC.model
 
     public class Favourite
     {
-        public int Id { get; set; }
+        public int UserId { get; set; }
+        public int ProductId { get; set; }
         public User User { get; set; }
-        //public Product Product { get; set; }
+        public Product Product { get; set; }
     }
 
     public class Product
@@ -56,6 +70,11 @@ namespace projectC.model
         public string Name { get; set; }
         public string Description { get; set; }
         public float Price { get; set; }
+        public List<ImageURL> imageURLs { get; set; }
+        public List<Favourite> Users { get; set; }
+
+
+
 
     }
 
@@ -64,5 +83,20 @@ namespace projectC.model
         public int Id { get; set; }
         public string Name { get; set; }
         public List<Product> Products { get; set; }
+        public List<SubCategory> SubCategories { get; set; }
     }
+
+    public class ImageURL
+    {
+        public string url { get; set; }
+        public int Id { get; set; }
+        public Product product { get; set; }
+    }
+    public class SubCategory
+    {
+        public int Id { get; set; }
+        public Category Category { get; set; }
+        public string SubCategory_Name { get; set; }
+    }
+
 }
