@@ -25,5 +25,12 @@ namespace projectC.Controllers
 
             return result;
         }
+    //     [HttpGet({"id"})]
+    //     public IQueryable<Category> Get(int id)
+
+    //         var result = 
+
+
+    // }
     }
 }
