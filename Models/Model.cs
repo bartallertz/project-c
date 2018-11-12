@@ -30,6 +30,7 @@ namespace projectC.model
         public DbSet<Category> categories { get; set; }
         public DbSet<User> users { get; set; }
         public DbSet<SubCategory> SubCategories { get; set; }
+        public DbSet<ImageURL> imageURLs { get; set; }
         public DbSet<Role> roles { get; set; }
         public DbSet<Favourite> favourites { get; set; }
 
