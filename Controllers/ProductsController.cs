@@ -17,6 +17,21 @@ namespace projectC.Controllers
         {
             this._context = context;
         }
+
+        [HttpGet]
+        public IQueryable Get()
+        {
+            var result = from p in this._context.products
+                         join i in this._context.imageURLs
+                         on p.Id equals i.product.Id into imageURLsGroup
+                         select new
+                         {
+                             Product = p,
+                             Image = imageURLsGroup.ToList()
+                         };
+
+            return result;
+        }
         
         // GET api/values/5
         [HttpGet("{id}")]
