@@ -32,7 +32,7 @@ namespace projectC.model
         public DbSet<SubCategory> SubCategories { get; set; }
         public DbSet<ImageURL> imageURLs { get; set; }
         public DbSet<Role> roles { get; set; }
-        public DbSet<Favourite> favourites { get; set; }
+        public DbSet<Favorite> favourites { get; set; }
 
 
 
@@ -47,17 +47,17 @@ namespace projectC.model
         public string Password { get; set; }
         public int RoleId { get; set; }
         public Role Role { get; set; }
-        public List<Favourite> Product { get; set; }
+        public List<Favorite> Product { get; set; }
     }
 
     public class Role
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        //public List<User> Users { get; set; }
+        public List<User> Users { get; set; }
     }
 
-    public class Favourite
+    public class Favorite
     {
         public int UserId { get; set; }
         public int ProductId { get; set; }
@@ -73,7 +73,7 @@ namespace projectC.model
         public float Price { get; set; }
         public string FirstImg { get; set; }
         public List<ImageURL> imageURLs { get; set; }
-        public List<Favourite> Users { get; set; }
+        public List<Favorite> Users { get; set; }
     }
 
     public class Category

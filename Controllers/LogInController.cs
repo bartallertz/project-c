@@ -4,19 +4,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using projectC.model;
-using System.Text;
+
 
 namespace projectC.Controllers
 {
     [Route("api/[controller]")]
-    public class AccountsController : Controller
+    public class LogInController : Controller
     {
         ProjectContext _context;
-        public AccountsController(ProjectContext context)
+        public LogInController(ProjectContext context)
         {
-            this._context = context;
+            _context = context;
         }
-        // GET api/values
+
+        // GET api/LogIn
         [HttpGet]
         public IQueryable<User> Get()
         {
@@ -25,37 +26,31 @@ namespace projectC.Controllers
             return result;
         }
 
-
-
         // GET api/values/5
         [HttpGet("{id}")]
-        public IQueryable<User> GetAccount(int id)
+        public IQueryable<User> Get(int id)
         {
-            //get a specific user
-            var result = from m in this._context.users where m.Id == id select m;
+            var result = from m in this._context.users select m;
 
             return result;
         }
 
-        //Post api/Accounts
+        // POST api/values
         [HttpPost]
-        public IActionResult Register([FromBody]User u)
+        public IActionResult Post([FromBody]User u, string password, string name)
         {
 
+            //lijst maken van Users [Name, password]
+            var userData = this._context.users.Select(m => m).ToList();
 
-            //  var UserRole = (u , u.RoleId = 1);
 
-            //register a new User
-            if (u == null | u.RoleId == 2)
+
+            if (u.Name != name | u.Password != password)
             {
                 return NoContent();
             }
             else
             {
-               
-                _context.Add(u);
-                _context.SaveChanges();
-
                 return Ok();
             }
         }
