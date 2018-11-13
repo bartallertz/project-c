@@ -17,7 +17,7 @@ namespace projectC.Controllers
         {
             this._context = context;
         }
-        // GET api/values
+        //GET api/values
         [HttpGet]
         public IQueryable<Category> Get()
         {
@@ -25,12 +25,24 @@ namespace projectC.Controllers
 
             return result;
         }
-    //     [HttpGet({"id"})]
-    //     public IQueryable<Category> Get(int id)
+        [HttpGet("{id}")]
+        public IQueryable Get(int id)
 
-    //         var result = 
+        {
+            var result = from i in this._context.categories
+                         join p in this._context.products
+                         on i.Id equals p.Category.Id into CategoriesGroup
+                         where i.Id == id
+                         select new
+                         {
+                             Categories = i,
+                             Products = CategoriesGroup.ToList()
+
+                         };
+
+            return result;
+        }
 
 
-    // }
     }
 }
