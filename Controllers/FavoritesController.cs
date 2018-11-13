@@ -1,20 +1,28 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using projectC.model;
 
+
 namespace projectC.Controllers
 {
     [Route("api/[controller]")]
-    public class ValuesController : Controller
+    public class FavoritesController : Controller
     {
+        ProjectContext _context;
+        public FavoritesController(ProjectContext context)
+        {
+            _context = context;
+        }
         // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IQueryable<Favorite> Get()
         {
-            return new string[] { "value1", "value2" };
+            var result = from m in this._context.favorites select m;
+
+            return result;
         }
 
         // GET api/values/5

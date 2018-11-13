@@ -31,18 +31,22 @@ namespace projectC.Migrations
                     b.ToTable("categories");
                 });
 
-            modelBuilder.Entity("projectC.model.Favourite", b =>
+            modelBuilder.Entity("projectC.model.Favorite", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("UserId");
+                    b.Property<int>("ProductId");
+
+                    b.Property<int>("UserId");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ProductId");
+
                     b.HasIndex("UserId");
 
-                    b.ToTable("favourites");
+                    b.ToTable("favorites");
                 });
 
             modelBuilder.Entity("projectC.model.Product", b =>
@@ -99,11 +103,17 @@ namespace projectC.Migrations
                     b.ToTable("users");
                 });
 
-            modelBuilder.Entity("projectC.model.Favourite", b =>
+            modelBuilder.Entity("projectC.model.Favorite", b =>
                 {
+                    b.HasOne("projectC.model.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("projectC.model.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("projectC.model.Product", b =>

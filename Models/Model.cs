@@ -10,15 +10,15 @@ namespace projectC.model
     public class ProjectContext : DbContext
     {
         public ProjectContext(DbContextOptions<ProjectContext> options) : base(options)
-        {   
+        {
 
         }
-        public DbSet<Product> products{get; set;}
-        public DbSet<Category> categories {get; set; }
-        public DbSet<User> users{get; set;}
+        public DbSet<Product> products { get; set; }
+        public DbSet<Category> categories { get; set; }
+        public DbSet<User> users { get; set; }
 
-        public DbSet<Role> roles{get; set;}
-        public DbSet<Favourite> favourites{get; set;}
+        public DbSet<Role> roles { get; set; }
+        public DbSet<Favorite> favorites { get; set; }
 
 
 
@@ -26,13 +26,13 @@ namespace projectC.model
 
     public class User
     {
-        public int Id {get; set;}
+        public int Id { get; set; }
         public string Name { get; set; }
         public string LastName { get; set; }
         public int Age { get; set; }
         public string Password { get; set; }
-        public int RoleId {get; set; }
-         public Role Role { get; set; }
+        public int RoleId { get; set; }
+        public Role Role { get; set; }
         //public List<Favourite> Favourites { get; set; }
     }
 
@@ -43,11 +43,15 @@ namespace projectC.model
         //public List<User> Users { get; set; }
     }
 
-    public class Favourite
+    public class Favorite
     {
         public int Id { get; set; }
+
+        public int ProductId { get; set; }
+
+        public int UserId { get; set; }
         public User User { get; set; }
-        //public Product Product { get; set; }
+        public Product Product { get; set; }
     }
 
     public class Product

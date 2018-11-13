@@ -10,8 +10,8 @@ using projectC.model;
 namespace projectC.Migrations
 {
     [DbContext(typeof(ProjectContext))]
-    [Migration("20181109124122_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20181113105331_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,18 +33,22 @@ namespace projectC.Migrations
                     b.ToTable("categories");
                 });
 
-            modelBuilder.Entity("projectC.model.Favourite", b =>
+            modelBuilder.Entity("projectC.model.Favorite", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("UserId");
+                    b.Property<int>("ProductId");
+
+                    b.Property<int>("UserId");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ProductId");
+
                     b.HasIndex("UserId");
 
-                    b.ToTable("favourites");
+                    b.ToTable("favorites");
                 });
 
             modelBuilder.Entity("projectC.model.Product", b =>
@@ -92,16 +96,26 @@ namespace projectC.Migrations
 
                     b.Property<string>("Password");
 
+                    b.Property<int>("RoleId");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("users");
                 });
 
-            modelBuilder.Entity("projectC.model.Favourite", b =>
+            modelBuilder.Entity("projectC.model.Favorite", b =>
                 {
+                    b.HasOne("projectC.model.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("projectC.model.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("projectC.model.Product", b =>
@@ -109,6 +123,14 @@ namespace projectC.Migrations
                     b.HasOne("projectC.model.Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId");
+                });
+
+            modelBuilder.Entity("projectC.model.User", b =>
+                {
+                    b.HasOne("projectC.model.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }
