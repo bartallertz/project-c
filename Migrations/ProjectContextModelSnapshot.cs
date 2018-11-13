@@ -31,7 +31,7 @@ namespace projectC.Migrations
                     b.ToTable("categories");
                 });
 
-            modelBuilder.Entity("projectC.model.Favourite", b =>
+            modelBuilder.Entity("projectC.model.Favorite", b =>
                 {
                     b.Property<int>("ProductId");
 
@@ -132,7 +132,7 @@ namespace projectC.Migrations
                     b.ToTable("users");
                 });
 
-            modelBuilder.Entity("projectC.model.Favourite", b =>
+            modelBuilder.Entity("projectC.model.Favorite", b =>
                 {
                     b.HasOne("projectC.model.Product", "Product")
                         .WithMany("Users")
