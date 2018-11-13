@@ -43,6 +43,23 @@ namespace projectC.Controllers
             return result;
         }
 
+        [HttpGet("subcategory/{name}")]
+        public IQueryable Get(string name)
+            {
+                var result = from c in this._context.categories
+                             join s in this._context.SubCategories
+                             on c.Id equals s.Category.Id into SubCategoriesGroup
+                             where c.Name == name
+                             select new
+                             {
+                                 Categories = c,
+                                 SubCategories = SubCategoriesGroup.ToList()
+                             };
+
+                        return result;
+
+            }
+
 
     }
 }
