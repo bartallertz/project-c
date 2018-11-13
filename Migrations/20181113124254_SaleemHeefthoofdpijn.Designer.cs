@@ -10,8 +10,8 @@ using projectC.model;
 namespace projectC.Migrations
 {
     [DbContext(typeof(ProjectContext))]
-    [Migration("20181113105331_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20181113124254_SaleemHeefthoofdpijn")]
+    partial class SaleemHeefthoofdpijn
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -113,7 +113,7 @@ namespace projectC.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("projectC.model.User", "User")
-                        .WithMany()
+                        .WithMany("Favourites")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

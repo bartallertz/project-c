@@ -33,14 +33,14 @@ namespace projectC.model
         public string Password { get; set; }
         public int RoleId { get; set; }
         public Role Role { get; set; }
-        //public List<Favourite> Favourites { get; set; }
+        public List<Favorite> products { get; set; }
     }
 
     public class Role
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        //public List<User> Users { get; set; }
+        public List<User> Users { get; set; }
     }
 
     public class Favorite
@@ -60,6 +60,8 @@ namespace projectC.model
         public string Name { get; set; }
         public string Description { get; set; }
         public float Price { get; set; }
+        public List<Favorite> users { get; set; }
+
 
     }
 

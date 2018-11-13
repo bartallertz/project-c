@@ -111,7 +111,7 @@ namespace projectC.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("projectC.model.User", "User")
-                        .WithMany()
+                        .WithMany("Favourites")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

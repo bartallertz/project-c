@@ -18,24 +18,55 @@ namespace projectC.Controllers
         }
         // GET api/values
         [HttpGet]
-        public IQueryable<Favorite> Get()
+        public IQueryable Get()
         {
-            var result = from m in this._context.favorites select m;
+            var result = from u in this._context.users
+                         join p in this._context.favorites
+                         on u.Id equals p.UserId into FavGrp
+                         select new 
+                         {
+                             User = u,
+                             Product = FavGrp.ToList()
+                         };
+
+
+
+            return result;
+        }
+        // GET api/values/5
+        [HttpGet("{id}")]
+        public IQueryable Get(int id)
+        {
+            var result = from u in this._context.users
+                         join p in this._context.favorites
+                         on u.Id equals p.UserId into FavGrp
+                         where u.Id == id
+                         select new 
+                         {
+                             User = u,
+                             Product = FavGrp.ToList()
+                         };
+
+
 
             return result;
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public IActionResult Post([FromBody]Favorite f)
         {
+            if (f == null)
+            {
+                return NoContent();
+            }
+            else
+            {
+                _context.Add(f);
+                _context.SaveChanges();
+
+                return Ok();
+            }
         }
 
         // PUT api/values/5
@@ -48,6 +79,7 @@ namespace projectC.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+          
         }
     }
 }
