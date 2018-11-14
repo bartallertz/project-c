@@ -85,7 +85,7 @@ namespace projectC.model
         public List<ImageURL> imageURLs { get; set; }
         public List<Favorite> Users { get; set; }
         public Category Category { get; set; }
-        public int CategoryId { get; set; }
+        public SubCategory SubCategory { get; set; }
 
 
 
