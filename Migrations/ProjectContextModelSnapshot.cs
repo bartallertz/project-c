@@ -2,7 +2,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using projectC.model;
@@ -10,10 +9,9 @@ using projectC.model;
 namespace projectC.Migrations
 {
     [DbContext(typeof(ProjectContext))]
-    [Migration("20181114111102_ImprovedModel")]
-    partial class ImprovedModel
+    partial class ProjectContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -156,7 +154,7 @@ namespace projectC.Migrations
 
             modelBuilder.Entity("projectC.model.Product", b =>
                 {
-                    b.HasOne("projectC.model.Category")
+                    b.HasOne("projectC.model.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId");
                 });
