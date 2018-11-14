@@ -21,7 +21,7 @@ namespace projectC.Controllers
         public IQueryable Get()
         {
             var result = from u in this._context.users
-                         join p in this._context.favorites
+                         join p in this._context.favourites
                          on u.Id equals p.UserId into FavGrp
                          select new 
                          {
@@ -38,7 +38,7 @@ namespace projectC.Controllers
         public IQueryable Get(int id)
         {
             var result = from u in this._context.users
-                         join p in this._context.favorites
+                         join p in this._context.favourites
                          on u.Id equals p.UserId into FavGrp
                          where u.Id == id
                          select new 
@@ -68,18 +68,17 @@ namespace projectC.Controllers
                 return Ok();
             }
         }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-          
-        }
+        // // DELETE api/values/5
+        // [HttpDelete("{id}")]
+        // public IActionResult Delete(Favorite f)
+        // {
+        //   if()
+        //   {
+        //       _context.favourites.Remove(f);
+        //       _context.SaveChanges();
+        //       return Ok();
+        //   }
+        //   return Unauthorized();
+        // }
     }
 }

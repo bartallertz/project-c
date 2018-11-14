@@ -3,7 +3,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace projectC.Migrations
 {
-    public partial class SaleemHeefthoofdpijn : Migration
+    public partial class ImprovedModel : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -42,6 +42,7 @@ namespace projectC.Migrations
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     Price = table.Column<float>(nullable: false),
+                    FirstImg = table.Column<string>(nullable: true),
                     CategoryId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -49,6 +50,26 @@ namespace projectC.Migrations
                     table.PrimaryKey("PK_products", x => x.Id);
                     table.ForeignKey(
                         name: "FK_products_categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SubCategories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
+                    CategoryId = table.Column<int>(nullable: true),
+                    SubCategory_Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SubCategories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SubCategories_categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "categories",
                         principalColumn: "Id",
@@ -79,25 +100,43 @@ namespace projectC.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "favorites",
+                name: "imageURLs",
                 columns: table => new
                 {
+                    url = table.Column<string>(nullable: true),
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
-                    ProductId = table.Column<int>(nullable: false),
-                    UserId = table.Column<int>(nullable: false)
+                    productId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_favorites", x => x.Id);
+                    table.PrimaryKey("PK_imageURLs", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_favorites_products_ProductId",
+                        name: "FK_imageURLs_products_productId",
+                        column: x => x.productId,
+                        principalTable: "products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "favourites",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(nullable: false),
+                    ProductId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_favourites", x => new { x.ProductId, x.UserId });
+                    table.ForeignKey(
+                        name: "FK_favourites_products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_favorites_users_UserId",
+                        name: "FK_favourites_users_UserId",
                         column: x => x.UserId,
                         principalTable: "users",
                         principalColumn: "Id",
@@ -105,18 +144,23 @@ namespace projectC.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_favorites_ProductId",
-                table: "favorites",
-                column: "ProductId");
+                name: "IX_favourites_UserId",
+                table: "favourites",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_favorites_UserId",
-                table: "favorites",
-                column: "UserId");
+                name: "IX_imageURLs_productId",
+                table: "imageURLs",
+                column: "productId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_products_CategoryId",
                 table: "products",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SubCategories_CategoryId",
+                table: "SubCategories",
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
@@ -128,19 +172,25 @@ namespace projectC.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "favorites");
+                name: "favourites");
 
             migrationBuilder.DropTable(
-                name: "products");
+                name: "imageURLs");
+
+            migrationBuilder.DropTable(
+                name: "SubCategories");
 
             migrationBuilder.DropTable(
                 name: "users");
 
             migrationBuilder.DropTable(
-                name: "categories");
+                name: "products");
 
             migrationBuilder.DropTable(
                 name: "roles");
+
+            migrationBuilder.DropTable(
+                name: "categories");
         }
     }
 }

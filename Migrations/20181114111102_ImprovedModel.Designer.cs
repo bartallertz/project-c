@@ -10,8 +10,8 @@ using projectC.model;
 namespace projectC.Migrations
 {
     [DbContext(typeof(ProjectContext))]
-    [Migration("20181112122735_meidenvanhollandhard")]
-    partial class meidenvanhollandhard
+    [Migration("20181114111102_ImprovedModel")]
+    partial class ImprovedModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,7 +33,7 @@ namespace projectC.Migrations
                     b.ToTable("categories");
                 });
 
-            modelBuilder.Entity("projectC.model.Favourite", b =>
+            modelBuilder.Entity("projectC.model.Favorite", b =>
                 {
                     b.Property<int>("ProductId");
 
@@ -59,7 +59,7 @@ namespace projectC.Migrations
 
                     b.HasIndex("productId");
 
-                    b.ToTable("ImageURL");
+                    b.ToTable("imageURLs");
                 });
 
             modelBuilder.Entity("projectC.model.Product", b =>
@@ -70,6 +70,8 @@ namespace projectC.Migrations
                     b.Property<int?>("CategoryId");
 
                     b.Property<string>("Description");
+
+                    b.Property<string>("FirstImg");
 
                     b.Property<string>("Name");
 
@@ -94,6 +96,22 @@ namespace projectC.Migrations
                     b.ToTable("roles");
                 });
 
+            modelBuilder.Entity("projectC.model.SubCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("CategoryId");
+
+                    b.Property<string>("SubCategory_Name");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("SubCategories");
+                });
+
             modelBuilder.Entity("projectC.model.User", b =>
                 {
                     b.Property<int>("Id")
@@ -116,7 +134,7 @@ namespace projectC.Migrations
                     b.ToTable("users");
                 });
 
-            modelBuilder.Entity("projectC.model.Favourite", b =>
+            modelBuilder.Entity("projectC.model.Favorite", b =>
                 {
                     b.HasOne("projectC.model.Product", "Product")
                         .WithMany("Users")
@@ -143,10 +161,17 @@ namespace projectC.Migrations
                         .HasForeignKey("CategoryId");
                 });
 
+            modelBuilder.Entity("projectC.model.SubCategory", b =>
+                {
+                    b.HasOne("projectC.model.Category", "Category")
+                        .WithMany("SubCategories")
+                        .HasForeignKey("CategoryId");
+                });
+
             modelBuilder.Entity("projectC.model.User", b =>
                 {
                     b.HasOne("projectC.model.Role", "Role")
-                        .WithMany()
+                        .WithMany("Users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

@@ -169,7 +169,7 @@ namespace projectC.Migrations
             modelBuilder.Entity("projectC.model.User", b =>
                 {
                     b.HasOne("projectC.model.Role", "Role")
-                        .WithMany()
+                        .WithMany("Users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

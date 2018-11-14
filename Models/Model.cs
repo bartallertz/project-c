@@ -11,13 +11,13 @@ namespace projectC.model
     {
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Favourite>()
+            modelBuilder.Entity<Favorite>()
             .HasKey(k => new { k.ProductId, k.UserId });
-            modelBuilder.Entity<Favourite>()
+            modelBuilder.Entity<Favorite>()
             .HasOne(k => k.User)
             .WithMany(k2 => k2.Product)
             .HasForeignKey(k => k.UserId);
-            modelBuilder.Entity<Favourite>()
+            modelBuilder.Entity<Favorite>()
             .HasOne(k => k.Product)
             .WithMany(k2 => k2.Users)
             .HasForeignKey(k => k.ProductId);
@@ -59,6 +59,8 @@ namespace projectC.model
 
     public class Favorite
     {
+
+        
         public int UserId { get; set; }
         public int ProductId { get; set; }
         public User User { get; set; }
