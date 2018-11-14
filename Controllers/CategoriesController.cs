@@ -43,17 +43,18 @@ namespace projectC.Controllers
             return result;
         }
 
-        [HttpGet("subcategory/{name}")]
-        public IQueryable Get(string name)
+        [HttpGet("{id}/{name}")]
+        public IQueryable Get(int id, string name)
             {
                 var result = from c in this._context.categories
-                             join s in this._context.SubCategories
-                             on c.Id equals s.Category.Id into SubCategoriesGroup
-                             where c.Name == name
+                             from s in this._context.SubCategories
+                             join p in this._context.products
+                             on s.Id equals p.SubCategory.Id into SubGrp
+                             where c.Id == id && s.SubCategory_Name == name
                              select new
                              {
-                                 Categories = c,
-                                 SubCategories = SubCategoriesGroup.ToList()
+                                 SubCategory = s,
+                                 Products = SubGrp.ToList()
                              };
 
                         return result;
