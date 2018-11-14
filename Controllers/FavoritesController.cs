@@ -9,16 +9,16 @@ using projectC.model;
 namespace projectC.Controllers
 {
     [Route("api/[controller]")]
-    public class FavoritesController : Controller
+    public class FavouritesController : Controller
     {
         ProjectContext _context;
-        public FavoritesController(ProjectContext context)
+        public FavouritesController(ProjectContext context)
         {
             _context = context;
         }
         // GET api/values
         [HttpGet]
-        public Favorite[] Get()
+        public Favourite[] Get()
         {
 
             var result = (from u in _context.users
@@ -28,7 +28,7 @@ namespace projectC.Controllers
                            where a_b.UserId == u.Id && a_b.ProductId == b.Id
                            select b).ToArray()
 
-                          select new Favorite()
+                          select new Favourite()
                           {
                               User = u,
                               Products = a_Products
@@ -37,7 +37,7 @@ namespace projectC.Controllers
 
             return result;
         }
-        public class Favorite
+        public class Favourite
         {
             public User User { get; set; }
 
@@ -45,7 +45,7 @@ namespace projectC.Controllers
         }
         // GET api/values/5
         [HttpGet("{id}")]
-        public Favorite[] Get(int id)
+        public Favourite[] Get(int id)
         {
             var result = (from u in _context.users
                           where u.Id == id
@@ -55,7 +55,7 @@ namespace projectC.Controllers
                            where a_b.UserId == u.Id && a_b.ProductId == b.Id
                            select b).ToArray()
 
-                          select new Favorite()
+                          select new Favourite()
                           {
                               User = u,
                               Products = a_Products
@@ -66,7 +66,7 @@ namespace projectC.Controllers
 
         // POST api/values
         [HttpPost]
-        public IActionResult Post([FromBody]Favorite f)
+        public IActionResult Post([FromBody]Favourite f)
         {
 
             if (f == null)

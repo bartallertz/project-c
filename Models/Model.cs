@@ -11,13 +11,13 @@ namespace projectC.model
     {
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Favorite>()
+            modelBuilder.Entity<Favourite>()
             .HasKey(k => new { k.ProductId, k.UserId });
-            modelBuilder.Entity<Favorite>()
+            modelBuilder.Entity<Favourite>()
             .HasOne(k => k.User)
             .WithMany(k2 => k2.Product)
             .HasForeignKey(k => k.UserId);
-            modelBuilder.Entity<Favorite>()
+            modelBuilder.Entity<Favourite>()
             .HasOne(k => k.Product)
             .WithMany(k2 => k2.Users)
             .HasForeignKey(k => k.ProductId);
@@ -32,7 +32,7 @@ namespace projectC.model
         public DbSet<SubCategory> SubCategories { get; set; }
         public DbSet<ImageURL> imageURLs { get; set; }
         public DbSet<Role> roles { get; set; }
-        public DbSet<Favorite> favourites { get; set; }
+        public DbSet<Favourite> favourites { get; set; }
 
 
 
@@ -47,7 +47,7 @@ namespace projectC.model
         public string Password { get; set; }
         public int RoleId { get; set; }
         public Role Role { get; set; }
-        public List<Favorite> Product { get; set; }
+        public List<Favourite> Product { get; set; }
         public string Gender { get; set; }
         public string Street_Name { get; set; }
         public string email { get; set; }
@@ -65,7 +65,7 @@ namespace projectC.model
         public List<User> Users { get; set; }
     }
 
-    public class Favorite
+    public class Favourite
     {
 
         
@@ -83,13 +83,9 @@ namespace projectC.model
         public float Price { get; set; }
         public string FirstImg { get; set; }
         public List<ImageURL> imageURLs { get; set; }
-        public List<Favorite> Users { get; set; }
+        public List<Favourite> Users { get; set; }
         public Category Category { get; set; }
         public SubCategory SubCategory { get; set; }
-
-
-
-
     }
 
     public class Category
