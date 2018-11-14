@@ -86,7 +86,15 @@ namespace projectC.Migrations
                     LastName = table.Column<string>(nullable: true),
                     Age = table.Column<int>(nullable: false),
                     Password = table.Column<string>(nullable: true),
-                    RoleId = table.Column<int>(nullable: false)
+                    RoleId = table.Column<int>(nullable: false),
+                    Gender = table.Column<string>(nullable: true),
+                    Street_Name = table.Column<string>(nullable: true),
+                    email = table.Column<string>(nullable: true),
+                    House_Number = table.Column<int>(nullable: false),
+                    Addition = table.Column<string>(nullable: true),
+                    Postalcode = table.Column<string>(nullable: true),
+                    City = table.Column<string>(nullable: true),
+                    Telephone_Number = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

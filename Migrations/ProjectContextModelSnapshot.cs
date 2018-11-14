@@ -115,7 +115,15 @@ namespace projectC.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("Addition");
+
                     b.Property<int>("Age");
+
+                    b.Property<string>("City");
+
+                    b.Property<string>("Gender");
+
+                    b.Property<int>("House_Number");
 
                     b.Property<string>("LastName");
 
@@ -123,7 +131,15 @@ namespace projectC.Migrations
 
                     b.Property<string>("Password");
 
+                    b.Property<string>("Postalcode");
+
                     b.Property<int>("RoleId");
+
+                    b.Property<string>("Street_Name");
+
+                    b.Property<string>("Telephone_Number");
+
+                    b.Property<string>("email");
 
                     b.HasKey("Id");
 
@@ -154,7 +170,7 @@ namespace projectC.Migrations
 
             modelBuilder.Entity("projectC.model.Product", b =>
                 {
-                    b.HasOne("projectC.model.Category")
+                    b.HasOne("projectC.model.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId");
                 });

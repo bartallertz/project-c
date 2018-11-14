@@ -50,8 +50,20 @@ namespace projectC.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public IActionResult Post([FromBody]Product p)
         {
+
+            if(p == null)
+            {
+                return NoContent();
+            }
+            else
+            {
+                this._context.Add(p);
+                this._context.SaveChanges();
+
+                return Ok();
+            }
         }
 
         // PUT api/values/5
@@ -62,8 +74,14 @@ namespace projectC.Controllers
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(int id, Product p)
         {
+
+            if(p != null)
+            {
+                _context.Remove(p);
+                _context.SaveChanges();
+            }
         }
     }
 }

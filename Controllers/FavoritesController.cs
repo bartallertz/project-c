@@ -18,37 +18,49 @@ namespace projectC.Controllers
         }
         // GET api/values
         [HttpGet]
-        public IQueryable Get()
+        public Favorite[] Get()
         {
-            var result = from u in this._context.users
-                         join p in this._context.favourites
-                         on u.Id equals p.UserId into FavGrp
-                         select new 
-                         {
-                             User = u,
-                             Product = FavGrp.ToList()
-                         };
 
+            var result = (from u in _context.users
+                          let a_Products =
+                          (from a_b in _context.favourites
+                           from b in _context.products
+                           where a_b.UserId == u.Id && a_b.ProductId == b.Id
+                           select b).ToArray()
 
+                          select new Favorite()
+                          {
+                              User = u,
+                              Products = a_Products
+
+                          }).ToArray();
 
             return result;
         }
+        public class Favorite
+        {
+            public User User { get; set; }
+
+            public Product[] Products { get; set; }
+        }
         // GET api/values/5
         [HttpGet("{id}")]
-        public IQueryable Get(int id)
+        public Favorite[] Get(int id)
         {
-            var result = from u in this._context.users
-                         join p in this._context.favourites
-                         on u.Id equals p.UserId into FavGrp
-                         where u.Id == id
-                         select new 
-                         {
-                             User = u,
-                             Product = FavGrp.ToList()
-                         };
+            var result = (from u in _context.users
+                          where u.Id == id
+                          let a_Products =
+                          (from a_b in _context.favourites
+                           from b in _context.products
+                           where a_b.UserId == u.Id && a_b.ProductId == b.Id
+                           select b).ToArray()
 
+                          select new Favorite()
+                          {
+                              User = u,
+                              Products = a_Products
 
-
+                          }).ToArray();
             return result;
         }
 
@@ -56,6 +68,7 @@ namespace projectC.Controllers
         [HttpPost]
         public IActionResult Post([FromBody]Favorite f)
         {
+
             if (f == null)
             {
                 return NoContent();
@@ -68,17 +81,12 @@ namespace projectC.Controllers
                 return Ok();
             }
         }
-        // // DELETE api/values/5
-        // [HttpDelete("{id}")]
-        // public IActionResult Delete(Favorite f)
-        // {
-        //   if()
-        //   {
-        //       _context.favourites.Remove(f);
-        //       _context.SaveChanges();
-        //       return Ok();
-        //   }
-        //   return Unauthorized();
-        // }
+        // DELETE api/values/5
+        [HttpDelete("{id}")]
+        public void Delete()
+        {
+
+
+        }
     }
 }
