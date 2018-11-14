@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using projectC.model;
@@ -9,9 +10,10 @@ using projectC.model;
 namespace projectC.Migrations
 {
     [DbContext(typeof(ProjectContext))]
-    partial class ProjectContextModelSnapshot : ModelSnapshot
+    [Migration("20181113122226_update")]
+    partial class update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,7 +33,7 @@ namespace projectC.Migrations
                     b.ToTable("categories");
                 });
 
-            modelBuilder.Entity("projectC.model.Favorite", b =>
+            modelBuilder.Entity("projectC.model.Favourite", b =>
                 {
                     b.Property<int>("ProductId");
 
@@ -57,7 +59,7 @@ namespace projectC.Migrations
 
                     b.HasIndex("productId");
 
-                    b.ToTable("imageURLs");
+                    b.ToTable("ImageURL");
                 });
 
             modelBuilder.Entity("projectC.model.Product", b =>
@@ -68,8 +70,6 @@ namespace projectC.Migrations
                     b.Property<int?>("CategoryId");
 
                     b.Property<string>("Description");
-
-                    b.Property<string>("FirstImg");
 
                     b.Property<string>("Name");
 
@@ -132,7 +132,7 @@ namespace projectC.Migrations
                     b.ToTable("users");
                 });
 
-            modelBuilder.Entity("projectC.model.Favorite", b =>
+            modelBuilder.Entity("projectC.model.Favourite", b =>
                 {
                     b.HasOne("projectC.model.Product", "Product")
                         .WithMany("Users")
@@ -154,7 +154,7 @@ namespace projectC.Migrations
 
             modelBuilder.Entity("projectC.model.Product", b =>
                 {
-                    b.HasOne("projectC.model.Category")
+                    b.HasOne("projectC.model.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId");
                 });
@@ -169,7 +169,7 @@ namespace projectC.Migrations
             modelBuilder.Entity("projectC.model.User", b =>
                 {
                     b.HasOne("projectC.model.Role", "Role")
-                        .WithMany("Users")
+                        .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
