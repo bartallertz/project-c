@@ -75,7 +75,12 @@ namespace projectC.model
         public float Price { get; set; }
         public string FirstImg { get; set; }
         public List<ImageURL> imageURLs { get; set; }
-        public List<Favorite> Users { get; set; }
+        public List<Favourite> Users { get; set; }
+        public Category Category { get; set; }
+
+
+
+
     }
 
     public class Category
