@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using projectC.model;
 
-
 namespace projectC.Controllers
 {
     [Route("api/[controller]")]
@@ -16,9 +15,9 @@ namespace projectC.Controllers
         {
             _context = context;
         }
-        // GET api/values
+
         [HttpGet]
-        public Favourite[] Get()
+        public IQueryable Get()
         {
 
             var result = (from u in _context.users
@@ -28,24 +27,16 @@ namespace projectC.Controllers
                            where a_b.UserId == u.Id && a_b.ProductId == b.Id
                            select b).ToArray()
 
-                          select new Favourite()
-                          {
+                          select new {
                               User = u,
                               Products = a_Products
-
-                          }).ToArray();
+                          });
 
             return result;
         }
-        public class Favourite
-        {
-            public User User { get; set; }
-
-            public Product[] Products { get; set; }
-        }
-        // GET api/values/5
+        
         [HttpGet("{id}")]
-        public Favourite[] Get(int id)
+        public IQueryable Get(int id)
         {
             var result = (from u in _context.users
                           where u.Id == id
@@ -55,12 +46,10 @@ namespace projectC.Controllers
                            where a_b.UserId == u.Id && a_b.ProductId == b.Id
                            select b).ToArray()
 
-                          select new Favourite()
-                          {
+                          select new {
                               User = u,
                               Products = a_Products
-
-                          }).ToArray();
+                          });
             return result;
         }
 
@@ -68,7 +57,6 @@ namespace projectC.Controllers
         [HttpPost]
         public IActionResult Post([FromBody]Favourite f)
         {
-
             if (f == null)
             {
                 return NoContent();
