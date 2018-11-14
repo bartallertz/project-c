@@ -10,8 +10,8 @@ using projectC.model;
 namespace projectC.Migrations
 {
     [DbContext(typeof(ProjectContext))]
-    [Migration("20181113122226_update")]
-    partial class update
+    [Migration("20181114124826_firstMigration")]
+    partial class firstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,7 +33,7 @@ namespace projectC.Migrations
                     b.ToTable("categories");
                 });
 
-            modelBuilder.Entity("projectC.model.Favourite", b =>
+            modelBuilder.Entity("projectC.model.Favorite", b =>
                 {
                     b.Property<int>("ProductId");
 
@@ -59,7 +59,7 @@ namespace projectC.Migrations
 
                     b.HasIndex("productId");
 
-                    b.ToTable("ImageURL");
+                    b.ToTable("imageURLs");
                 });
 
             modelBuilder.Entity("projectC.model.Product", b =>
@@ -70,6 +70,8 @@ namespace projectC.Migrations
                     b.Property<int?>("CategoryId");
 
                     b.Property<string>("Description");
+
+                    b.Property<string>("FirstImg");
 
                     b.Property<string>("Name");
 
@@ -132,7 +134,7 @@ namespace projectC.Migrations
                     b.ToTable("users");
                 });
 
-            modelBuilder.Entity("projectC.model.Favourite", b =>
+            modelBuilder.Entity("projectC.model.Favorite", b =>
                 {
                     b.HasOne("projectC.model.Product", "Product")
                         .WithMany("Users")
@@ -169,7 +171,7 @@ namespace projectC.Migrations
             modelBuilder.Entity("projectC.model.User", b =>
                 {
                     b.HasOne("projectC.model.Role", "Role")
-                        .WithMany()
+                        .WithMany("Users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

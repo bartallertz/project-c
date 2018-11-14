@@ -48,6 +48,14 @@ namespace projectC.model
         public int RoleId { get; set; }
         public Role Role { get; set; }
         public List<Favorite> Product { get; set; }
+        public string Gender { get; set; }
+        public string Street_Name { get; set; }
+        public string email { get; set; }
+        public int House_Number { get; set; }
+        public string Addition { get; set; }
+        public string Postalcode { get; set; }
+        public string City { get; set; }
+        public string Telephone_Number { get; set; }
     }
 
     public class Role
@@ -75,7 +83,7 @@ namespace projectC.model
         public float Price { get; set; }
         public string FirstImg { get; set; }
         public List<ImageURL> imageURLs { get; set; }
-        public List<Favourite> Users { get; set; }
+        public List<Favorite> Users { get; set; }
         public Category Category { get; set; }
 
 
