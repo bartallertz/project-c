@@ -46,7 +46,7 @@ namespace projectC.Controllers
             //  var UserRole = (u , u.RoleId = 1);
 
             //register a new User
-            if (u == null | u.RoleId == 2)
+            if (u == null)
             {
                 return NoContent();
             }
