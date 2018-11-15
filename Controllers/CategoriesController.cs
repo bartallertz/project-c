@@ -19,10 +19,16 @@ namespace projectC.Controllers
         }
         //GET api/values
         [HttpGet]
-        public IQueryable<Category> Get()
+        public IQueryable Get()
         {
-            var result = from m in this._context.categories select m;
-
+            var result = from c in this._context.categories
+                         join s in this._context.SubCategories
+                         on c.Id equals s.Category.Id into Collection
+                         select new
+                         {
+                             Category = c,
+                             SubCategory = Collection.ToArray()
+                         };
             return result;
         }
         [HttpGet("{id}")]
