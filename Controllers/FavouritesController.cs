@@ -55,7 +55,7 @@ namespace projectC.Controllers
 
         // POST api/values
         [HttpPost]
-        public IActionResult Post([FromBody]Favourite f)
+        public IActionResult Post([FromBody]Favorite f)
         {
             if (f == null)
             {
