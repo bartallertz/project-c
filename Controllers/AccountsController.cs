@@ -41,18 +41,19 @@ namespace projectC.Controllers
         [HttpPost]
         public IActionResult Register([FromBody]User u)
         {
+            var UserData = from u2 in _context.users.ToList() 
+                                where u == u2  
+                                select u2;
 
-
-            //  var UserRole = (u , u.RoleId = 1);
-
+            
             //register a new User
-            if (u == null)
+            if (u == null || u == UserData)
             {
                 return NoContent();
             }
             else
             {
-               
+                u.RoleId = 1;
                 _context.Add(u);
                 _context.SaveChanges();
 
