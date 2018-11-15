@@ -27,14 +27,15 @@ namespace projectC.Controllers
                            where a_b.UserId == u.Id && a_b.ProductId == b.Id
                            select b).ToArray()
 
-                          select new {
+                          select new
+                          {
                               User = u,
                               Products = a_Products
                           });
 
             return result;
         }
-        
+
         [HttpGet("{id}")]
         public IQueryable Get(int id)
         {
@@ -46,7 +47,8 @@ namespace projectC.Controllers
                            where a_b.UserId == u.Id && a_b.ProductId == b.Id
                            select b).ToArray()
 
-                          select new {
+                          select new
+                          {
                               User = u,
                               Products = a_Products
                           });
@@ -69,11 +71,10 @@ namespace projectC.Controllers
                 return Ok();
             }
         }
-        // DELETE api/values/5
+        // DELETE api/Favourite/1
         [HttpDelete("{id}")]
-        public void Delete()
+        public void Delete(int id)
         {
-
 
         }
     }
