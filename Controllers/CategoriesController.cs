@@ -43,8 +43,26 @@ namespace projectC.Controllers
             return result;
         }
 
-        [HttpGet("{id}/{id2}")]
-        public IQueryable Get(int id, int id2)
+
+        [HttpGet("{id}/Subcategories")]
+        public IQueryable Get2(int id)
+        {
+            var result = from c in this._context.categories
+                         join s in this._context.SubCategories
+                         on c.Id equals s.Category.Id into Collection
+                         where c.Id == id
+                         select new
+                         {
+                             Category = c,
+                             SubCategory = Collection.ToArray()
+                         };
+            return result;
+        }
+
+
+
+        [HttpGet("{id}/Subcategories/{id2}")]
+        public IQueryable Get3(int id, int id2)
         {
             var result = from c in this._context.categories
                          from s in this._context.SubCategories
@@ -58,8 +76,9 @@ namespace projectC.Controllers
                          };
 
             return result;
-
         }
+
+
 
 
     }
