@@ -21,6 +21,9 @@ namespace projectC.model
             .HasOne(k => k.Product)
             .WithMany(k2 => k2.Users)
             .HasForeignKey(k => k.ProductId);
+            modelBuilder.Entity<User>()
+            .Property(i => i.RoleId)
+            .HasDefaultValue(1);
         }
         public ProjectContext(DbContextOptions<ProjectContext> options) : base(options)
         {
