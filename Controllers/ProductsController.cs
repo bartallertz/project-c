@@ -21,12 +21,16 @@ namespace projectC.Controllers
         [HttpGet]
         public IQueryable Get()
         {
-            var result = from p in this._context.products
-                         orderby p.Id
-                         select new
-                         {
-                             Product = p,
-                         };
+            var result = (from p in _context.products
+                        let a_Products =
+                          (from pr in _context.products
+                            orderby pr.Id
+                            select pr).ToList()
+
+                          select new
+                          {
+                              Products = a_Products
+                          });
 
             return result;
         }

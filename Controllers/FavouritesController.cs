@@ -29,7 +29,6 @@ namespace projectC.Controllers
 
                           select new
                           {
-                              User = u,
                               Products = a_Products
                           });
 
