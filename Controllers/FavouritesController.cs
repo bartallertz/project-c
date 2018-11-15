@@ -48,9 +48,17 @@ namespace projectC.Controllers
 
                           select new
                           {
-                              User = u,
                               Products = a_Products
                           });
+            return result;
+        }
+
+        [HttpGet("{id1}/{id2}")]
+        public Boolean Get(int id1, int id2)
+        {
+            var result = (from a_b in _context.favourites
+                          where a_b.UserId == id1 && a_b.ProductId == id2
+                          select a_b).Any();
             return result;
         }
 
@@ -71,10 +79,17 @@ namespace projectC.Controllers
             }
         }
         // DELETE api/Favourite/1
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{userId}/{productId}")]
+        public void Delete(int userId, int productId)
         {
+            var remove = (from a_b in _context.favourites
+                where a_b.UserId == userId && a_b.ProductId == productId
+                select a_b).FirstOrDefault();
 
+            if(remove != null) {
+                _context.favourites.Remove(remove);
+                _context.SaveChanges();
+            }
         }
     }
 }
