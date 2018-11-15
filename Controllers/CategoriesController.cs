@@ -43,23 +43,23 @@ namespace projectC.Controllers
             return result;
         }
 
-        [HttpGet("{id}/{name}")]
-        public IQueryable Get(int id, string name)
-            {
-                var result = from c in this._context.categories
-                             from s in this._context.SubCategories
-                             join p in this._context.products
-                             on s.Id equals p.SubCategory.Id into SubGrp
-                             where c.Id == id && s.SubCategory_Name == name
-                             select new
-                             {
-                                 SubCategory = s,
-                                 Products = SubGrp.ToList()
-                             };
+        [HttpGet("{id}/{id2}")]
+        public IQueryable Get(int id, int id2)
+        {
+            var result = from c in this._context.categories
+                         from s in this._context.SubCategories
+                         join p in this._context.products
+                         on s.Id equals p.SubCategory.Id into SubGrp
+                         where c.Id == id && s.Id == id2
+                         select new
+                         {
+                             SubCategory = s,
+                             Products = SubGrp.ToList()
+                         };
 
-                        return result;
+            return result;
 
-            }
+        }
 
 
     }
