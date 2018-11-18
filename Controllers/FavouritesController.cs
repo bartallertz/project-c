@@ -38,18 +38,11 @@ namespace projectC.Controllers
         [HttpGet("{id}")]
         public IQueryable Get(int id)
         {
-            var result = (from u in _context.users
-                          where u.Id == id
-                          let a_Products =
-                          (from a_b in _context.favourites
-                           from b in _context.products
-                           where a_b.UserId == u.Id && a_b.ProductId == b.Id
-                           select b).ToArray()
-
-                          select new
-                          {
-                              Products = a_Products
-                          });
+            var result =    from u in _context.users
+                            from p in _context.products
+                            from u_p in _context.favourites
+                            where u.Id == id && u_p.UserId == id && u_p.ProductId == p.Id
+                            select p;
             return result;
         }
 

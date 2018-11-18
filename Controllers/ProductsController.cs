@@ -22,11 +22,8 @@ namespace projectC.Controllers
         public IQueryable Get()
         {
             var result = from p in _context.products
-                      orderby p.Id
-                       select new
-                          {
-                              Products = p
-                          };
+                        orderby p.Id
+                        select p;
 
             return result;
         }
