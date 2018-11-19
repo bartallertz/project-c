@@ -36,15 +36,9 @@ namespace projectC.Controllers
 
         {
             var result = from i in this._context.categories
-                         join p in this._context.products
-                         on i.Id equals p.Category.Id into CategoriesGroup
-                         where i.Id == id
-                         select new
-                         {
-                             Categories = i,
-                             Products = CategoriesGroup.ToList()
-
-                         };
+                         from p in this._context.products
+                         where i.Id == id && p.Category.Id == i.Id
+                         select p;
 
             return result;
         }
