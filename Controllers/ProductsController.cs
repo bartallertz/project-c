@@ -21,9 +21,17 @@ namespace projectC.Controllers
         [HttpGet]
         public IQueryable Get()
         {
-            var result = from p in _context.products
-                        orderby p.Id
-                        select p;
+            var result =    from p in _context.products
+                            let isFavourite = (from f in _context.favourites where p.Id == f.ProductId select p).Any()
+                            orderby p.Id
+                            select new {
+                                isFavourite = isFavourite,
+                                Id = p.Id,
+                                Name = p.Name,
+                                Description = p.Description,
+                                Price = p.Price,
+                                FirstImg = p.FirstImg
+                            };
 
             return result;
         }
