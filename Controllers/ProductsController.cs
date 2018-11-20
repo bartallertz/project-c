@@ -18,15 +18,32 @@ namespace projectC.Controllers
             this._context = context;
         }
 
-        [HttpGet]
-        public IQueryable Get()
+        //GET Products/Price=50-100
+        [HttpGet("Price={min}-{max}")]
+        public IQueryable PriceRange(int min, int max)
         {
-            var result = from p in _context.products
-                        orderby p.Id
-                        select p;
-
-            return result;
+            var result = from p in this._context.products
+                where ((p.Price > min || p.Price == min) && (p.Price < max || p.Price == max))          
+                orderby p.Price
+                select p;
+            return result.Distinct();
         }
+
+        //GET Products/Search=(insert text)
+        [HttpGet("Search={searchquery}")]
+        public IQueryable Search(string searchquery)
+        {
+            var result = from p in this._context.products
+                         from c in this._context.categories
+                         where (p.Description.ToString().ToLower().Contains(searchquery.ToLower()) ||
+                          p.Name.ToString().ToLower().Contains(searchquery.ToLower()) ||
+                            (c.Name.ToString().ToLower().Contains(searchquery.ToLower()) && p.Category.Id == c.Id))
+                         orderby p.Id
+                         select p;
+            return result.Distinct();
+        }
+
+
 
         // GET api/values/5
         [HttpGet("{id}")]
@@ -50,7 +67,7 @@ namespace projectC.Controllers
         public IActionResult Post([FromBody]Product p)
         {
 
-            if(p == null)
+            if (p == null)
             {
                 return NoContent();
             }
@@ -74,7 +91,7 @@ namespace projectC.Controllers
         public void Delete(int id, Product p)
         {
 
-            if(p != null)
+            if (p != null)
             {
                 _context.Remove(p);
                 _context.SaveChanges();
