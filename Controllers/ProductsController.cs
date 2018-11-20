@@ -23,7 +23,7 @@ namespace projectC.Controllers
         public IQueryable PriceRange(int min, int max)
         {
             var result = from p in this._context.products
-                where ((p.Price > min || p.Price == min) && (p.Price < max || p.Price == max))          
+                where ((p.Price >= min) && (p.Price <= max))          
                 orderby p.Price
                 select p;
             return result.Distinct();
