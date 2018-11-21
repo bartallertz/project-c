@@ -18,23 +18,52 @@ namespace projectC.Controllers
             this._context = context;
         }
 
+        //GET Products
         [HttpGet]
         public IQueryable Get()
         {
-            var result =    from p in _context.products
-                            let isFavourite = (from f in _context.favourites where p.Id == f.ProductId select p).Any()
-                            orderby p.Id
-                            select new {
-                                isFavourite = isFavourite,
-                                Id = p.Id,
-                                Name = p.Name,
-                                Description = p.Description,
-                                Price = p.Price,
-                                FirstImg = p.FirstImg
-                            };
+            var result = from p in _context.products
+                         let isFavourite = (from f in _context.favourites where p.Id == f.ProductId select p).Any()
+                         orderby p.Id
+                         select new
+                         {
+                             isFavourite = isFavourite,
+                             Id = p.Id,
+                             Name = p.Name,
+                             Description = p.Description,
+                             Price = p.Price,
+                             FirstImg = p.FirstImg
+                         };
 
             return result;
         }
+
+        //GET Products/Price=50-100
+        [HttpGet("Price={min}-{max}")]
+        public IQueryable PriceRange(int min, int max)
+        {
+            var result = from p in this._context.products
+                         where ((p.Price >= min) && (p.Price <= max))
+                         select p;
+            return result.Distinct();
+        }
+
+        //GET Products/Search=(insert text)
+        [HttpGet("Search={searchquery}")]
+        public IQueryable Search(string searchquery)
+        {
+
+            var result = from p in this._context.products
+                         from c in this._context.categories
+                         where (p.Description.ToString().ToLower().Contains(searchquery.ToLower()) ||
+                          p.Name.ToString().ToLower().Contains(searchquery.ToLower()) ||
+                            (c.Name.ToString().ToLower().Contains(searchquery.ToLower()) && p.Category.Id == c.Id))
+                         orderby p.Id
+                         select p;
+            return result.Distinct();
+        }
+
+
 
         // GET api/values/5
         [HttpGet("{id}")]
@@ -58,7 +87,7 @@ namespace projectC.Controllers
         public IActionResult Post([FromBody]Product p)
         {
 
-            if(p == null)
+            if (p == null)
             {
                 return NoContent();
             }
@@ -82,7 +111,7 @@ namespace projectC.Controllers
         public void Delete(int id, Product p)
         {
 
-            if(p != null)
+            if (p != null)
             {
                 _context.Remove(p);
                 _context.SaveChanges();
