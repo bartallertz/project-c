@@ -18,14 +18,23 @@ namespace projectC.Controllers
             this._context = context;
         }
 
+        //GET Products
+        [HttpGet]
+        public IQueryable<Product> Get()
+        {
+            var result = from p in this._context.products
+                         orderby p.Id
+                         select p;
+            return result;
+        }
+
         //GET Products/Price=50-100
         [HttpGet("Price={min}-{max}")]
         public IQueryable PriceRange(int min, int max)
         {
             var result = from p in this._context.products
-                where ((p.Price >= min) && (p.Price <= max))          
-                orderby p.Price
-                select p;
+                         where ((p.Price >= min) && (p.Price <= max))
+                         select p;
             return result.Distinct();
         }
 
@@ -33,6 +42,7 @@ namespace projectC.Controllers
         [HttpGet("Search={searchquery}")]
         public IQueryable Search(string searchquery)
         {
+
             var result = from p in this._context.products
                          from c in this._context.categories
                          where (p.Description.ToString().ToLower().Contains(searchquery.ToLower()) ||
