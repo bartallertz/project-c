@@ -52,15 +52,13 @@ namespace projectC.Controllers
             //Login combo is correct
             if (LoginCheck == true)
             {
-                Console.WriteLine("Login Suc6");
                 return Ok();
             }
 
             //Login combo does not exist
             else
             {
-                Console.WriteLine("no account");
-                return NoContent();
+                return Unauthorized();
             }
         }
 
@@ -88,45 +86,29 @@ namespace projectC.Controllers
             //Check for potential errors
             bool DupeMail = _context.users.Any(Dupe => Dupe.email == u.email);
             bool PhoneCheck = _context.users.Any(CheckPhone => CheckPhone.Telephone_Number == u.Telephone_Number);
-            
+
 
             //Criteria check
             if (DupeMail)
             {
-                Console.WriteLine("email dupe");
-                return NoContent();
+                return BadRequest("Email adress already exists");
             }
             if (PhoneCheck)
             {
-                Console.WriteLine("Phonenumber already bestaan vieze scammer");
-                return NoContent();
+                return BadRequest("Phone number already exists");
             }
-            if ( DupeMail == false && PhoneCheck == false)
+            if (DupeMail == false && PhoneCheck == false)
             {
-                Console.WriteLine("account created");
-                u.RoleId = 1;             
+                u.RoleId = 1;
                 _context.Add(u);
                 _context.SaveChanges();
-                return Ok();
+                return Ok("Account created");
             }
             else
             {
-                Console.WriteLine("something bad happened");
                 return NoContent();
             }
         }
     }
-
-    // // PUT api/values/5
-    // [HttpPut("{id}")]
-    // public void Put(int id, [FromBody]string value)
-    // {
-    // }
-
-    // // DELETE api/values/5
-    // [HttpDelete("{id}")]
-    // public void Delete(int id)
-    // {
-    // }
 }
 
