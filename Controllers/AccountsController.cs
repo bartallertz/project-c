@@ -91,12 +91,12 @@ namespace projectC.Controllers
             
 
             //Criteria check
-            if (DupeMail == true)
+            if (DupeMail)
             {
                 Console.WriteLine("email dupe");
                 return NoContent();
             }
-            if (PhoneCheck == true)
+            if (PhoneCheck)
             {
                 Console.WriteLine("Phonenumber already bestaan vieze scammer");
                 return NoContent();
