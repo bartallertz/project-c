@@ -67,13 +67,9 @@ namespace projectC.Controllers
             var result = from c in this._context.categories
                          from s in this._context.SubCategories
                          join p in this._context.products
-                         on s.Id equals p.SubCategory.Id into SubGrp
+                         on s.Id equals p.SubCategory.Id
                          where c.Id == id && s.Id == id2
-                         select new
-                         {
-                             SubCategory = s,
-                             Products = SubGrp.ToList()
-                         };
+                         select p;
 
             return result;
         }
