@@ -41,22 +41,32 @@ namespace projectC.Controllers
         [HttpPost]
         public IActionResult Register([FromBody]User u)
         {
-            var UserData = from u2 in _context.users.ToList() 
-                                where u == u2  
-                                select u2;
+            var UserData = from u2 in _context.users.ToList()
+                           select u2;
 
-            
+
             //register a new User
-            if (u == null || u == UserData)
+            if (u == null)
             {
+                Console.WriteLine("Vul een naam of wachtwoord in");
                 return NoContent();
+                
             }
             else
             {
-                u.RoleId = 1;
-                _context.Add(u);
-                _context.SaveChanges();
+                if (u.email == UserData.ElementAt(13).ToString())
+                {
+                    Console.WriteLine("Dit Account bestaat al");
+                    //throw new UnauthorizedAccessException();
+                }
+                else
+                {
+                    u.RoleId = 1;
+                    _context.Add(u);
+                    _context.SaveChanges();
 
+                    return Ok();
+                }
                 return Ok();
             }
         }

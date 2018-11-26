@@ -24,6 +24,8 @@ namespace projectC.model
             modelBuilder.Entity<User>()
             .Property(i => i.RoleId)
             .HasDefaultValue(1);
+
+            
         }
         public ProjectContext(DbContextOptions<ProjectContext> options) : base(options)
         {
@@ -36,6 +38,8 @@ namespace projectC.model
         public DbSet<ImageURL> imageURLs { get; set; }
         public DbSet<Role> roles { get; set; }
         public DbSet<Favourite> favourites { get; set; }
+
+        public DbSet<ShoppingCart> shoppingCarts{get; set;}
 
 
 
@@ -110,6 +114,16 @@ namespace projectC.model
         public int Id { get; set; }
         public Category Category { get; set; }
         public string SubCategory_Name { get; set; }
+    }
+
+    public class ShoppingCart
+    {
+         public int UserId { get; set; }
+        public int ProductId { get; set; }
+        public User User { get; set; }
+        public Product Product { get; set; }
+
+        public int Amount {get; set;}
     }
 
 }
