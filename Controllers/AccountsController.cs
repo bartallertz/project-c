@@ -5,12 +5,17 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using projectC.model;
 using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security;
 
 namespace projectC.Controllers
 {
     [Route("api/[controller]")]
     public class AccountsController : Controller
     {
+
+
         ProjectContext _context;
         public AccountsController(ProjectContext context)
         {
@@ -24,8 +29,6 @@ namespace projectC.Controllers
 
             return result;
         }
-
-
 
         // GET api/values/5
         [HttpGet("{id}")]
@@ -41,18 +44,37 @@ namespace projectC.Controllers
         [HttpPost("Login")]
         public IActionResult Login([FromBody] User u, string email, string password)
         {
-            //Upload credentials
-            var credentials = from user in _context.users
-                              where email == u.email && password == u.Password
-                              select user;
 
             //Check credentials
             bool LoginCheck = _context.users.Any(CheckCredentials => CheckCredentials.email == u.email && CheckCredentials.Password == u.Password);
 
+
             //Login combo is correct
             if (LoginCheck == true)
             {
-                return Ok();
+                User LoggedUser = (from user in this._context.users
+                                   where user.email == u.email && user.Password == u.Password
+                                   select user).FirstOrDefault();
+
+
+                string key = "401b09eab3c013d4c37591abd3e44453b954555b7a0812e1081c39b740293f765eae731f5a65ed1";
+                var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
+                var LoginCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
+                var header = new JwtHeader(LoginCredentials);
+
+                var payload = new JwtPayload
+                {
+                    { "EMAIL", LoggedUser.email},
+                    { "ID", LoggedUser.Id.ToString()},
+                    { "ROLE ID", LoggedUser.RoleId.ToString()}
+                };
+
+                var secToken = new JwtSecurityToken(header, payload);
+                var handler = new JwtSecurityTokenHandler();
+                var tokenString = handler.WriteToken(secToken);
+                string PayloadString = tokenString.Split('.')[1];
+
+                return Ok(PayloadString);
             }
 
             //Login combo does not exist

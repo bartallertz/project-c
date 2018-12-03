@@ -4,6 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using projectC.model;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security;
 
 namespace projectC.Controllers
 {
@@ -38,6 +42,7 @@ namespace projectC.Controllers
         [HttpGet("{id}")]
         public IQueryable Get(int id)
         {
+
             var result =    from u in _context.users
                             from p in _context.products
                             from u_p in _context.favourites
