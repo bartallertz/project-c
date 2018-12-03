@@ -37,6 +37,7 @@ namespace projectC.model
         public DbSet<Role> roles { get; set; }
         public DbSet<Favourite> favourites { get; set; }
 
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
 
 
     }
@@ -71,7 +72,7 @@ namespace projectC.model
     public class Favourite
     {
 
-        
+
         public int UserId { get; set; }
         public int ProductId { get; set; }
         public User User { get; set; }
@@ -110,6 +111,14 @@ namespace projectC.model
         public int Id { get; set; }
         public Category Category { get; set; }
         public string SubCategory_Name { get; set; }
+    }
+    public class ShoppingCart
+    {
+        public int UserId { get; set; }
+        public int ProductId { get; set; }
+        public User User { get; set; }
+        public Product Product { get; set; }
+
     }
 
 }
