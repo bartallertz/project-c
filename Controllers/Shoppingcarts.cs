@@ -17,34 +17,45 @@ namespace projectC.Controllers
             this._context = context;
         }
 
-        // GET api/values
-        [HttpGet]
-        public IQueryable Get()
+        // GET api/shoppingcarts    
+        // id = UserId
+        [HttpGet("{id}")]
+        public IQueryable Get(int id)
         {
-        var result = (from u in _context.users
-                        let a_products = 
-                        (from a_b in _context.shoppingCarts
-                        from b in _context.products
-                        where a_b.UserId == u.Id && a_b.ProductId == b.Id select b).ToArray()
-                        select new
-                        {
-                            Product = a_products
-                        });
+            var result = from u in _context.users
+                         from p in _context.products
+                         from u_p in _context.shoppingCarts
+                         where u.Id == id && u_p.ProductId == p.Id
+                         select p;
 
             return result;
         }
 
         // GET api/values/5
-        [HttpGet("{id}")]
-        public IQueryable Get(int id)
+        [HttpGet("{id1}/{id2}")]
+        public Boolean Get(int id1, int id2)
         {
-          
+            var result = (from a_b in _context.shoppingCarts
+                          where a_b.UserId == id1 && a_b.ProductId == id2
+                          select a_b).Any();
+            return result;
         }
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public IActionResult Post([FromBody]ShoppingCart s)
         {
+            if (s == null)
+            {
+                return NoContent();
+            }
+            else
+            {
+                _context.Add(s);
+                _context.SaveChanges();
+
+                return Ok();
+            }
         }
 
         // PUT api/values/5
@@ -54,9 +65,40 @@ namespace projectC.Controllers
         }
 
         // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+
+        [HttpDelete("{userId}/{productId}")]
+        public void Delete(int userId, int productId)
         {
+            var remove = (from a_b in _context.shoppingCarts
+                          where a_b.UserId == userId && a_b.ProductId == productId
+                          select a_b).FirstOrDefault();
+
+            if (remove != null)
+            {
+                _context.shoppingCarts.Remove(remove);
+                _context.SaveChanges();
+            }
+        }
+        [HttpDelete("checkout/{userId}")]
+        public void Delete2(int userId)
+        {
+            var remove = (from a_b in _context.shoppingCarts
+                          where a_b.UserId == userId
+                          select a_b).ToList();
+
+            foreach (var item in remove)
+            {
+                if (item != null)
+                {
+                    _context.shoppingCarts.Remove(item);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    Unauthorized();
+                }
+            }
+
         }
     }
 }

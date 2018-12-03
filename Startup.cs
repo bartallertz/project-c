@@ -26,8 +26,8 @@ namespace projectC
         public void ConfigureServices(IServiceCollection services)
         {   
             services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
-            services.AddDbContext<ProjectContext>(opt => opt.UseNpgsql("User ID=postgres;Password=admin;Host=localhost;Port=5432;Database=ProjectCv2558459751;Pooling=true;"));
-            services.AddMvc();
+            services.AddDbContext<ProjectContext>(opt => opt.UseNpgsql("User ID=postgres;Password=admin;Host=localhost;Port=5432;Database=ProjectCv25s58459751;Pooling=true;"));
+            services.AddMvc();                                                                                                            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
