@@ -24,6 +24,9 @@ namespace projectC.model
             modelBuilder.Entity<User>()
             .Property(i => i.RoleId)
             .HasDefaultValue(1);
+
+            modelBuilder.Entity<ShoppingCart>()
+            .HasKey(k => new{k.ProductId, k.UserId});
         }
         public ProjectContext(DbContextOptions<ProjectContext> options) : base(options)
         {
@@ -37,6 +40,7 @@ namespace projectC.model
         public DbSet<Role> roles { get; set; }
         public DbSet<Favourite> favourites { get; set; }
 
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
 
 
     }
@@ -71,7 +75,7 @@ namespace projectC.model
     public class Favourite
     {
 
-        
+
         public int UserId { get; set; }
         public int ProductId { get; set; }
         public User User { get; set; }
@@ -110,6 +114,14 @@ namespace projectC.model
         public int Id { get; set; }
         public Category Category { get; set; }
         public string SubCategory_Name { get; set; }
+    }
+    public class ShoppingCart
+    {
+        public int UserId { get; set; }
+        public int ProductId { get; set; }
+        public User User { get; set; }
+        public Product Product { get; set; }
+
     }
 
 }
