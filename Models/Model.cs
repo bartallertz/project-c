@@ -24,6 +24,9 @@ namespace projectC.model
             modelBuilder.Entity<User>()
             .Property(i => i.RoleId)
             .HasDefaultValue(1);
+
+            modelBuilder.Entity<ShoppingCart>()
+            .HasKey(k => new{k.ProductId, k.UserId});
         }
         public ProjectContext(DbContextOptions<ProjectContext> options) : base(options)
         {

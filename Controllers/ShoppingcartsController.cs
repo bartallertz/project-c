@@ -27,7 +27,7 @@ namespace projectC.Controllers
                          from u_p in _context.ShoppingCarts
                          where u.Id == id && u_p.ProductId == p.Id
                          select p;
-
+            
             return result;
         }
 
@@ -79,7 +79,7 @@ namespace projectC.Controllers
                 _context.SaveChanges();
             }
         }
-        [HttpDelete("checkout/{userId}")]
+        [HttpDelete("d/{userId}")]
         public void Delete2(int userId)
         {
             var remove = (from a_b in _context.ShoppingCarts
