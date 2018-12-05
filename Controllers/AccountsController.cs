@@ -57,7 +57,7 @@ namespace projectC.Controllers
                                    select user).FirstOrDefault();
 
 
-                string key = "401b09eab3c013d4c37591abd3e44453b954555b7a0812e1081c39b740293f765eae731f5a65ed1";
+                string key = "401b09eab3c013d4c37591abd3e44453b954SALEEM0812e1081c39b740293f765eae731f5a65ed51";
                 var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
                 var LoginCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
                 var header = new JwtHeader(LoginCredentials);
