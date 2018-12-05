@@ -62,25 +62,7 @@ namespace projectC.Controllers
             }
         }
 
-       
-        // [HttpPut("Edit")]
-        // public void Put(int Id, [FromBody]User users, string password, string streetname, string email, int housenumber, string addition, string postalcode, string city, string phonenumber)
-        //     {
-        //         var Edit = from user in _context.users
-        //                     where (password == user.Password &&
-        //                     streetname == user.Street_Name &&
-        //                     email == user.email &&
-        //                     housenumber == user.House_Number &&
-        //                     addition == user.Addition &&
-        //                     postalcode == user.Postalcode &&
-        //                     city == user.City &&
-        //                     phonenumber == user.Telephone_Number && user.Id == Id)
-        //                     select user;
-                            
-        //                     _context.Update(Edit);
-        //                     _context.SaveChanges();
-        //     }
-
+       //Request to edit user data.
        [HttpPut("Edit/{id}")]
         public IActionResult Update(int id, [FromBody]User user)
         {
