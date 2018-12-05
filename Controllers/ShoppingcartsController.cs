@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using projectC.model;
+using projectC.JWT;
 
 namespace projectC.Controllers
 {
@@ -19,9 +20,16 @@ namespace projectC.Controllers
 
         // GET api/shoppingcarts    
         // id = UserId
-        [HttpGet("{id}")]
-        public IQueryable Get(int id)
+        [HttpGet("MyCart")]
+        public IQueryable Get(string token)
         {
+            if (token == null)
+            {
+                token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
+            }
+
+            int id = JWTValidator.TokenValidation(token);
+
             var result = from u in _context.users
                          from p in _context.products
                          from u_p in _context.ShoppingCarts

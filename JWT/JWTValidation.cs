@@ -9,9 +9,9 @@ using System.Security;
 
 namespace projectC.JWT
 {
-    public class JWTValidation
+    public class JWTValidator
     {
-        public int TokenValidation(string TokenString)
+        public static int TokenValidation(string TokenString)
         {
             while (TokenString.Length % 4 != 0)
             {
@@ -20,7 +20,7 @@ namespace projectC.JWT
             
             byte[] data = Convert.FromBase64String(TokenString);
             string decodedString = Encoding.UTF8.GetString(data);
-            int USER_EYE_DEE = Convert.ToInt32(decodedString.Split(',')[1].Split(':')[1].Substring(1,1));
+            int USER_EYE_DEE = Convert.ToInt32(decodedString.Split(',')[1].Split(':')[1].Replace("\"",""));
 
             return USER_EYE_DEE;
         }
