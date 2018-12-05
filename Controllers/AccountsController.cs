@@ -28,7 +28,7 @@ namespace projectC.Controllers
 
 
         // GET api/values/5
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetUser")]
         public IQueryable<User> GetAccount(int id)
         {
             //get a specific user
@@ -60,6 +60,49 @@ namespace projectC.Controllers
             {
                 return Unauthorized();
             }
+        }
+
+       
+        // [HttpPut("Edit")]
+        // public void Put(int Id, [FromBody]User users, string password, string streetname, string email, int housenumber, string addition, string postalcode, string city, string phonenumber)
+        //     {
+        //         var Edit = from user in _context.users
+        //                     where (password == user.Password &&
+        //                     streetname == user.Street_Name &&
+        //                     email == user.email &&
+        //                     housenumber == user.House_Number &&
+        //                     addition == user.Addition &&
+        //                     postalcode == user.Postalcode &&
+        //                     city == user.City &&
+        //                     phonenumber == user.Telephone_Number && user.Id == Id)
+        //                     select user;
+                            
+        //                     _context.Update(Edit);
+        //                     _context.SaveChanges();
+        //     }
+
+       [HttpPut("Edit/{id}")]
+        public IActionResult Update(int id, [FromBody]User user)
+        {
+            var edit = _context.users.Find(id);
+            if (edit == null)
+            {
+                return NotFound();
+            }
+
+            edit.Password = user.Password;
+            edit.Street_Name = user.Street_Name;
+            edit.email = user.email;
+            edit.House_Number = user.House_Number;
+            edit.Addition = user.Addition;
+            edit.Postalcode = user.Postalcode;
+            edit.City = user.City;
+            edit.Telephone_Number = user.Telephone_Number;
+
+            _context.users.Update(edit);
+            _context.SaveChanges();
+        return CreatedAtRoute("GetUser", new { id = edit.Id }, edit);
+
         }
 
 
