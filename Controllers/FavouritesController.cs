@@ -60,9 +60,16 @@ namespace projectC.Controllers
 
         }
 
-        [HttpGet("{id1}/{id2}")]
-        public Boolean Get(int id1, int id2)
+        [HttpGet("MyFavourites/{id2}")]
+        public Boolean Get(string token, int id2)
         {
+            if (token == null)
+            {
+                token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
+            }
+
+            int id1 = JWTValidator.TokenValidation(token);
+
             var result = (from a_b in _context.favourites
                           where a_b.UserId == id1 && a_b.ProductId == id2
                           select a_b).Any();
