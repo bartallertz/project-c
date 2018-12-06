@@ -24,7 +24,6 @@ namespace projectC.Controllers
         [HttpGet]
         public IQueryable Get()
         {
-
             var result = (from u in _context.users
                           let a_Products =
                           (from a_b in _context.favourites
@@ -36,7 +35,6 @@ namespace projectC.Controllers
                           {
                               Products = a_Products
                           });
-
             return result;
         }
 
@@ -56,8 +54,6 @@ namespace projectC.Controllers
                          where u.Id == id && u_p.UserId == id && u_p.ProductId == p.Id
                          select p;
             return result;
-
-
         }
 
         [HttpGet("MyFavourites/{id2}")]
@@ -80,8 +76,6 @@ namespace projectC.Controllers
         [HttpPost]
         public IActionResult Post([FromBody]Favourite f)
         {
-
-
             if (f == null)
             {
                 return NoContent();
