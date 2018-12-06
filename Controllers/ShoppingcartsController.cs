@@ -40,8 +40,8 @@ namespace projectC.Controllers
         }
 
         // GET api/values/5
-        [HttpGet("MyCart/{id2}")]
-        public Boolean Get(string token, int id2)
+        [HttpGet("MyCart/{ProductId}")]
+        public Boolean Get(string token, int ProductId)
         {
             if (token == null)
             {
@@ -50,7 +50,7 @@ namespace projectC.Controllers
 
             int id1 = JWTValidator.TokenValidation(token);
             var result = (from a_b in _context.ShoppingCarts
-                          where a_b.UserId == id1 && a_b.ProductId == id2
+                          where a_b.UserId == id1 && a_b.ProductId == ProductId
                           select a_b).Any();
             return result;
         }

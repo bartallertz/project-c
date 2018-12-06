@@ -21,23 +21,6 @@ namespace projectC.Controllers
             _context = context;
         }
 
-        [HttpGet]
-        public IQueryable Get()
-        {
-            var result = (from u in _context.users
-                          let a_Products =
-                          (from a_b in _context.favourites
-                           from b in _context.products
-                           where a_b.UserId == u.Id && a_b.ProductId == b.Id
-                           select b).ToArray()
-
-                          select new
-                          {
-                              Products = a_Products
-                          });
-            return result;
-        }
-
         [HttpGet("MyFavourites")]
         public IQueryable Get(string token)
         {
@@ -56,8 +39,8 @@ namespace projectC.Controllers
             return result;
         }
 
-        [HttpGet("MyFavourites/{id2}")]
-        public Boolean Get(string token, int id2)
+        [HttpGet("MyFavourites/{ProductId}")]
+        public Boolean Get(string token, int ProductId)
         {
             if (token == null)
             {
@@ -67,7 +50,7 @@ namespace projectC.Controllers
             int id1 = JWTValidator.TokenValidation(token);
 
             var result = (from a_b in _context.favourites
-                          where a_b.UserId == id1 && a_b.ProductId == id2
+                          where a_b.UserId == id1 && a_b.ProductId == ProductId
                           select a_b).Any();
             return result;
         }
