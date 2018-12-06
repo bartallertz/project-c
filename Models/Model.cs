@@ -123,7 +123,5 @@ namespace projectC.model
         public User User { get; set; }
         public Product Product { get; set; }
         public int Amount { get; set; }
-
     }
-
 }
