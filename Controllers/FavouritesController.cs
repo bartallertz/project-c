@@ -8,6 +8,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security;
+using projectC.JWT;
 
 namespace projectC.Controllers
 {
@@ -23,7 +24,6 @@ namespace projectC.Controllers
         [HttpGet]
         public IQueryable Get()
         {
-
             var result = (from u in _context.users
                           let a_Products =
                           (from a_b in _context.favourites
@@ -35,25 +35,37 @@ namespace projectC.Controllers
                           {
                               Products = a_Products
                           });
-
             return result;
         }
 
-        [HttpGet("{id}")]
-        public IQueryable Get(int id)
+        [HttpGet("MyFavourites")]
+        public IQueryable Get(string token)
         {
+            if (token == null)
+            {
+                token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
+            }
 
-            var result =    from u in _context.users
-                            from p in _context.products
-                            from u_p in _context.favourites
-                            where u.Id == id && u_p.UserId == id && u_p.ProductId == p.Id
-                            select p;
+            int id = JWTValidator.TokenValidation(token);
+
+            var result = from u in _context.users
+                         from p in _context.products
+                         from u_p in _context.favourites
+                         where u.Id == id && u_p.UserId == id && u_p.ProductId == p.Id
+                         select p;
             return result;
         }
 
-        [HttpGet("{id1}/{id2}")]
-        public Boolean Get(int id1, int id2)
+        [HttpGet("MyFavourites/{id2}")]
+        public Boolean Get(string token, int id2)
         {
+            if (token == null)
+            {
+                token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
+            }
+
+            int id1 = JWTValidator.TokenValidation(token);
+
             var result = (from a_b in _context.favourites
                           where a_b.UserId == id1 && a_b.ProductId == id2
                           select a_b).Any();
@@ -81,10 +93,11 @@ namespace projectC.Controllers
         public void Delete(int userId, int productId)
         {
             var remove = (from a_b in _context.favourites
-                where a_b.UserId == userId && a_b.ProductId == productId
-                select a_b).FirstOrDefault();
+                          where a_b.UserId == userId && a_b.ProductId == productId
+                          select a_b).FirstOrDefault();
 
-            if(remove != null) {
+            if (remove != null)
+            {
                 _context.favourites.Remove(remove);
                 _context.SaveChanges();
             }

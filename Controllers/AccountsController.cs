@@ -8,6 +8,7 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security;
+using projectC.JWT;
 
 namespace projectC.Controllers
 {
@@ -31,9 +32,16 @@ namespace projectC.Controllers
         }
 
         // GET api/values/5
-        [HttpGet("{id}")]
-        public IQueryable<User> GetAccount(int id)
+        [HttpGet("MyAccount")]
+        public IQueryable<User> GetAccount(string token)
         {
+            if (token == null)
+            {
+                token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
+            }
+
+            int id = JWTValidator.TokenValidation(token);
+
             //get a specific user
             var result = from m in this._context.users where m.Id == id select m;
 
@@ -57,7 +65,7 @@ namespace projectC.Controllers
                                    select user).FirstOrDefault();
 
 
-                string key = "401b09eab3c013d4c37591abd3e44453b954555b7a0812e1081c39b740293f765eae731f5a65ed1";
+                string key = "401b09eab3c013d4c37591abd3e44453b954SALEEM0812e1081c39b740293f765eae731f5a65ed51";
                 var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
                 var LoginCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
                 var header = new JwtHeader(LoginCredentials);
