@@ -73,8 +73,8 @@ namespace projectC.Controllers
         }
 
         // POST api/values
-        [HttpPost]
-        public IActionResult Post([FromBody]Favourite f)
+        [HttpPost("PostFavourite")]
+        public IActionResult Post([FromBody]Favourite f, string token)
         {
             if (f == null)
             {
@@ -82,6 +82,14 @@ namespace projectC.Controllers
             }
             else
             {
+                if (token == null)
+                {
+                    token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
+                }
+
+                int id = JWTValidator.TokenValidation(token);
+
+                f.UserId = id;
                 _context.Add(f);
                 _context.SaveChanges();
 
@@ -89,11 +97,18 @@ namespace projectC.Controllers
             }
         }
         // DELETE api/Favourite/1
-        [HttpDelete("{userId}/{productId}")]
-        public void Delete(int userId, int productId)
+        [HttpDelete("RemoveFavourite/{productId}")]
+        public void Delete(string token, int productId)
         {
+            if (token == null)
+            {
+                token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
+            }
+
+            int id = JWTValidator.TokenValidation(token);
+
             var remove = (from a_b in _context.favourites
-                          where a_b.UserId == userId && a_b.ProductId == productId
+                          where a_b.UserId == id && a_b.ProductId == productId
                           select a_b).FirstOrDefault();
 
             if (remove != null)

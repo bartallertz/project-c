@@ -26,7 +26,7 @@ namespace projectC.model
             .HasDefaultValue(1);
 
             modelBuilder.Entity<ShoppingCart>()
-            .HasKey(k => new{k.ProductId, k.UserId});
+            .HasKey(k => new { k.ProductId, k.UserId });
         }
         public ProjectContext(DbContextOptions<ProjectContext> options) : base(options)
         {
@@ -93,6 +93,7 @@ namespace projectC.model
         public List<Favourite> Users { get; set; }
         public Category Category { get; set; }
         public SubCategory SubCategory { get; set; }
+        public int Stock { get; set; }
     }
 
     public class Category
@@ -121,6 +122,7 @@ namespace projectC.model
         public int ProductId { get; set; }
         public User User { get; set; }
         public Product Product { get; set; }
+        public int Amount { get; set; }
 
     }
 
