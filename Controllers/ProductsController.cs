@@ -73,15 +73,37 @@ namespace projectC.Controllers
         [HttpGet("Search={searchquery}")]
         public IQueryable Search(string searchquery, string token)
         {
-
-            var result = from p in this._context.products
+            if (token == null)
+            {
+                var result = from p in this._context.products
                          from c in this._context.categories
                          where (p.Description.ToString().ToLower().Contains(searchquery.ToLower()) ||
                           p.Name.ToString().ToLower().Contains(searchquery.ToLower()) ||
                             (c.Name.ToString().ToLower().Contains(searchquery.ToLower()) && p.Category.Id == c.Id))
                          orderby p.Id
                          select p;
-            return result.Distinct();
+                return result.Distinct();
+            } else {
+                int id = JWTValidator.TokenValidation(token);
+
+                var result = from p in this._context.products
+                            from c in this._context.categories
+                            let isFavourite = (from f in _context.favourites where p.Id == f.ProductId && f.UserId == id select p).Any()
+                            where (p.Description.ToString().ToLower().Contains(searchquery.ToLower()) ||
+                            p.Name.ToString().ToLower().Contains(searchquery.ToLower()) ||
+                                (c.Name.ToString().ToLower().Contains(searchquery.ToLower()) && p.Category.Id == c.Id))
+                            orderby p.Id
+                            select new
+                            {
+                                isFavourite = isFavourite,
+                                Id = p.Id,
+                                Name = p.Name,
+                                Description = p.Description,
+                                Price = p.Price,
+                                FirstImg = p.FirstImg
+                            };
+                return result.Distinct();
+            }
         }
 
 
