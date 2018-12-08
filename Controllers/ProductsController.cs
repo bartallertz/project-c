@@ -71,7 +71,7 @@ namespace projectC.Controllers
 
         //GET Products/Search=(insert text)
         [HttpGet("Search={searchquery}")]
-        public IQueryable Search(string searchquery)
+        public IQueryable Search(string searchquery, string token)
         {
 
             var result = from p in this._context.products
@@ -88,7 +88,7 @@ namespace projectC.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public IQueryable Get(int id)
+        public IQueryable Get(int id, string token)
         {
             var result = from p in this._context.products
                          join i in this._context.imageURLs

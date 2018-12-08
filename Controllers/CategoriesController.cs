@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using projectC.model;
+using projectC.JWT;
 
 namespace projectC.Controllers
 {
@@ -31,16 +32,40 @@ namespace projectC.Controllers
                          };
             return result;
         }
-        [HttpGet("{id}")]
-        public IQueryable Get(int id)
+        [HttpGet("{categoryId}")]
+        public IQueryable Get(int categoryId, string token)
 
         {
-            var result = from i in this._context.categories
-                         from p in this._context.products
-                         where i.Id == id && p.Category.Id == i.Id
-                         select p;
+            if (token == null) {
+                var result = from i in this._context.categories
+                            from p in this._context.products
+                            where i.Id == categoryId && p.Category.Id == i.Id
+                            select p;
 
-            return result;
+                return result;
+            } else {
+                int id = JWTValidator.TokenValidation(token);
+
+                var result = from i in this._context.categories
+                            from p in this._context.products
+                            let isFavourite = (
+                                from f in _context.favourites
+                                where p.Id == f.ProductId && f.UserId == id
+                                select p).Any()
+                            where i.Id == categoryId && p.Category.Id == i.Id
+                            orderby p.Id
+                            select new
+                            {
+                                isFavourite = isFavourite,
+                                Id = p.Id,
+                                Name = p.Name,
+                                Description = p.Description,
+                                Price = p.Price,
+                                FirstImg = p.FirstImg
+                            };
+
+                return result;
+            }
         }
 
 
@@ -61,21 +86,43 @@ namespace projectC.Controllers
 
 
 
-        [HttpGet("{id}/Subcategories/{id2}")]
-        public IQueryable Get3(int id, int id2)
+        [HttpGet("{categoryId}/Subcategories/{subCategoryId}")]
+        public IQueryable Get3(int categoryId, int subCategoryId, string token)
         {
-            var result = from c in this._context.categories
+            if (token == null) {
+                var result = from c in this._context.categories
                          from s in this._context.SubCategories
                          join p in this._context.products
                          on s.Id equals p.SubCategory.Id
-                         where c.Id == id && s.Id == id2
+                         where c.Id == categoryId && s.Id == subCategoryId
                          select p;
 
-            return result;
+                return result;
+            } else {
+                int id = JWTValidator.TokenValidation(token);
+
+                var result = from c in this._context.categories
+                            from s in this._context.SubCategories
+                            join p in this._context.products
+                            on s.Id equals p.SubCategory.Id
+                            let isFavourite = (
+                                    from f in _context.favourites
+                                    where p.Id == f.ProductId && f.UserId == id
+                                    select p).Any()
+                            where c.Id == categoryId && s.Id == subCategoryId
+                            orderby p.Id
+                            select new
+                            {
+                                isFavourite = isFavourite,
+                                Id = p.Id,
+                                Name = p.Name,
+                                Description = p.Description,
+                                Price = p.Price,
+                                FirstImg = p.FirstImg
+                            };
+
+                return result;
+            }
         }
-
-
-
-
     }
 }
