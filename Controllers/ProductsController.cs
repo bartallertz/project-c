@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using projectC.model;
+using projectC.JWT;
 
 namespace projectC.Controllers
 {
@@ -20,14 +21,15 @@ namespace projectC.Controllers
 
         //GET Products
         [HttpGet]
-        public IQueryable Get()
+        public IQueryable Get(string token)
         {
-            var result = from p in _context.products
-                         let isFavourite = (from f in _context.favourites where p.Id == f.ProductId select p).Any()
+            if (token == null)
+            {
+                var result = from p in _context.products
                          orderby p.Id
                          select new
                          {
-                             isFavourite = isFavourite,
+                             isFavourite = false,
                              Id = p.Id,
                              Name = p.Name,
                              Description = p.Description,
@@ -35,7 +37,26 @@ namespace projectC.Controllers
                              FirstImg = p.FirstImg
                          };
 
-            return result;
+                return result;
+            } else {
+                int id = JWTValidator.TokenValidation(token);
+
+                var result = from p in _context.products
+                            let isFavourite = (from f in _context.favourites where p.Id == f.ProductId && f.UserId == id select p).Any()
+                            orderby p.Id
+                            select new
+                            {
+                                isFavourite = isFavourite,
+                                Id = p.Id,
+                                Name = p.Name,
+                                Description = p.Description,
+                                Price = p.Price,
+                                FirstImg = p.FirstImg
+                            };
+
+                return result;
+            }
+
         }
 
         //GET Products/Price=50-100
