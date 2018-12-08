@@ -37,7 +37,7 @@ namespace projectC.Controllers
         {
             if (token == null)
             {
-                return NoContent();
+                token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
             }
 
             int id = JWTValidator.TokenValidation(token);
