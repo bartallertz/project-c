@@ -92,6 +92,40 @@ namespace projectC.Controllers
             }
         }
 
+       //Request to edit user data.
+       [HttpPut("Edit")]
+        public IActionResult Update(string token, [FromBody]User user)
+        {
+            if (token == null)
+            {
+                token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
+            }
+
+            int id = JWTValidator.TokenValidation(token);
+            Console.WriteLine(id);
+            var edit = _context.users.Find(id);
+            if (edit == null)
+            {
+                return NotFound();
+            }
+
+            edit.Password = user.Password;
+            edit.Street_Name = user.Street_Name;
+            edit.email = user.email;
+            edit.House_Number = user.House_Number;
+            edit.Addition = user.Addition;
+            edit.Postalcode = user.Postalcode;
+            edit.City = user.City;
+            edit.Telephone_Number = user.Telephone_Number;
+
+            _context.users.Update(edit);
+            _context.SaveChanges();
+
+            return Ok();
+        //return CreatedAtRoute("GetUser", new { id = edit.Id }, edit);
+
+        }
+
 
         //Post api/Accounts/Register
         [HttpPost("Register")]
