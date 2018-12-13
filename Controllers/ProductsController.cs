@@ -101,9 +101,17 @@ namespace projectC.Controllers
         }
 
         // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        [HttpPut("{id}/{stock}")]
+        public void Put(int id, int stock, [FromBody]Product product)
         {
+            var result = from p in this._context.products        
+            where product.Id == id
+            select p;
+
+            foreach (var item in result)
+            {
+                item.Stock = stock;
+            }
         }
 
         // DELETE api/values/5

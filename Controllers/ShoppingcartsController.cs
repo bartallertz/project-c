@@ -39,6 +39,31 @@ namespace projectC.Controllers
             return result;
         }
 
+        [HttpPut("MyCart/Buy/{ProductId}")]
+        public IActionResult Buy([FromBody] Product p, [FromBody] ShoppingCart S, string token)
+        {
+            if (token == null)
+            {
+                token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
+            }
+
+            int id = JWTValidator.TokenValidation(token);
+
+            var result = from B in this._context.ShoppingCarts
+            where B.UserId == id && B.ProductId == p.Id
+            select B.Amount;
+            
+            foreach(var item in result)
+            {
+                p.Stock = p.Stock - item;
+            }
+
+            _context.Update(p);
+            _context.SaveChanges();
+            
+            return Ok();
+        }
+
         // GET api/values/5
         [HttpGet("MyCart/{ProductId}")]
         public Boolean Get(string token, int ProductId)
