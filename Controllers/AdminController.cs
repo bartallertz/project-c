@@ -40,7 +40,7 @@ namespace projectC.Controllers
         }
 
         //Create user
-        [HttpPost("UserAdd")]
+        [HttpPost("User/Add")]
         public IActionResult CreateUser(string token, [FromBody]User u, string name, string lastname, int age, string password, string gender, string streetname, string email, int housenumber, string addition, string postalcode, string city, string phonenumber)
         {
             if (token == null)
@@ -73,7 +73,7 @@ namespace projectC.Controllers
         }
 
         //Edit User
-        [HttpPut("UserEdit")]
+        [HttpPut("User/Edit")]
         public IActionResult Update(string token, [FromBody]User user)
         {
             if (token == null)
@@ -108,10 +108,10 @@ namespace projectC.Controllers
             return Ok();
         }
         //Add product
-        [HttpPost("ProductAdd")]
+        [HttpPost("Product/Add")]
         public IActionResult ProductAdd(string token, [FromBody]Product p, string name, string Description, float price, string FirstIMG, int stock)
         {
-            if (token == null || u.RoleId == 1)
+            if (token == null)
             {
                 token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
             }
@@ -126,13 +126,13 @@ namespace projectC.Controllers
                            stock == p.Stock)
                            select p;
 
-            _context.users.Add(p);
+            _context.products.Add(p);
             _context.SaveChanges();
 
             return Ok("Product added");
         }
 
-        [HttpPut("ProductEdit")]
+        [HttpPut("Product/Edit")]
         public IActionResult ProductEdit(string token, [FromBody]Product p)
         {
             if (token == null)
@@ -159,6 +159,75 @@ namespace projectC.Controllers
             _context.SaveChanges();
 
             return Ok();
+        }
+
+        //Delete user
+        [HttpDelete("User/Delete/{userid}")]
+        public void DeleteUser(string token, int userid)
+        {
+            if (token == null)
+            {
+                token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
+            }
+
+            int id = JWTValidator.TokenValidation(token);
+            int roleid = JWTValidator.TokenValidation(token);
+
+            var remove = (from u in _context.users
+                          where u.Id == userid select u).FirstOrDefault();
+
+            if (remove != null)
+            {
+                _context.users.Remove(remove);
+                _context.SaveChanges();
+            }  
+        }
+
+        //Delete product
+        [HttpDelete("Product/Delete/{productid}")]
+        public void DeleteProduct(string token, int productid)
+        {
+             if (token == null)
+            {
+                token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
+            }
+
+            int id = JWTValidator.TokenValidation(token);
+            int roleid = JWTValidator.TokenValidation(token);
+            
+            var remove = (from p in _context.products
+                          where productid == p.Id 
+                          select p).FirstOrDefault();
+
+            if (remove != null)
+            {
+                _context.products.Remove(remove);
+                _context.SaveChanges();
+            }
+
+        }
+
+        //Delete product images
+        [HttpDelete("Product/Delete/Images/{productid}")]
+        public void DeleteProductImages(string token, int productid)
+        {
+             if (token == null)
+            {
+                token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
+            }
+
+            int id = JWTValidator.TokenValidation(token);
+            int roleid = JWTValidator.TokenValidation(token);
+            
+            var remove = (from i in _context.imageURLs
+                           where productid == i.product.Id
+                           select i).FirstOrDefault();
+
+            if (remove != null)
+            {
+                _context.imageURLs.Remove(remove);
+                _context.SaveChanges();
+            }    
         }
 
 
