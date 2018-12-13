@@ -102,7 +102,6 @@ namespace projectC.Controllers
             }
 
             int id = JWTValidator.TokenValidation(token);
-            Console.WriteLine(id);
             var edit = _context.users.Find(id);
             if (edit == null)
             {
@@ -122,8 +121,6 @@ namespace projectC.Controllers
             _context.SaveChanges();
 
             return Ok();
-        //return CreatedAtRoute("GetUser", new { id = edit.Id }, edit);
-
         }
 
 
