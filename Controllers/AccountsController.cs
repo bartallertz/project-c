@@ -102,28 +102,30 @@ namespace projectC.Controllers
             }
 
             int id = JWTValidator.TokenValidation(token);
-            Console.WriteLine(id);
             var edit = _context.users.Find(id);
-            if (edit == null)
+            if (id == user.Id)
             {
-                return NotFound();
+                
+                edit.Password = user.Password;
+                edit.Street_Name = user.Street_Name;
+                edit.email = user.email;
+                edit.House_Number = user.House_Number;
+                edit.Addition = user.Addition;
+                edit.Postalcode = user.Postalcode;
+                edit.City = user.City;
+                edit.Telephone_Number = user.Telephone_Number;
+
+                _context.users.Update(edit);
+                _context.SaveChanges();
+            
             }
 
-            edit.Password = user.Password;
-            edit.Street_Name = user.Street_Name;
-            edit.email = user.email;
-            edit.House_Number = user.House_Number;
-            edit.Addition = user.Addition;
-            edit.Postalcode = user.Postalcode;
-            edit.City = user.City;
-            edit.Telephone_Number = user.Telephone_Number;
-
-            _context.users.Update(edit);
-            _context.SaveChanges();
+            else
+            {
+                return Unauthorized();
+            }
 
             return Ok();
-        //return CreatedAtRoute("GetUser", new { id = edit.Id }, edit);
-
         }
 
 
