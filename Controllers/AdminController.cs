@@ -202,7 +202,6 @@ namespace projectC.Controllers
             if (remove != null)
             {
                 _context.products.Remove(remove);
-                _context.SaveChanges();
             }
 
         }

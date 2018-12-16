@@ -106,6 +106,26 @@ namespace projectC.Controllers
             }
         }
 
+        // test random products
+        [HttpGet("Random")]
+        public IQueryable Random(string token)
+        {
+            var result = (from p in _context.products
+                          select new
+                          {
+                              Id = p.Id,
+                              Description = p.Description,
+                              Price = p.Price,
+                              FirstImg = p.FirstImg,
+                              Name = p.Name,
+                              stock = p.Stock
+                          }).OrderBy(x => Guid.NewGuid()).Take(20); // 20 is het hoeveel random items je wilt, verander how you see fit :3 o/ Sorry dat het zo lang duurde :'(
+                           
+
+                         return result.Distinct();
+        }
+        
+
 
 
         // GET api/values/5
