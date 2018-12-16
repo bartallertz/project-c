@@ -202,32 +202,33 @@ namespace projectC.Controllers
             if (remove != null)
             {
                 _context.products.Remove(remove);
+                _context.SaveChanges();
             }
 
         }
 
         //Delete product images
-        [HttpDelete("Product/Delete/Images/{productid}")]
-        public void DeleteProductImages(string token, int productid)
-        {
-             if (token == null)
-            {
-                token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
-            }
+        // [HttpDelete("Product/Delete/Images/{productid}")]
+        // public void DeleteProductImages(string token, int productid)
+        // {
+        //      if (token == null)
+        //     {
+        //         token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
+        //     }
 
-            int id = JWTValidator.TokenValidation(token);
-            int roleid = JWTValidator.TokenValidation(token);
+        //     int id = JWTValidator.TokenValidation(token);
+        //     int roleid = JWTValidator.TokenValidation(token);
             
-            var remove = (from i in _context.imageURLs
-                           where productid == i.product.Id
-                           select i).FirstOrDefault();
+        //     var remove = (from i in _context.imageURLs
+        //                    where productid == i.product.Id
+        //                    select i).FirstOrDefault();
 
-            if (remove != null)
-            {
-                _context.imageURLs.Remove(remove);
-                _context.SaveChanges();
-            }    
-        }
+        //     if (remove != null)
+        //     {
+        //         _context.imageURLs.Remove(remove);
+        //         _context.SaveChanges();
+        //     }    
+        // }
 
 
     }
