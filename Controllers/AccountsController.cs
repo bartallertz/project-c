@@ -103,27 +103,19 @@ namespace projectC.Controllers
 
             int id = JWTValidator.IDTokenValidation(token);
             var edit = _context.users.Find(id);
-            if (id == user.Id)
-            {
+            Console.WriteLine(id + "test" + user.Id);
 
-                edit.Password = user.Password;
-                edit.Street_Name = user.Street_Name;
-                edit.email = user.email;
-                edit.House_Number = user.House_Number;
-                edit.Addition = user.Addition;
-                edit.Postalcode = user.Postalcode;
-                edit.City = user.City;
-                edit.Telephone_Number = user.Telephone_Number;
+            edit.Password = user.Password;
+            edit.Street_Name = user.Street_Name;
+            edit.email = user.email;
+            edit.House_Number = user.House_Number;
+            edit.Addition = user.Addition;
+            edit.Postalcode = user.Postalcode;
+            edit.City = user.City;
+            edit.Telephone_Number = user.Telephone_Number;
 
-                _context.users.Update(edit);
-                _context.SaveChanges();
-
-            }
-
-            else
-            {
-                return Unauthorized();
-            }
+            _context.users.Update(edit);
+            _context.SaveChanges();
 
             return Ok();
         }
@@ -168,7 +160,7 @@ namespace projectC.Controllers
                 u.RoleId = 1;
                 _context.Add(u);
                 _context.SaveChanges();
-                return Ok("Account created");
+                return Ok("Account Geregistreerd");
             }
             else
             {
