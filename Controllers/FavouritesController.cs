@@ -29,7 +29,7 @@ namespace projectC.Controllers
                 token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
             }
 
-            int id = JWTValidator.TokenValidation(token);
+            int id = JWTValidator.RoleIDTokenValidation(token);
 
             var result = from u in _context.users
                          from p in _context.products
@@ -47,7 +47,7 @@ namespace projectC.Controllers
                 token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
             }
 
-            int id1 = JWTValidator.TokenValidation(token);
+            int id1 = JWTValidator.IDTokenValidation(token);
 
             var result = (from a_b in _context.favourites
                           where a_b.UserId == id1 && a_b.ProductId == ProductId
@@ -70,7 +70,7 @@ namespace projectC.Controllers
                     token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
                 }
 
-                int id = JWTValidator.TokenValidation(token);
+                int id = JWTValidator.IDTokenValidation(token);
 
                 f.UserId = id;
                 _context.Add(f);
@@ -88,7 +88,7 @@ namespace projectC.Controllers
                 token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
             }
 
-            int id = JWTValidator.TokenValidation(token);
+            int id = JWTValidator.IDTokenValidation(token);
 
             var remove = (from a_b in _context.favourites
                           where a_b.UserId == id && a_b.ProductId == productId

@@ -44,7 +44,7 @@ namespace projectC.Controllers
 
                 return result;
             } else {
-                int id = JWTValidator.TokenValidation(token);
+                int id = JWTValidator.IDTokenValidation(token);
 
                 var result = from i in this._context.categories
                             from p in this._context.products
@@ -99,7 +99,7 @@ namespace projectC.Controllers
 
                 return result;
             } else {
-                int id = JWTValidator.TokenValidation(token);
+                int id = JWTValidator.IDTokenValidation(token);
 
                 var result = from c in this._context.categories
                             from s in this._context.SubCategories

@@ -39,7 +39,7 @@ namespace projectC.Controllers
 
                 return result;
             } else {
-                int id = JWTValidator.TokenValidation(token);
+                int id = JWTValidator.IDTokenValidation(token);
 
                 var result = from p in _context.products
                             let isFavourite = (from f in _context.favourites where p.Id == f.ProductId && f.UserId == id select p).Any()
@@ -84,7 +84,7 @@ namespace projectC.Controllers
                          select p;
                 return result.Distinct();
             } else {
-                int id = JWTValidator.TokenValidation(token);
+                int id = JWTValidator.IDTokenValidation(token);
 
                 var result = from p in this._context.products
                             from c in this._context.categories

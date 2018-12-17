@@ -28,7 +28,7 @@ namespace projectC.Controllers
                 token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
             }
 
-            int id = JWTValidator.TokenValidation(token);
+            int id = JWTValidator.IDTokenValidation(token);
 
             var result = from u in _context.users
                          from p in _context.products
@@ -48,7 +48,7 @@ namespace projectC.Controllers
                 token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
             }
 
-            int id1 = JWTValidator.TokenValidation(token);
+            int id1 = JWTValidator.IDTokenValidation(token);
             var result = (from a_b in _context.ShoppingCarts
                           where a_b.UserId == id1 && a_b.ProductId == ProductId
                           select a_b).Any();

@@ -40,7 +40,7 @@ namespace projectC.Controllers
                 token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
             }
 
-            int id = JWTValidator.TokenValidation(token);
+            int id = JWTValidator.IDTokenValidation(token);
 
             //get a specific user
             var result = from m in this._context.users where m.Id == id select m;
@@ -101,7 +101,7 @@ namespace projectC.Controllers
                 token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
             }
 
-            int id = JWTValidator.TokenValidation(token);
+            int id = JWTValidator.IDTokenValidation(token);
             Console.WriteLine(id);
             var edit = _context.users.Find(id);
             if (edit == null)
@@ -155,11 +155,11 @@ namespace projectC.Controllers
             //Criteria check
             if (DupeMail)
             {
-                return BadRequest("Email adress already exists");
+                return BadRequest("Email bestaat niet of is al in gebruik");
             }
             if (PhoneCheck)
             {
-                return BadRequest("Phone number already exists");
+                return BadRequest("Telefoon nummer bestaat niet of is al in gebruik");
             }
             if (DupeMail == false && PhoneCheck == false)
             {
