@@ -103,7 +103,6 @@ namespace projectC.Controllers
 
             int id = JWTValidator.IDTokenValidation(token);
             var edit = _context.users.Find(id);
-            Console.WriteLine(id + "test" + user.Id);
 
             edit.Password = user.Password;
             edit.Street_Name = user.Street_Name;
