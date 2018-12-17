@@ -92,8 +92,8 @@ namespace projectC.Controllers
             }
         }
 
-       //Request to edit user data.
-       [HttpPut("Edit")]
+        //Request to edit user data.
+        [HttpPut("Edit")]
         public IActionResult Update(string token, [FromBody]User user)
         {
             if (token == null)
@@ -105,7 +105,7 @@ namespace projectC.Controllers
             var edit = _context.users.Find(id);
             if (id == user.Id)
             {
-                
+
                 edit.Password = user.Password;
                 edit.Street_Name = user.Street_Name;
                 edit.email = user.email;
@@ -117,7 +117,7 @@ namespace projectC.Controllers
 
                 _context.users.Update(edit);
                 _context.SaveChanges();
-            
+
             }
 
             else
@@ -174,6 +174,22 @@ namespace projectC.Controllers
             {
                 return NoContent();
             }
+        }
+
+        public bool CheckAdminStatus(string token)
+        {
+            if (token == null)
+            {
+                token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
+            }
+
+            int id = JWTValidator.RoleIDTokenValidation(token);
+            if (id == 2)
+            {
+                return true;
+
+            }
+            else return false;
         }
     }
 }
