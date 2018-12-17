@@ -29,7 +29,7 @@ namespace projectC.Controllers
                 token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
             }
 
-            int id = JWTValidator.RoleIDTokenValidation(token);
+            int id = JWTValidator.IDTokenValidation(token);
 
             var result = from u in _context.users
                          from p in _context.products

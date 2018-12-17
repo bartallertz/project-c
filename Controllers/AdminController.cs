@@ -206,6 +206,14 @@ namespace projectC.Controllers
             }
 
         }
+        [HttpGet("Status")]
+        
+        public Boolean CheckAdminStatus(string token)
+        {
+            bool Validation = JWTValidator.RoleIDTokenValidation(token);
+            return Validation;   
+        }
+        
 
         //Delete product images
         // [HttpDelete("Product/Delete/Images/{productid}")]

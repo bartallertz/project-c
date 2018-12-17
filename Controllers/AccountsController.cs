@@ -175,22 +175,6 @@ namespace projectC.Controllers
                 return NoContent();
             }
         }
-
-        public bool CheckAdminStatus(string token)
-        {
-            if (token == null)
-            {
-                token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
-            }
-
-            int id = JWTValidator.RoleIDTokenValidation(token);
-            if (id == 2)
-            {
-                return true;
-
-            }
-            else return false;
-        }
     }
 }
 

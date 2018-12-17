@@ -17,27 +17,30 @@ namespace projectC.JWT
             {
                 TokenString = TokenString + "=";
             }
-            
+
             byte[] data = Convert.FromBase64String(TokenString);
             string decodedString = Encoding.UTF8.GetString(data);
-            int USER_EYE_DEE = Convert.ToInt32(decodedString.Split(',')[1].Split(':')[1].Replace("\"",""));
+            int USER_EYE_DEE = Convert.ToInt32(decodedString.Split(',')[1].Split(':')[1].Replace("\"", ""));
 
             return USER_EYE_DEE;
         }
 
-        public static int RoleIDTokenValidation(string TokenString)
+        public static bool RoleIDTokenValidation(string TokenString)
         {
             while (TokenString.Length % 4 != 0)
             {
                 TokenString = TokenString + "=";
             }
-            
+
             byte[] data = Convert.FromBase64String(TokenString);
             string decodedString = Encoding.UTF8.GetString(data);
-            int ROLE_EYE_DEE = Convert.ToInt32(decodedString.Split(',')[2].Split(':')[2].Replace("\"",""));
+            int ROLE_EYE_DEE = Convert.ToInt32(decodedString.Replace("}", "").Split(',')[2].Split(':')[1].Replace("\"", ""));
 
-            Console.WriteLine(ROLE_EYE_DEE);
-            return ROLE_EYE_DEE;
+            if (ROLE_EYE_DEE == 2)
+            {
+                return true;
+            }
+            else return false;
         }
     }
 }
