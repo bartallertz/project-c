@@ -101,12 +101,7 @@ namespace projectC.Controllers
                 token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
             }
 
-<<<<<<< HEAD
             int id = JWTValidator.IDTokenValidation(token);
-            Console.WriteLine(id);
-=======
-            int id = JWTValidator.TokenValidation(token);
->>>>>>> e086292633b6a895ae9e6311721efb9114a72e97
             var edit = _context.users.Find(id);
             if (id == user.Id)
             {

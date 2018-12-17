@@ -48,8 +48,8 @@ namespace projectC.Controllers
                 token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
             }
 
-            int id = JWTValidator.TokenValidation(token);
-            int roleid = JWTValidator.TokenValidation(token);
+            int id = JWTValidator.IDTokenValidation(token);
+            int roleid = JWTValidator.IDTokenValidation(token);
 
             var UserData = from user in _context.users
                            where (name == u.Name &&
@@ -81,8 +81,8 @@ namespace projectC.Controllers
                 token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
             }
 
-            int id = JWTValidator.TokenValidation(token);
-            int roleid = JWTValidator.TokenValidation(token);
+            int id = JWTValidator.IDTokenValidation(token);
+            int roleid = JWTValidator.IDTokenValidation(token);
             var edit = _context.users.Find(id);
             if (edit == null)
             {
@@ -116,8 +116,8 @@ namespace projectC.Controllers
                 token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
             }
 
-            int id = JWTValidator.TokenValidation(token);
-            int roleid = JWTValidator.TokenValidation(token);
+            int id = JWTValidator.IDTokenValidation(token);
+            int roleid = JWTValidator.IDTokenValidation(token);
             var ProductData = from Product in _context.products
                            where (name == p.Name &&
                            Description == p.Description &&
@@ -140,8 +140,8 @@ namespace projectC.Controllers
                 token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
             }
 
-            int id = JWTValidator.TokenValidation(token);
-            int roleid = JWTValidator.TokenValidation(token);
+            int id = JWTValidator.IDTokenValidation(token);
+            int roleid = JWTValidator.IDTokenValidation(token);
             var edit = _context.products.Find(id);
             if (edit == null)
             {
@@ -170,8 +170,8 @@ namespace projectC.Controllers
                 token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
             }
 
-            int id = JWTValidator.TokenValidation(token);
-            int roleid = JWTValidator.TokenValidation(token);
+            int id = JWTValidator.IDTokenValidation(token);
+            int roleid = JWTValidator.IDTokenValidation(token);
 
             var remove = (from u in _context.users
                           where u.Id == userid select u).FirstOrDefault();
@@ -192,8 +192,8 @@ namespace projectC.Controllers
                 token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
             }
 
-            int id = JWTValidator.TokenValidation(token);
-            int roleid = JWTValidator.TokenValidation(token);
+            int id = JWTValidator.IDTokenValidation(token);
+            int roleid = JWTValidator.IDTokenValidation(token);
             
             var remove = (from p in _context.products
                           where productid == p.Id 
@@ -216,8 +216,8 @@ namespace projectC.Controllers
         //         token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
         //     }
 
-        //     int id = JWTValidator.TokenValidation(token);
-        //     int roleid = JWTValidator.TokenValidation(token);
+        //     int id = JWTValidator.IDTokenValidation(token);
+        //     int roleid = JWTValidator.IDTokenValidation(token);
             
         //     var remove = (from i in _context.imageURLs
         //                    where productid == i.product.Id
