@@ -110,19 +110,38 @@ namespace projectC.Controllers
         [HttpGet("Random")]
         public IQueryable Random(string token)
         {
-            var result = (from p in _context.products
-                          select new
-                          {
-                              Id = p.Id,
-                              Description = p.Description,
-                              Price = p.Price,
-                              FirstImg = p.FirstImg,
-                              Name = p.Name,
-                              stock = p.Stock
-                          }).OrderBy(x => Guid.NewGuid()).Take(20); // 20 is het hoeveel random items je wilt, verander how you see fit :3 o/ Sorry dat het zo lang duurde :'(
-                           
+            if (token == null) {
+                var result = (from p in _context.products
+                            select new
+                            {
+                                Id = p.Id,
+                                Description = p.Description,
+                                Price = p.Price,
+                                FirstImg = p.FirstImg,
+                                Name = p.Name,
+                                stock = p.Stock
+                            }).OrderBy(x => Guid.NewGuid()).Take(20); // 20 is het hoeveel random items je wilt, verander how you see fit :3 o/ Sorry dat het zo lang duurde :'(
+                            
 
-                         return result.Distinct();
+                            return result.Distinct();
+            } else {
+                int id = JWTValidator.IDTokenValidation(token);
+                var result = (from p in _context.products
+                            let isFavourite = (from f in _context.favourites where p.Id == f.ProductId && f.UserId == id select p).Any()
+                            select new
+                            {
+                                Id = p.Id,
+                                Description = p.Description,
+                                Price = p.Price,
+                                FirstImg = p.FirstImg,
+                                Name = p.Name,
+                                stock = p.Stock,
+                                isFavourite = isFavourite,
+                            }).OrderBy(x => Guid.NewGuid()).Take(20); // 20 is het hoeveel random items je wilt, verander how you see fit :3 o/ Sorry dat het zo lang duurde :'(
+                            
+
+                            return result.Distinct();
+            }
         }
         
 
