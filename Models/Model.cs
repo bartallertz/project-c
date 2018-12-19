@@ -58,7 +58,7 @@ namespace projectC.model
         public string Gender { get; set; }
         public string Street_Name { get; set; }
         public string email { get; set; }
-        public int House_Number { get; set; }
+        public string House_Number { get; set; }
         public string Addition { get; set; }
         public string Postalcode { get; set; }
         public string City { get; set; }

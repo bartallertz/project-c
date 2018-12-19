@@ -41,7 +41,7 @@ namespace projectC.Controllers
 
         //Create user
         [HttpPost("User/Add")]
-        public IActionResult CreateUser(string token, [FromBody]User u, string name, string lastname, int age, string password, string gender, string streetname, string email, int housenumber, string addition, string postalcode, string city, string phonenumber)
+        public IActionResult CreateUser(string token, [FromBody]User u, string name, string lastname, int age, string password, string gender, string streetname, string email, string housenumber, string addition, string postalcode, string city, string phonenumber)
         {
 
             bool RoleId = JWTValidator.RoleIDTokenValidation(token);
@@ -145,42 +145,47 @@ namespace projectC.Controllers
 
         }
 
-        [HttpPut("Product/Edit")]
-        public IActionResult ProductEdit(string token, [FromBody]Product p, User u)
-        {
-
-
+        [HttpPut("Product/Edit/{productid}")]
+        public IActionResult ProductEdit(string token, int productid, [FromBody]Product p)
+        { 
             bool RoleId = JWTValidator.RoleIDTokenValidation(token);
-            int id = JWTValidator.IDTokenValidation(token);
-            var edit = _context.products.Find(id);
+            var edit = _context.products.Find(productid);
             if (RoleId)
             {
+                if(p.Name != null){
                 edit.Name = p.Name;
+                Console.WriteLine(p.Name);
+                } else {
+                    edit.Name = edit.Name;
+                    Console.WriteLine("dombo");
+                }
+                if(p.Description != null){
                 edit.Description = p.Description;
+                } else {
+                    edit.Description = edit.Description;
+                }
                 edit.Price = p.Price;
+                if(p.FirstImg != null){
                 edit.FirstImg = p.FirstImg;
+                } else{
+                    edit.FirstImg = edit.FirstImg;
+                }
                 edit.Stock = p.Stock;
-
 
                 _context.products.Update(edit);
                 _context.SaveChanges();
 
                 return Ok();
             }
-            else
-            {
-
+            
                 return Unauthorized();
-
-            }
 
         }
 
         //Delete user
         [HttpDelete("User/Delete/{userid}")]
-        public void DeleteUser(string token, int userid, [FromBody]User user)
+        public IActionResult DeleteUser(string token, int userid, [FromBody]User user)
         {
-            int id = JWTValidator.IDTokenValidation(token);
             bool RoleId = JWTValidator.RoleIDTokenValidation(token);
             if (RoleId)
             {
@@ -192,25 +197,27 @@ namespace projectC.Controllers
                 {
                     _context.users.Remove(remove);
                     _context.SaveChanges();
+                    return Ok();
                 }
                 else
                 {
 
-                    Unauthorized();
+                    return NotFound();
 
                 }
+                
             }
+            
+            return Unauthorized();
+        
         }
 
         //Delete product
         [HttpDelete("Product/Delete/{productid}")]
-        public void DeleteProduct(string token, int productid, [FromBody]User u)
+        public IActionResult DeleteProduct(string token, int productid, [FromBody]User u)
         {
-
-
-            int id = JWTValidator.IDTokenValidation(token);
-            int roleid = JWTValidator.IDTokenValidation(token);
-            if (roleid == u.RoleId)
+            bool RoleId = JWTValidator.RoleIDTokenValidation(token);
+            if (RoleId)
             {
                 var remove = (from p in _context.products
                               where productid == p.Id
@@ -220,14 +227,19 @@ namespace projectC.Controllers
                 {
                     _context.products.Remove(remove);
                     _context.SaveChanges();
+                    return Ok("Product Deleted");
                 }
                 else
                 {
 
-                    Unauthorized();
+                    return NotFound();
 
                 }
+                
             }
+            
+            return Unauthorized();
+        
         }
 
         [HttpGet("Status")]

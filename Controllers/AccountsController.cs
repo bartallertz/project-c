@@ -104,25 +104,84 @@ namespace projectC.Controllers
             int id = JWTValidator.IDTokenValidation(token);
             var edit = _context.users.Find(id);
 
-            edit.Password = user.Password;
-            edit.Street_Name = user.Street_Name;
-            edit.email = user.email;
-            edit.House_Number = user.House_Number;
+            if(user.Password != null)
+            {
+                edit.Password = user.Password;
+            } else {
+                edit.Password = edit.Password;
+            }
+            if(user.Street_Name != null)
+            {
+                edit.Street_Name = user.Street_Name;
+            } else {
+                edit.Street_Name = edit.Street_Name;
+            }
+            if(user.email != null)
+            {
+                edit.email = user.email;
+            } else {
+                edit.email = edit.email;
+            }
+            if(user.House_Number != null)
+            {
+                edit.House_Number = user.House_Number;
+            } else {
+                edit.House_Number = edit.House_Number;
+            }
+            if(user.Addition != null)
+            {
             edit.Addition = user.Addition;
-            edit.Postalcode = user.Postalcode;
-            edit.City = user.City;
-            edit.Telephone_Number = user.Telephone_Number;
+            } else {
+                edit.Addition = edit.Addition;
+            }
+            if(user.Postalcode != null)
+            {
+                edit.Postalcode = user.Postalcode;
+            } else {
+                edit.Postalcode = edit.Postalcode;
+            }
+            if(user.City != null)
+            {
+                edit.City = user.City;
+            } else {
+                edit.City = edit.City;
+            }
+            if(user.Telephone_Number != null)
+            {
+                edit.Telephone_Number = user.Telephone_Number;
+            } else {
+                edit.Telephone_Number = edit.Telephone_Number;
+            }
+
+             //Check for potential errors
+            bool DupeMail = _context.users.Any(Dupe => Dupe.email == user.email);
+            bool PhoneCheck = _context.users.Any(CheckPhone => CheckPhone.Telephone_Number == user.Telephone_Number);
+
+
+            //Criteria check
+            if (DupeMail)
+            {
+                return BadRequest("Email bestaat niet of is al in gebruik");
+            }
+            if (PhoneCheck)
+            {
+                return BadRequest("Telefoon nummer bestaat niet of is al in gebruik");
+            }
+            if (DupeMail == false && PhoneCheck == false)
+            {
+                Console.WriteLine("Cool");
+            }
 
             _context.users.Update(edit);
             _context.SaveChanges();
 
-            return Ok();
+             return Ok("Account edited");
         }
 
 
         //Post api/Accounts/Register
         [HttpPost("Register")]
-        public IActionResult Register([FromBody]User u, string name, string lastname, int age, string password, string gender, string streetname, string email, int housenumber, string addition, string postalcode, string city, string phonenumber)
+        public IActionResult Register([FromBody]User u, string name, string lastname, int age, string password, string gender, string streetname, string email, string housenumber, string addition, string postalcode, string city, string phonenumber)
         {
             var UserData = from user in _context.users
                            where (name == u.Name &&
