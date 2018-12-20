@@ -23,20 +23,36 @@ namespace projectC.Controllers
             this._context = context;
         }
         // GET Users
-        [HttpGet]
-        public IQueryable<User> GetUsers()
+        [HttpGet("User")]
+        public IActionResult GetUsers(string token, [FromQuery]User u)
         {
-            var result = from m in this._context.users orderby m.Id select m;
 
-            return result;
+            bool RoleId = JWTValidator.RoleIDTokenValidation(token);
+            if (RoleId)
+                {
+                    var query = _context.users.OrderBy(m => u.Id);
+                     return Ok(query);
+                } else {
+                    
+                    return Unauthorized();
+
+                }
         }
         //Get Products
-        [HttpGet]
-        public IQueryable<Product> GetProducts()
+        [HttpGet("Product")]
+        public IActionResult GetProducts(string token, [FromQuery]Product p)
         {
-            var result = from m in this._context.products orderby m.Id select m;
 
-            return result;
+            bool RoleId = JWTValidator.RoleIDTokenValidation(token);
+            if (RoleId)
+                {
+                    var query = _context.products.OrderBy(m => p.Id);
+                     return Ok(query);
+                } else {
+                    
+                    return Unauthorized();
+
+                }
         }
 
         //Create user
@@ -78,40 +94,102 @@ namespace projectC.Controllers
         }
 
         //Edit User
-        [HttpPut("User/Edit")]
-        public IActionResult Update(string token, [FromBody]User user)
+        [HttpPut("User/Edit/{userid}")]
+        public IActionResult Update(string token, int userid, [FromBody]User user)
         {
 
 
             bool RoleId = JWTValidator.RoleIDTokenValidation(token);
-            int id = JWTValidator.IDTokenValidation(token);
-            var edit = _context.users.Find(id);
+            var edit = _context.users.Find(userid);
             if (RoleId)
             {
+                if(user.Name != null){
                 edit.Name = user.Name;
+                } else {
+                    edit.Name = edit.Name;
+                }
+                if(user.LastName != null){
                 edit.LastName = user.LastName;
+                } else {
+                    edit.LastName = edit.LastName;
+                }
                 edit.Age = user.Age;
+                if(user.Gender != null){
                 edit.Gender = user.Gender;
+                } else {
+                    edit.Gender = edit.Gender;
+                }
+                if(user.Password != null){
                 edit.Password = user.Password;
+                } else {
+                    edit.Password = edit.Password;
+                }
+                if(user.Street_Name != null){
                 edit.Street_Name = user.Street_Name;
+                } else {
+                    edit.Street_Name = edit.Street_Name;
+                }
+                if(user.email != null){
                 edit.email = user.email;
+                } else {
+                    edit.email = edit.email;
+                }
+                if(user.House_Number != null){
                 edit.House_Number = user.House_Number;
+                } else {
+                    edit.House_Number = edit.House_Number;
+                }
+                if (user.Addition != null){
                 edit.Addition = user.Addition;
+                } else {
+                    edit.Addition = edit.Addition;
+                }
+                if(user.Postalcode != null){
                 edit.Postalcode = user.Postalcode;
+                } else {
+                    edit.Postalcode = edit.Postalcode;
+                }
+                if(user.City != null){
                 edit.City = user.City;
+                } else {
+                    edit.City = edit.City;
+                }
+                if(user.Telephone_Number != null){
                 edit.Telephone_Number = user.Telephone_Number;
+                } else {
+                    edit.Telephone_Number = edit.Telephone_Number;
+                }
 
-                _context.users.Update(edit);
+                 //Check for potential errors
+                bool DupeMail = _context.users.Any(Dupe => Dupe.email == user.email);
+                bool PhoneCheck = _context.users.Any(CheckPhone => CheckPhone.Telephone_Number == user.Telephone_Number);
+
+
+                //Criteria check
+                if (DupeMail)
+                {
+                    return BadRequest("Email bestaat niet of is al in gebruik");
+                }
+                if (PhoneCheck)
+                {
+                    return BadRequest("Telefoon nummer bestaat niet of is al in gebruik");
+                }
+                if (DupeMail == false && PhoneCheck == false)
+                {
+                    _context.users.Update(edit);
                 _context.SaveChanges();
 
-                return Ok();
-            }
-            else
-            {
+                }
 
-                return Unauthorized();
+                 return Ok("Account edited");
 
             }
+                else
+                {
+
+                    return Unauthorized();
+
+                }
 
         }
         //Add product

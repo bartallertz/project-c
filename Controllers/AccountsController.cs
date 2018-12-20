@@ -169,11 +169,9 @@ namespace projectC.Controllers
             }
             if (DupeMail == false && PhoneCheck == false)
             {
-                Console.WriteLine("Cool");
+                _context.users.Update(edit);
+                _context.SaveChanges();   
             }
-
-            _context.users.Update(edit);
-            _context.SaveChanges();
 
              return Ok("Account edited");
         }
