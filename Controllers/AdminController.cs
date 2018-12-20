@@ -31,7 +31,7 @@ namespace projectC.Controllers
             return result;
         }
         //Get Products
-        [HttpGet]
+        [HttpGet("Products")]
         public IQueryable<Product> GetProducts()
         {
             var result = from m in this._context.products orderby m.Id select m;
