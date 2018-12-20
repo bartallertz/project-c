@@ -23,7 +23,7 @@ namespace projectC.Controllers
             this._context = context;
         }
         // GET Users
-        [HttpGet]
+        [HttpGet("Users")]
         public IQueryable<User> GetUsers()
         {
             var result = from m in this._context.users orderby m.Id select m;
