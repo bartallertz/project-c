@@ -169,8 +169,13 @@ namespace projectC.Controllers
             }
             if (DupeMail == false && PhoneCheck == false)
             {
-                _context.users.Update(edit);
-                _context.SaveChanges();   
+                if(ModelState.IsValid)
+                        {
+                            _context.users.Update(edit);
+                            _context.SaveChanges();
+                        } else {
+                                    return BadRequest(ModelState);
+                                }  
             }
 
              return Ok("Account edited");
@@ -179,7 +184,7 @@ namespace projectC.Controllers
 
         //Post api/Accounts/Register
         [HttpPost("Register")]
-        public IActionResult Register([FromBody]User u, string name, string lastname, int age, string password, string gender, string streetname, string email, string housenumber, string addition, string postalcode, string city, string phonenumber)
+        public IActionResult Register([FromBody]User u, string name, string lastname, string age, string password, string gender, string streetname, string email, string housenumber, string addition, string postalcode, string city, string phonenumber)
         {
             var UserData = from user in _context.users
                            where (name == u.Name &&
@@ -213,10 +218,14 @@ namespace projectC.Controllers
             }
             if (DupeMail == false && PhoneCheck == false)
             {
-                u.RoleId = 1;
-                _context.Add(u);
-                _context.SaveChanges();
-                return Ok("Account Geregistreerd");
+               if(ModelState.IsValid)
+                        {
+                            _context.users.Add(u);
+                            _context.SaveChanges();
+                            return Ok("Account Created");
+                        } else {
+                                    return BadRequest(ModelState);
+                                }
             }
             else
             {
@@ -225,4 +234,3 @@ namespace projectC.Controllers
         }
     }
 }
-

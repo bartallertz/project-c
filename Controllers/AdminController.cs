@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security;
 using projectC.JWT;
+using System.Text.RegularExpressions;
 
 namespace projectC.Controllers
 {
@@ -57,7 +58,7 @@ namespace projectC.Controllers
 
         //Create user
         [HttpPost("User/Add")]
-        public IActionResult CreateUser(string token, [FromBody]User u, string name, string lastname, int age, string password, string gender, string streetname, string email, string housenumber, string addition, string postalcode, string city, string phonenumber)
+        public IActionResult CreateUser(string token, [FromBody]User u, string name, string lastname, string age, string password, string gender, string streetname, string email, string housenumber, string addition, string postalcode, string city, string phonenumber)
         {
 
             bool RoleId = JWTValidator.RoleIDTokenValidation(token);
@@ -79,8 +80,13 @@ namespace projectC.Controllers
                                phonenumber == u.Telephone_Number)
                                select u;
 
-                _context.users.Add(u);
-                _context.SaveChanges();
+                if(ModelState.IsValid)
+                        {
+                            _context.users.Add(u);
+                            _context.SaveChanges();
+                        } else {
+                                    return BadRequest(ModelState);
+                                }
 
                 return Ok("Account Created.");
             }
@@ -113,7 +119,11 @@ namespace projectC.Controllers
                 } else {
                     edit.LastName = edit.LastName;
                 }
+                if(user.Age != null){
                 edit.Age = user.Age;
+                } else {
+                    edit.Age = edit.Age;
+                }
                 if(user.Gender != null){
                 edit.Gender = user.Gender;
                 } else {
@@ -176,21 +186,22 @@ namespace projectC.Controllers
                 }
                 if (DupeMail == false && PhoneCheck == false)
                 {
-                    _context.users.Update(edit);
-                _context.SaveChanges();
-
+                    if(ModelState.IsValid)
+                        {
+                            _context.users.Update(edit);
+                            _context.SaveChanges();
+                        } else {
+                                    return BadRequest(ModelState);
+                                }
                 }
 
                  return Ok("Account edited");
 
-            }
-                else
-                {
+            } else {
 
                     return Unauthorized();
 
-                }
-
+                    }
         }
         //Add product
         [HttpPost("Product/Add")]
@@ -209,8 +220,13 @@ namespace projectC.Controllers
                                   stock == p.Stock)
                                   select p;
 
-                _context.products.Add(p);
-                _context.SaveChanges();
+                if(ModelState.IsValid)
+                        {
+                            _context.products.Add(p);
+                            _context.SaveChanges();
+                        } else {
+                                    return BadRequest(ModelState);
+                                }
 
                 return Ok("Product added");
             }
@@ -223,6 +239,46 @@ namespace projectC.Controllers
 
         }
 
+        //Add images
+        [HttpPost("Product/Add/Images/{productid}")]
+        public IActionResult AddImage(string token,[FromBody]ImageURL i, Product p, string url, int productid)
+        {
+            bool RoleId = JWTValidator.RoleIDTokenValidation(token);
+            if(RoleId)
+            {
+                var ImageData = from image in this._context.imageURLs
+                                join product in this._context.products
+                                on i.product.Id equals p.Id
+                                where productid == i.product.Id
+                                select new{p,i};
+                                    
+                        if(ModelState.IsValid)
+                        {
+                            _context.imageURLs.Add(i);
+                            _context.SaveChanges();
+                        } else {
+                                    return BadRequest(ModelState);
+                                }
+
+                        return Ok("Images Added");
+            }
+
+            return Unauthorized();
+        }
+        [HttpGet("test")]
+        public IQueryable Get()
+        {
+            var ImageData = from i in this._context.imageURLs
+                                join p in this._context.products
+                                on i.product.Id equals p.Id into Collection
+                                select new{
+                                    image = i,
+                                    Product = Collection.ToArray()
+                                    };
+
+                                return ImageData;
+        }
+
         [HttpPut("Product/Edit/{productid}")]
         public IActionResult ProductEdit(string token, int productid, [FromBody]Product p)
         { 
@@ -232,10 +288,8 @@ namespace projectC.Controllers
             {
                 if(p.Name != null){
                 edit.Name = p.Name;
-                Console.WriteLine(p.Name);
                 } else {
                     edit.Name = edit.Name;
-                    Console.WriteLine("dombo");
                 }
                 if(p.Description != null){
                 edit.Description = p.Description;
@@ -250,10 +304,15 @@ namespace projectC.Controllers
                 }
                 edit.Stock = p.Stock;
 
-                _context.products.Update(edit);
-                _context.SaveChanges();
+                if(ModelState.IsValid)
+                        {
+                            _context.products.Update(edit);
+                            _context.SaveChanges();
+                        } else {
+                                    return BadRequest(ModelState);
+                                }
 
-                return Ok();
+                return Ok("Product updated");
             }
             
                 return Unauthorized();
@@ -312,12 +371,41 @@ namespace projectC.Controllers
 
                     return NotFound();
 
-                }
-                
+                }  
             }
             
             return Unauthorized();
         
+        }
+
+        //Delete images
+        [HttpDelete("Product/Delete/Images/{imageid}")]
+        public IActionResult DeleteImage(string token, int imageid)
+        {
+            bool RoleId = JWTValidator.RoleIDTokenValidation(token);
+            if (RoleId)
+            {
+
+                var remove = (from i in _context.imageURLs
+                              where imageid == i.Id
+                              select i).FirstOrDefault();
+
+                    if (remove != null)
+                {
+                    _context.imageURLs.Remove(remove);
+                    _context.SaveChanges();
+                    return Ok("Product Deleted");
+                }
+                else
+                {
+
+                    return NotFound();
+
+                }  
+            }
+
+            return Unauthorized();
+
         }
 
         [HttpGet("Status")]
@@ -328,8 +416,3 @@ namespace projectC.Controllers
         }
     }
 }
-
-
-
-
-
