@@ -30,14 +30,16 @@ namespace projectC.Controllers
 
             bool RoleId = JWTValidator.RoleIDTokenValidation(token);
             if (RoleId)
-                {
-                    var query = _context.users.OrderBy(m => u.Id);
-                     return Ok(query);
-                } else {
-                    
-                    return Unauthorized();
+            {
+                var query = _context.users.OrderBy(m => u.Id);
+                return Ok(query);
+            }
+            else
+            {
 
-                }
+                return Unauthorized();
+
+            }
         }
         [HttpGet("Images")]
         public IActionResult GetImages(string token, [FromQuery]ImageURL i)
@@ -45,14 +47,16 @@ namespace projectC.Controllers
 
             bool RoleId = JWTValidator.RoleIDTokenValidation(token);
             if (RoleId)
-                {
-                    var query = _context.imageURLs.OrderBy(m => i.Id);
-                     return Ok(query);
-                } else {
-                    
-                    return Unauthorized();
+            {
+                var query = _context.imageURLs.OrderBy(m => i.Id);
+                return Ok(query);
+            }
+            else
+            {
 
-                }
+                return Unauthorized();
+
+            }
         }
         //Get Products
         [HttpGet("Product")]
@@ -61,14 +65,16 @@ namespace projectC.Controllers
 
             bool RoleId = JWTValidator.RoleIDTokenValidation(token);
             if (RoleId)
-                {
-                    var query = _context.products.OrderBy(m => p.Id);
-                     return Ok(query);
-                } else {
-                    
-                    return Unauthorized();
+            {
+                var query = _context.products.OrderBy(m => p.Id);
+                return Ok(query);
+            }
+            else
+            {
 
-                }
+                return Unauthorized();
+
+            }
         }
 
         //Create user
@@ -95,13 +101,15 @@ namespace projectC.Controllers
                                phonenumber == u.Telephone_Number)
                                select u;
 
-                if(ModelState.IsValid)
-                        {
-                            _context.users.Add(u);
-                            _context.SaveChanges();
-                        } else {
-                                    return BadRequest(ModelState);
-                                }
+                if (ModelState.IsValid)
+                {
+                    _context.users.Add(u);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    return BadRequest(ModelState);
+                }
 
                 return Ok("Account Created.");
             }
@@ -124,68 +132,104 @@ namespace projectC.Controllers
             var edit = _context.users.Find(userid);
             if (RoleId)
             {
-                if(user.Name != null){
-                edit.Name = user.Name;
-                } else {
+                if (user.Name != null)
+                {
+                    edit.Name = user.Name;
+                }
+                else
+                {
                     edit.Name = edit.Name;
                 }
-                if(user.LastName != null){
-                edit.LastName = user.LastName;
-                } else {
+                if (user.LastName != null)
+                {
+                    edit.LastName = user.LastName;
+                }
+                else
+                {
                     edit.LastName = edit.LastName;
                 }
-                if(user.Age != null){
-                edit.Age = user.Age;
-                } else {
+                if (user.Age != null)
+                {
+                    edit.Age = user.Age;
+                }
+                else
+                {
                     edit.Age = edit.Age;
                 }
-                if(user.Gender != null){
-                edit.Gender = user.Gender;
-                } else {
+                if (user.Gender != null)
+                {
+                    edit.Gender = user.Gender;
+                }
+                else
+                {
                     edit.Gender = edit.Gender;
                 }
-                if(user.Password != null){
-                edit.Password = user.Password;
-                } else {
+                if (user.Password != null)
+                {
+                    edit.Password = user.Password;
+                }
+                else
+                {
                     edit.Password = edit.Password;
                 }
-                if(user.Street_Name != null){
-                edit.Street_Name = user.Street_Name;
-                } else {
+                if (user.Street_Name != null)
+                {
+                    edit.Street_Name = user.Street_Name;
+                }
+                else
+                {
                     edit.Street_Name = edit.Street_Name;
                 }
-                if(user.email != null){
-                edit.email = user.email;
-                } else {
+                if (user.email != null)
+                {
+                    edit.email = user.email;
+                }
+                else
+                {
                     edit.email = edit.email;
                 }
-                if(user.House_Number != null){
-                edit.House_Number = user.House_Number;
-                } else {
+                if (user.House_Number != null)
+                {
+                    edit.House_Number = user.House_Number;
+                }
+                else
+                {
                     edit.House_Number = edit.House_Number;
                 }
-                if (user.Addition != null){
-                edit.Addition = user.Addition;
-                } else {
+                if (user.Addition != null)
+                {
+                    edit.Addition = user.Addition;
+                }
+                else
+                {
                     edit.Addition = edit.Addition;
                 }
-                if(user.Postalcode != null){
-                edit.Postalcode = user.Postalcode;
-                } else {
+                if (user.Postalcode != null)
+                {
+                    edit.Postalcode = user.Postalcode;
+                }
+                else
+                {
                     edit.Postalcode = edit.Postalcode;
                 }
-                if(user.City != null){
-                edit.City = user.City;
-                } else {
+                if (user.City != null)
+                {
+                    edit.City = user.City;
+                }
+                else
+                {
                     edit.City = edit.City;
                 }
-                if(user.Telephone_Number != null){
-                edit.Telephone_Number = user.Telephone_Number;
-                } else {
+                if (user.Telephone_Number != null)
+                {
+                    edit.Telephone_Number = user.Telephone_Number;
+                }
+                else
+                {
                     edit.Telephone_Number = edit.Telephone_Number;
                 }
 
-                 //Check for potential errors
+                //Check for potential errors
                 bool DupeMail = _context.users.Any(Dupe => Dupe.email == user.email);
                 bool PhoneCheck = _context.users.Any(CheckPhone => CheckPhone.Telephone_Number == user.Telephone_Number);
 
@@ -201,22 +245,26 @@ namespace projectC.Controllers
                 }
                 if (DupeMail == false && PhoneCheck == false)
                 {
-                    if(ModelState.IsValid)
-                        {
-                            _context.users.Update(edit);
-                            _context.SaveChanges();
-                        } else {
-                                    return BadRequest(ModelState);
-                                }
+                    if (ModelState.IsValid)
+                    {
+                        _context.users.Update(edit);
+                        _context.SaveChanges();
+                    }
+                    else
+                    {
+                        return BadRequest(ModelState);
+                    }
                 }
 
-                 return Ok("Account edited");
+                return Ok("Account edited");
 
-            } else {
+            }
+            else
+            {
 
-                    return Unauthorized();
+                return Unauthorized();
 
-                    }
+            }
         }
         //Add product
         [HttpPost("Product/Add")]
@@ -235,13 +283,15 @@ namespace projectC.Controllers
                                   stock == p.Stock)
                                   select p;
 
-                if(ModelState.IsValid)
-                        {
-                            _context.products.Add(p);
-                            _context.SaveChanges();
-                        } else {
-                                    return BadRequest(ModelState);
-                                }
+                if (ModelState.IsValid)
+                {
+                    _context.products.Add(p);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    return BadRequest(ModelState);
+                }
 
                 return Ok("Product added");
             }
@@ -256,28 +306,29 @@ namespace projectC.Controllers
 
         //Add images
         [HttpPost("Product/Add/Images/{productid}")]
-        public IActionResult AddImage(string token, [FromBody]ImageURL i, int productid)
+        public IActionResult AddImage(string token, [FromBody]List<ImageURL> imageURLs, int productid)
         {
             bool RoleId = JWTValidator.RoleIDTokenValidation(token);
-            if(RoleId)
+            if (RoleId)
             {
-            //    foreach (var item in i)
-            //    {
-            //        ImageURL imageURL = new ImageURL();
-            //        imageURL.Id = productid;
-            //        imageURL.url = item.url;
-            //        _context.Add(imageURL);
-            //    }
-                                    
-                // if(ModelState.IsValid)
-                // {
-                //     _context.imageURLs.Add(i);
-                //     _context.SaveChanges();
-                // } else {
-                //             return BadRequest(ModelState);
-                //         }
 
-                // return Ok("Images Added");
+                if (ModelState.IsValid)
+                {
+                    foreach (var item in imageURLs)
+                    {
+                        ImageURL imageURL = new ImageURL();
+                        imageURL.url = item.url;
+                        imageURL.ProductId = productid;
+                        _context.Add(imageURL);
+                    }
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    return BadRequest(ModelState);
+                }
+
+                return Ok("Images Added");
             }
 
             return Unauthorized();
@@ -285,41 +336,52 @@ namespace projectC.Controllers
 
         [HttpPut("Product/Edit/{productid}")]
         public IActionResult ProductEdit(string token, int productid, [FromBody]Product p)
-        { 
+        {
             bool RoleId = JWTValidator.RoleIDTokenValidation(token);
             var edit = _context.products.Find(productid);
             if (RoleId)
             {
-                if(p.Name != null){
-                edit.Name = p.Name;
-                } else {
+                if (p.Name != null)
+                {
+                    edit.Name = p.Name;
+                }
+                else
+                {
                     edit.Name = edit.Name;
                 }
-                if(p.Description != null){
-                edit.Description = p.Description;
-                } else {
+                if (p.Description != null)
+                {
+                    edit.Description = p.Description;
+                }
+                else
+                {
                     edit.Description = edit.Description;
                 }
                 edit.Price = p.Price;
-                if(p.FirstImg != null){
-                edit.FirstImg = p.FirstImg;
-                } else{
+                if (p.FirstImg != null)
+                {
+                    edit.FirstImg = p.FirstImg;
+                }
+                else
+                {
                     edit.FirstImg = edit.FirstImg;
                 }
                 edit.Stock = p.Stock;
 
-                if(ModelState.IsValid)
-                        {
-                            _context.products.Update(edit);
-                            _context.SaveChanges();
-                        } else {
-                                    return BadRequest(ModelState);
-                                }
+                if (ModelState.IsValid)
+                {
+                    _context.products.Update(edit);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    return BadRequest(ModelState);
+                }
 
                 return Ok("Product updated");
             }
-            
-                return Unauthorized();
+
+            return Unauthorized();
 
         }
 
@@ -346,11 +408,11 @@ namespace projectC.Controllers
                     return NotFound();
 
                 }
-                
+
             }
-            
+
             return Unauthorized();
-        
+
         }
 
         //Delete product
@@ -375,11 +437,11 @@ namespace projectC.Controllers
 
                     return NotFound();
 
-                }  
+                }
             }
-            
+
             return Unauthorized();
-        
+
         }
 
         //Delete images
@@ -394,7 +456,7 @@ namespace projectC.Controllers
                               where imageid == i.Id
                               select i).FirstOrDefault();
 
-                    if (remove != null)
+                if (remove != null)
                 {
                     _context.imageURLs.Remove(remove);
                     _context.SaveChanges();
@@ -405,7 +467,7 @@ namespace projectC.Controllers
 
                     return NotFound();
 
-                }  
+                }
             }
 
             return Unauthorized();

@@ -25,7 +25,10 @@ namespace projectC.model
             modelBuilder.Entity<User>()
             .Property(i => i.RoleId)
             .HasDefaultValue(1);
-
+            modelBuilder.Entity<ImageURL>()
+            .HasOne(k => k.Product)
+            .WithMany(k2 => k2.imageURLs)
+            .HasForeignKey(k => k.ProductId);
             modelBuilder.Entity<ShoppingCart>()
             .HasKey(k => new { k.ProductId, k.UserId });
         }
@@ -158,7 +161,8 @@ namespace projectC.model
         [StringLength(256, ErrorMessage = "URL cannot be longer then 256 characters")]
         public string url { get; set; }
         public int Id { get; set; }
-        public Product product { get; set; }
+        public int ProductId { get; set; }
+        public Product Product { get; set; }
     }
     public class SubCategory
     {
