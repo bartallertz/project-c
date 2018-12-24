@@ -256,25 +256,28 @@ namespace projectC.Controllers
 
         //Add images
         [HttpPost("Product/Add/Images/{productid}")]
-        public IActionResult AddImage(string token,[FromBody]ImageURL i, Product p, string url, int productid)
+        public IActionResult AddImage(string token, [FromBody]ImageURL i, int productid)
         {
             bool RoleId = JWTValidator.RoleIDTokenValidation(token);
             if(RoleId)
             {
-                var ImageData = from image in _context.imageURLs
-                                where productid == i.product.Id &&
-                                url == i.url
-                                select image;
+            //    foreach (var item in i)
+            //    {
+            //        ImageURL imageURL = new ImageURL();
+            //        imageURL.Id = productid;
+            //        imageURL.url = item.url;
+            //        _context.Add(imageURL);
+            //    }
                                     
-                        if(ModelState.IsValid)
-                        {
-                            _context.imageURLs.Add(i);
-                            _context.SaveChanges();
-                        } else {
-                                    return BadRequest(ModelState);
-                                }
+                // if(ModelState.IsValid)
+                // {
+                //     _context.imageURLs.Add(i);
+                //     _context.SaveChanges();
+                // } else {
+                //             return BadRequest(ModelState);
+                //         }
 
-                        return Ok("Images Added");
+                // return Ok("Images Added");
             }
 
             return Unauthorized();
