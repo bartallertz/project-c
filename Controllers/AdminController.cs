@@ -39,6 +39,21 @@ namespace projectC.Controllers
 
                 }
         }
+        [HttpGet("Images")]
+        public IActionResult GetImages(string token, [FromQuery]ImageURL i)
+        {
+
+            bool RoleId = JWTValidator.RoleIDTokenValidation(token);
+            if (RoleId)
+                {
+                    var query = _context.imageURLs.OrderBy(m => i.Id);
+                     return Ok(query);
+                } else {
+                    
+                    return Unauthorized();
+
+                }
+        }
         //Get Products
         [HttpGet("Product")]
         public IActionResult GetProducts(string token, [FromQuery]Product p)
@@ -246,11 +261,10 @@ namespace projectC.Controllers
             bool RoleId = JWTValidator.RoleIDTokenValidation(token);
             if(RoleId)
             {
-                var ImageData = from image in this._context.imageURLs
-                                join product in this._context.products
-                                on i.product.Id equals p.Id
-                                where productid == i.product.Id
-                                select new{p,i};
+                var ImageData = from image in _context.imageURLs
+                                where productid == i.product.Id &&
+                                url == i.url
+                                select image;
                                     
                         if(ModelState.IsValid)
                         {
@@ -264,19 +278,6 @@ namespace projectC.Controllers
             }
 
             return Unauthorized();
-        }
-        [HttpGet("test")]
-        public IQueryable Get()
-        {
-            var ImageData = from i in this._context.imageURLs
-                                join p in this._context.products
-                                on i.product.Id equals p.Id into Collection
-                                select new{
-                                    image = i,
-                                    Product = Collection.ToArray()
-                                    };
-
-                                return ImageData;
         }
 
         [HttpPut("Product/Edit/{productid}")]
