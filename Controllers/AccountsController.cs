@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security;
 using projectC.JWT;
+using projectC.Mail;
 
 namespace projectC.Controllers
 {
@@ -159,7 +160,8 @@ namespace projectC.Controllers
                 u.RoleId = 1;
                 _context.Add(u);
                 _context.SaveChanges();
-                return Ok("Account Geregistreerd");
+                MailRegister.RegisterMail(u.email, u.Name, u.LastName);
+                return Ok("Account Geregistreerd en mail verzonden");
             }
             else
             {

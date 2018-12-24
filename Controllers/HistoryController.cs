@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using projectC.model;
 using projectC.JWT;
+using projectC.Mail;
 
 namespace projectC.Controllers
 {
@@ -19,7 +20,6 @@ namespace projectC.Controllers
             this._context = context;
         }
 
-        //GET Products
         [HttpGet]
         public IQueryable Get(string token)
         {
@@ -33,27 +33,41 @@ namespace projectC.Controllers
         }
 
         [HttpPost("Update")]
-        public IActionResult UpdateHistory([FromBody] History h, string token)
+        public IActionResult UpdateHistory(string token)
         {
+
             int id = JWTValidator.IDTokenValidation(token);
             var result = from s in this._context.ShoppingCarts
-                         where (s.UserId == id && 
-                         h.UserId == s.UserId &&
-                         h.Amount == s.Amount &&
-                         h.ProductId == s.ProductId &&
-                         h.Date == DateTime.Now)
+                         where s.UserId == id
                          select s;
 
             foreach (var item in result)
             {
-                if (item != null)
+                History history = new History();
+                history.Amount = item.Amount;
+                history.Date = DateTime.Now.ToString();
+                history.ProductId = item.ProductId;
+                history.UserId = item.UserId;
+                history.Status = "Pending";
+                _context.Add(history);
+                string GetMail()
                 {
-                    _context.Add(item);
-                    _context.SaveChanges();
+                    var mailinfo = (from u in this._context.users
+                                   where u.Id == id
+                                   select u.email).First();
+                    return mailinfo;
                 }
+                string GetProduct()
+                {
+                    var Productname = (from p in this._context.products
+                                      where history.ProductId == p.Id
+                                      select p.Name).First();
+                    return Productname;
+                }
+                Mail.MailProduct.PurchaseMail(GetMail(), GetProduct());
             }
-
-            return Ok("isgoed");
+            _context.SaveChanges();
+            return Ok("Geschiedenis bijgewerkt");
         }
     }
 }
