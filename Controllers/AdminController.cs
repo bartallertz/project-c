@@ -357,7 +357,11 @@ namespace projectC.Controllers
                 {
                     edit.Description = edit.Description;
                 }
+                if(p.Price>0){
                 edit.Price = p.Price;
+                } else {
+                    edit.Price = edit.Price;
+                }
                 if (p.FirstImg != null)
                 {
                     edit.FirstImg = p.FirstImg;
@@ -366,7 +370,11 @@ namespace projectC.Controllers
                 {
                     edit.FirstImg = edit.FirstImg;
                 }
+                if(p.Stock>0){
                 edit.Stock = p.Stock;
+                } else {
+                    edit.Stock = edit.Stock;
+                }
 
                 if (ModelState.IsValid)
                 {
