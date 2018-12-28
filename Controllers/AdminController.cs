@@ -328,7 +328,7 @@ namespace projectC.Controllers
                     return BadRequest(ModelState);
                 }
 
-                return Ok("Images Added");
+                return Ok("Image(s) Added");
             }
 
             return Unauthorized();
@@ -394,92 +394,173 @@ namespace projectC.Controllers
         }
 
         //Delete user
-        [HttpDelete("User/Delete/{userid}")]
-        public IActionResult DeleteUser(string token, int userid, [FromBody]User user)
+        [HttpDelete("User/Delete")]
+        public IActionResult DeleteProduct(string token, [FromBody]List<User> users)
         {
             bool RoleId = JWTValidator.RoleIDTokenValidation(token);
             if (RoleId)
             {
-                var remove = (from u in _context.users
-                              where u.Id == userid
-                              select u).FirstOrDefault();
 
-                if (remove != null)
+                if (ModelState.IsValid)
                 {
-                    _context.users.Remove(remove);
+                    foreach (var item in users)
+                    {
+                        User user = new User();
+                        user.Id = item.Id;
+                        _context.Remove(user);
+                        Console.WriteLine(user.Id);
+                    }
                     _context.SaveChanges();
-                    return Ok();
                 }
                 else
                 {
-
-                    return NotFound();
-
+                    return BadRequest(ModelState);
                 }
 
+                return Ok("User(s) Deleted");
             }
 
             return Unauthorized();
-
         }
+        // public IActionResult DeleteUser(string token, int userid, [FromBody]User user)
+        // {
+        //     bool RoleId = JWTValidator.RoleIDTokenValidation(token);
+        //     if (RoleId)
+        //     {
+        //         var remove = (from u in _context.users
+        //                       where u.Id == userid
+        //                       select u).FirstOrDefault();
+
+        //         if (remove != null)
+        //         {
+        //             _context.users.Remove(remove);
+        //             _context.SaveChanges();
+        //             return Ok();
+        //         }
+        //         else
+        //         {
+
+        //             return NotFound();
+
+        //         }
+
+        //     }
+
+        //     return Unauthorized();
+
+        // }
 
         //Delete product
-        [HttpDelete("Product/Delete/{productid}")]
-        public IActionResult DeleteProduct(string token, int productid, [FromBody]User u)
+        [HttpDelete("Product/Delete")]
+        public IActionResult DeleteProduct(string token, [FromBody]List<Product> products)
         {
             bool RoleId = JWTValidator.RoleIDTokenValidation(token);
             if (RoleId)
             {
-                var remove = (from p in _context.products
-                              where productid == p.Id
-                              select p).FirstOrDefault();
 
-                if (remove != null)
+                if (ModelState.IsValid)
                 {
-                    _context.products.Remove(remove);
+                    foreach (var item in products)
+                    {
+                        Product product = new Product();
+                        product.Id = item.Id;
+                        _context.Remove(product);
+                        Console.WriteLine(product.Id);
+                    }
                     _context.SaveChanges();
-                    return Ok("Product Deleted");
                 }
                 else
                 {
-
-                    return NotFound();
-
+                    return BadRequest(ModelState);
                 }
+
+                return Ok("Product(s) Deleted");
             }
 
             return Unauthorized();
-
         }
+        // public IActionResult DeleteProduct(string token, int productid, [FromBody]User u)
+        // {
+        //     bool RoleId = JWTValidator.RoleIDTokenValidation(token);
+        //     if (RoleId)
+        //     {
+        //         var remove = (from p in _context.products
+        //                       where productid == p.Id
+        //                       select p).FirstOrDefault();
+
+        //         if (remove != null)
+        //         {
+        //             _context.products.Remove(remove);
+        //             _context.SaveChanges();
+        //             return Ok("Product Deleted");
+        //         }
+        //         else
+        //         {
+
+        //             return NotFound();
+
+        //         }
+        //     }
+
+        //     return Unauthorized();
+
+        // }
 
         //Delete images
-        [HttpDelete("Product/Delete/Images/{imageid}")]
-        public IActionResult DeleteImage(string token, int imageid)
+        [HttpDelete("Product/Delete/Images")]
+        // public IActionResult DeleteImage(string token, int imageid)
+        // {
+        //     bool RoleId = JWTValidator.RoleIDTokenValidation(token);
+        //     if (RoleId)
+        //     {
+
+        //         var remove = (from i in _context.imageURLs
+        //                       where imageid == i.Id
+        //                       select i).FirstOrDefault();
+
+        //         if (remove != null)
+        //         {
+        //             _context.imageURLs.Remove(remove);
+        //             _context.SaveChanges();
+        //             return Ok("Product Deleted");
+        //         }
+        //         else
+        //         {
+
+        //             return NotFound();
+
+        //         }
+        //     }
+
+        //     return Unauthorized();
+
+        // }
+        public IActionResult DeleteImage(string token, [FromBody]List<ImageURL> imageURLs)
         {
             bool RoleId = JWTValidator.RoleIDTokenValidation(token);
             if (RoleId)
             {
 
-                var remove = (from i in _context.imageURLs
-                              where imageid == i.Id
-                              select i).FirstOrDefault();
-
-                if (remove != null)
+                if (ModelState.IsValid)
                 {
-                    _context.imageURLs.Remove(remove);
+                    foreach (var item in imageURLs)
+                    {
+                        ImageURL imageURL = new ImageURL();
+                        imageURL.Id = item.Id;
+                        _context.Remove(imageURL);
+                        // Console.WriteLine(item.Id);
+                    }
                     _context.SaveChanges();
-                    return Ok("Product Deleted");
                 }
                 else
                 {
-
-                    return NotFound();
-
+                    return BadRequest(ModelState);
                 }
+
+                return Ok("Images Deleted");
             }
 
             return Unauthorized();
-
         }
 
         [HttpGet("Status")]
