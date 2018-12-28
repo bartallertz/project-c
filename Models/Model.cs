@@ -59,11 +59,9 @@ namespace projectC.model
         [RegularExpression(@"^[a-zA-Z]+((\s|\-)[a-zA-Z]+)?$", ErrorMessage = "Not a valid character inserted")]
         [StringLength(30, MinimumLength = 2, ErrorMessage = "Can't be longer then 30 Characters and has to be atleast 2")]
         public string LastName { get; set; }
-        [Display(Name = "Your age")]
-        [Range(13,120, ErrorMessage = "Minimum age is 13 maximum age is 120")]
-        [RegularExpression(@"^([1-9][0-9]{1,2}?|)$", ErrorMessage = "not a valid character")]
-        [StringLength(3)]
-        public string Age { get; set; }
+        [Display(Name = "Your Birthday")]
+        [DataType(DataType.Date, ErrorMessage = "Not a correct date format, MM/DD/YYYY please.")]
+        public DateTime Birthday { get; set; }
         [Display(Name = "Password")]
         [StringLength(40)]
         [RegularExpression(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,40}$", ErrorMessage = "Invalid Characters only Alphanumerical Characters allowed, has to have atleast 1 number and 1 Capital letter")]
