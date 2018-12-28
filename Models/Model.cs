@@ -60,8 +60,9 @@ namespace projectC.model
         [StringLength(30, MinimumLength = 2, ErrorMessage = "Can't be longer then 30 Characters and has to be atleast 2")]
         public string LastName { get; set; }
         [Display(Name = "Your Birthday")]
-        [DataType(DataType.Date, ErrorMessage = "Not a correct date format, MM/DD/YYYY please.")]
-        public DateTime Birthday { get; set; }
+        // [DataType(DataType.Date, ErrorMessage = "Not a correct date format, MM/DD/YYYY please.")]
+        [RegularExpression(@"^[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}$", ErrorMessage = "Not a correct date format MM/DD/YYYY please")]
+        public string Birthday { get; set; }
         [Display(Name = "Password")]
         [StringLength(40)]
         [RegularExpression(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,40}$", ErrorMessage = "Invalid Characters only Alphanumerical Characters allowed, has to have atleast 1 number and 1 Capital letter")]

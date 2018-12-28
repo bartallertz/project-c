@@ -168,7 +168,7 @@ namespace projectC.Controllers
 
         //Post api/Accounts/Register
         [HttpPost("Register")]
-        public IActionResult Register([FromBody]User u, string name, string lastname, DateTime birthday, string password, string gender, string streetname, string email, string housenumber, string addition, string postalcode, string city, string phonenumber)
+        public IActionResult Register([FromBody]User u, string name, string lastname, string birthday, string password, string gender, string streetname, string email, string housenumber, string addition, string postalcode, string city, string phonenumber)
         {
             var UserData = from user in _context.users
                            where (name == u.Name &&

@@ -79,7 +79,7 @@ namespace projectC.Controllers
 
         //Create user
         [HttpPost("User/Add")]
-        public IActionResult CreateUser(string token, [FromBody]User u, string name, string lastname, DateTime birthday, string password, string gender, string streetname, string email, string housenumber, string addition, string postalcode, string city, string phonenumber)
+        public IActionResult CreateUser(string token, [FromBody]User u, string name, string lastname, string birthday, string password, string gender, string streetname, string email, string housenumber, string addition, string postalcode, string city, string phonenumber)
         {
 
             bool RoleId = JWTValidator.RoleIDTokenValidation(token);
@@ -140,7 +140,7 @@ namespace projectC.Controllers
                 {
                     edit.LastName = user.LastName;
                 }
-                if (user.Birthday != default(DateTime))
+                if (user.Birthday != null)
                 {
                     edit.Birthday = user.Birthday;
                 }
