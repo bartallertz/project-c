@@ -153,7 +153,7 @@ namespace projectC.Controllers
         {
             var result = from p in this._context.products
                          join i in this._context.imageURLs
-                         on p.Id equals i.product.Id into imageURLsGroup
+                         on p.Id equals i.ProductId into imageURLsGroup
                          where p.Id == id
                          select new
                          {

@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security;
 using projectC.JWT;
+using System.Text.RegularExpressions;
 
 namespace projectC.Controllers
 {
@@ -23,25 +24,62 @@ namespace projectC.Controllers
             this._context = context;
         }
         // GET Users
-        [HttpGet("Users")]
-        public IQueryable<User> GetUsers()
+        [HttpGet("User")]
+        public IActionResult GetUsers(string token, [FromQuery]User u)
         {
-            var result = from m in this._context.users orderby m.Id select m;
 
-            return result;
+            bool RoleId = JWTValidator.RoleIDTokenValidation(token);
+            if (RoleId)
+            {
+                var query = _context.users.OrderBy(m => u.Id);
+                return Ok(query);
+            }
+            else
+            {
+
+                return Unauthorized();
+
+            }
+        }
+        [HttpGet("Images")]
+        public IActionResult GetImages(string token, [FromQuery]ImageURL i)
+        {
+
+            bool RoleId = JWTValidator.RoleIDTokenValidation(token);
+            if (RoleId)
+            {
+                var query = _context.imageURLs.OrderBy(m => i.Id);
+                return Ok(query);
+            }
+            else
+            {
+
+                return Unauthorized();
+
+            }
         }
         //Get Products
-        [HttpGet("Products")]
-        public IQueryable<Product> GetProducts()
+        [HttpGet("Product")]
+        public IActionResult GetProducts(string token, [FromQuery]Product p)
         {
-            var result = from m in this._context.products orderby m.Id select m;
 
-            return result;
+            bool RoleId = JWTValidator.RoleIDTokenValidation(token);
+            if (RoleId)
+            {
+                var query = _context.products.OrderBy(m => p.Id);
+                return Ok(query);
+            }
+            else
+            {
+
+                return Unauthorized();
+
+            }
         }
 
         //Create user
         [HttpPost("User/Add")]
-        public IActionResult CreateUser(string token, [FromBody]User u, string name, string lastname, int age, string password, string gender, string streetname, string email, int housenumber, string addition, string postalcode, string city, string phonenumber)
+        public IActionResult CreateUser(string token, [FromBody]User u, string name, string lastname, string birthday, string password, string gender, string streetname, string email, string housenumber, string addition, string postalcode, string city, string phonenumber)
         {
 
             bool RoleId = JWTValidator.RoleIDTokenValidation(token);
@@ -51,7 +89,7 @@ namespace projectC.Controllers
                 var UserData = from user in _context.users
                                where (name == u.Name &&
                                lastname == u.LastName &&
-                               age == u.Age &&
+                               birthday == u.Birthday &&
                                password == u.Password &&
                                gender == u.Gender &&
                                streetname == u.Street_Name &&
@@ -63,8 +101,15 @@ namespace projectC.Controllers
                                phonenumber == u.Telephone_Number)
                                select u;
 
-                _context.users.Add(u);
-                _context.SaveChanges();
+                if (ModelState.IsValid)
+                {
+                    _context.users.Add(u);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    return BadRequest(ModelState);
+                }
 
                 return Ok("Account Created.");
             }
@@ -78,33 +123,94 @@ namespace projectC.Controllers
         }
 
         //Edit User
-        [HttpPut("User/Edit")]
-        public IActionResult Update(string token, [FromBody]User user)
+        [HttpPut("User/Edit/{userid}")]
+        public IActionResult Update(string token, int userid, [FromBody]User user)
         {
 
 
             bool RoleId = JWTValidator.RoleIDTokenValidation(token);
-            int id = JWTValidator.IDTokenValidation(token);
-            var edit = _context.users.Find(id);
+            var edit = _context.users.Find(userid);
             if (RoleId)
             {
-                edit.Name = user.Name;
-                edit.LastName = user.LastName;
-                edit.Age = user.Age;
-                edit.Gender = user.Gender;
-                edit.Password = user.Password;
-                edit.Street_Name = user.Street_Name;
-                edit.email = user.email;
-                edit.House_Number = user.House_Number;
-                edit.Addition = user.Addition;
-                edit.Postalcode = user.Postalcode;
-                edit.City = user.City;
-                edit.Telephone_Number = user.Telephone_Number;
+                if (user.Name != null)
+                {
+                    edit.Name = user.Name;
+                }
+                if (user.LastName != null)
+                {
+                    edit.LastName = user.LastName;
+                }
+                if (user.Birthday != null)
+                {
+                    edit.Birthday = user.Birthday;
+                }
+                if (user.Gender != null)
+                {
+                    edit.Gender = user.Gender;
+                }
+                if (user.Password != null)
+                {
+                    edit.Password = user.Password;
+                }
+                if (user.Street_Name != null)
+                {
+                    edit.Street_Name = user.Street_Name;
+                }
+                if (user.email != null)
+                {
+                    edit.email = user.email;
+                }
+                if (user.House_Number != null)
+                {
+                    edit.House_Number = user.House_Number;
+                }
+                if (user.Addition != null)
+                {
+                    edit.Addition = user.Addition;
+                }
+                if (user.Postalcode != null)
+                {
+                    edit.Postalcode = user.Postalcode;
+                }
+                if (user.City != null)
+                {
+                    edit.City = user.City;
+                }
 
-                _context.users.Update(edit);
-                _context.SaveChanges();
+                if (user.Telephone_Number != null)
+                {
+                    edit.Telephone_Number = user.Telephone_Number;
+                }
 
-                return Ok();
+                //Check for potential errors
+                bool DupeMail = _context.users.Any(Dupe => Dupe.email == user.email);
+                bool PhoneCheck = _context.users.Any(CheckPhone => CheckPhone.Telephone_Number == user.Telephone_Number);
+
+
+                //Criteria check
+                if (DupeMail)
+                {
+                    return BadRequest("Email bestaat niet of is al in gebruik");
+                }
+                if (PhoneCheck)
+                {
+                    return BadRequest("Telefoon nummer bestaat niet of is al in gebruik");
+                }
+                if (DupeMail == false && PhoneCheck == false)
+                {
+                    if (ModelState.IsValid)
+                    {
+                        _context.users.Update(edit);
+                        _context.SaveChanges();
+                    }
+                    else
+                    {
+                        return BadRequest(ModelState);
+                    }
+                }
+
+                return Ok("Account edited");
+
             }
             else
             {
@@ -112,7 +218,6 @@ namespace projectC.Controllers
                 return Unauthorized();
 
             }
-
         }
         //Add product
         [HttpPost("Product/Add")]
@@ -131,8 +236,15 @@ namespace projectC.Controllers
                                   stock == p.Stock)
                                   select p;
 
-                _context.products.Add(p);
-                _context.SaveChanges();
+                if (ModelState.IsValid)
+                {
+                    _context.products.Add(p);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    return BadRequest(ModelState);
+                }
 
                 return Ok("Product added");
             }
@@ -145,89 +257,164 @@ namespace projectC.Controllers
 
         }
 
-        [HttpPut("Product/Edit")]
-        public IActionResult ProductEdit(string token, [FromBody]Product p, User u)
+        //Add images
+        [HttpPost("Product/Add/Images/{productid}")]
+        public IActionResult AddImage(string token, [FromBody]List<ImageURL> imageURLs, int productid)
         {
-
-
             bool RoleId = JWTValidator.RoleIDTokenValidation(token);
-            int id = JWTValidator.IDTokenValidation(token);
-            var edit = _context.products.Find(id);
             if (RoleId)
             {
-                edit.Name = p.Name;
-                edit.Description = p.Description;
-                edit.Price = p.Price;
-                edit.FirstImg = p.FirstImg;
-                edit.Stock = p.Stock;
 
+                if (ModelState.IsValid)
+                {
+                    foreach (var item in imageURLs)
+                    {
+                        ImageURL imageURL = new ImageURL();
+                        imageURL.url = item.url;
+                        imageURL.ProductId = productid;
+                        _context.Add(imageURL);
+                    }
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    return BadRequest(ModelState);
+                }
 
-                _context.products.Update(edit);
-                _context.SaveChanges();
-
-                return Ok();
+                return Ok("Image(s) Added");
             }
-            else
+
+            return Unauthorized();
+        }
+
+        [HttpPut("Product/Edit/{productid}")]
+        public IActionResult ProductEdit(string token, int productid, [FromBody]Product p)
+        {
+            bool RoleId = JWTValidator.RoleIDTokenValidation(token);
+            var edit = _context.products.Find(productid);
+            if (RoleId)
             {
+                if (p.Name != null)
+                {
+                    edit.Name = p.Name;
+                }
+                if (p.Description != null)
+                {
+                    edit.Description = p.Description;
+                }
+                if(p.Price != default(float)){
+                edit.Price = p.Price;
+                } 
+                if (p.FirstImg != null)
+                {
+                    edit.FirstImg = p.FirstImg;
+                }
+                if(p.Stock != default(int)){
+                edit.Stock = p.Stock;
+                }
 
-                return Unauthorized();
+                if (ModelState.IsValid)
+                {
+                    _context.products.Update(edit);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    return BadRequest(ModelState);
+                }
 
+                return Ok("Product updated");
             }
+
+            return Unauthorized();
 
         }
 
         //Delete user
-        [HttpDelete("User/Delete/{userid}")]
-        public void DeleteUser(string token, int userid, [FromBody]User user)
+        [HttpDelete("User/Delete")]
+        public IActionResult DeleteProduct(string token, [FromBody]List<User> users)
         {
-            int id = JWTValidator.IDTokenValidation(token);
             bool RoleId = JWTValidator.RoleIDTokenValidation(token);
             if (RoleId)
             {
-                var remove = (from u in _context.users
-                              where u.Id == userid
-                              select u).FirstOrDefault();
 
-                if (remove != null)
+                if (ModelState.IsValid)
                 {
-                    _context.users.Remove(remove);
+                    foreach (var item in users)
+                    {
+                        User user = new User();
+                        user.Id = item.Id;
+                        _context.Remove(user);
+                    }
                     _context.SaveChanges();
                 }
                 else
                 {
-
-                    Unauthorized();
-
+                    return BadRequest(ModelState);
                 }
+
+                return Ok("User(s) Deleted");
             }
+
+            return Unauthorized();
         }
 
         //Delete product
-        [HttpDelete("Product/Delete/{productid}")]
-        public void DeleteProduct(string token, int productid, [FromBody]User u)
+        [HttpDelete("Product/Delete")]
+        public IActionResult DeleteProduct(string token, [FromBody]List<Product> products)
         {
-
-
-            int id = JWTValidator.IDTokenValidation(token);
-            int roleid = JWTValidator.IDTokenValidation(token);
-            if (roleid == u.RoleId)
+            bool RoleId = JWTValidator.RoleIDTokenValidation(token);
+            if (RoleId)
             {
-                var remove = (from p in _context.products
-                              where productid == p.Id
-                              select p).FirstOrDefault();
 
-                if (remove != null)
+                if (ModelState.IsValid)
                 {
-                    _context.products.Remove(remove);
+                    foreach (var item in products)
+                    {
+                        Product product = new Product();
+                        product.Id = item.Id;
+                        _context.Remove(product);
+                    }
                     _context.SaveChanges();
                 }
                 else
                 {
-
-                    Unauthorized();
-
+                    return BadRequest(ModelState);
                 }
+
+                return Ok("Product(s) Deleted");
             }
+
+            return Unauthorized();
+        }
+
+        //Delete images
+        [HttpDelete("Product/Delete/Images")]
+        public IActionResult DeleteImage(string token, [FromBody]List<ImageURL> imageURLs)
+        {
+            bool RoleId = JWTValidator.RoleIDTokenValidation(token);
+            if (RoleId)
+            {
+
+                if (ModelState.IsValid)
+                {
+                    foreach (var item in imageURLs)
+                    {
+                        ImageURL imageURL = new ImageURL();
+                        imageURL.Id = item.Id;
+                        _context.Remove(imageURL);
+                    }
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    return BadRequest(ModelState);
+                }
+
+                return Ok("Images Deleted");
+            }
+
+            return Unauthorized();
         }
 
         [HttpGet("Status")]
@@ -238,8 +425,3 @@ namespace projectC.Controllers
         }
     }
 }
-
-
-
-
-
