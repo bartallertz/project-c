@@ -104,30 +104,76 @@ namespace projectC.Controllers
             int id = JWTValidator.IDTokenValidation(token);
             var edit = _context.users.Find(id);
 
-            edit.Password = user.Password;
-            edit.Street_Name = user.Street_Name;
-            edit.email = user.email;
-            edit.House_Number = user.House_Number;
+            if(user.Password != null)
+            {
+                edit.Password = user.Password;
+            } 
+            if(user.Street_Name != null)
+            {
+                edit.Street_Name = user.Street_Name;
+            } 
+            if(user.email != null)
+            {
+                edit.email = user.email;
+            }
+            if(user.House_Number != null)
+            {
+                edit.House_Number = user.House_Number;
+            }
+            if(user.Addition != null)
+            {
             edit.Addition = user.Addition;
-            edit.Postalcode = user.Postalcode;
-            edit.City = user.City;
-            edit.Telephone_Number = user.Telephone_Number;
+            }
+            if(user.Postalcode != null)
+            {
+                edit.Postalcode = user.Postalcode;
+            }
+            if(user.City != null)
+            {
+                edit.City = user.City;
+            }
+            if(user.Telephone_Number != null)
+            {
+                edit.Telephone_Number = user.Telephone_Number;
+            }
 
-            _context.users.Update(edit);
-            _context.SaveChanges();
+             //Check for potential errors
+            bool DupeMail = _context.users.Any(Dupe => Dupe.email == user.email);
+            bool PhoneCheck = _context.users.Any(CheckPhone => CheckPhone.Telephone_Number == user.Telephone_Number);
 
-            return Ok();
+
+            //Criteria check
+            if (DupeMail)
+            {
+                return BadRequest("Email bestaat niet of is al in gebruik");
+            }
+            if (PhoneCheck)
+            {
+                return BadRequest("Telefoon nummer bestaat niet of is al in gebruik");
+            }
+            if (DupeMail == false && PhoneCheck == false)
+            {
+                if(ModelState.IsValid)
+                        {
+                            _context.users.Update(edit);
+                            _context.SaveChanges();
+                        } else {
+                                    return BadRequest(ModelState);
+                                }  
+            }
+
+             return Ok("Account edited");
         }
 
 
         //Post api/Accounts/Register
         [HttpPost("Register")]
-        public IActionResult Register([FromBody]User u, string name, string lastname, int age, string password, string gender, string streetname, string email, int housenumber, string addition, string postalcode, string city, string phonenumber)
+        public IActionResult Register([FromBody]User u, string name, string lastname, string birthday, string password, string gender, string streetname, string email, string housenumber, string addition, string postalcode, string city, string phonenumber)
         {
             var UserData = from user in _context.users
                            where (name == u.Name &&
                            lastname == u.LastName &&
-                           age == u.Age &&
+                           birthday == u.Birthday &&
                            password == u.Password &&
                            gender == u.Gender &&
                            streetname == u.Street_Name &&
@@ -156,10 +202,14 @@ namespace projectC.Controllers
             }
             if (DupeMail == false && PhoneCheck == false)
             {
-                u.RoleId = 1;
-                _context.Add(u);
-                _context.SaveChanges();
-                return Ok("Account Geregistreerd");
+               if(ModelState.IsValid)
+                        {
+                            _context.users.Add(u);
+                            _context.SaveChanges();
+                            return Ok("Account Created");
+                        } else {
+                                    return BadRequest(ModelState);
+                                }
             }
             else
             {
@@ -168,4 +218,3 @@ namespace projectC.Controllers
         }
     }
 }
-
