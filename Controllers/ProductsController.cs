@@ -149,19 +149,34 @@ namespace projectC.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public IQueryable Get(int id, string token)
-        {
-            var result = from p in this._context.products
-                         join i in this._context.imageURLs
-                         on p.Id equals i.ProductId into imageURLsGroup
-                         where p.Id == id
-                         select new
-                         {
-                             Product = p,
-                             Image = imageURLsGroup.ToList()
-                         };
-
-            return result;
+        public IQueryable Get(int id, string token) {
+            if (token == null) {
+                var result = from p in this._context.products
+                    join i in this._context.imageURLs
+                    on p.Id equals i.ProductId into imageURLsGroup
+                    where p.Id == id
+                    select new
+                    {
+                        Product = p,
+                        Image = imageURLsGroup.ToList(),
+                        isFavourite = false
+                    };
+                return result;
+            } else {
+                int userid = JWTValidator.IDTokenValidation(token);
+                var result = from p in this._context.products
+                    join i in this._context.imageURLs
+                    on p.Id equals i.ProductId into imageURLsGroup
+                    where p.Id == id
+                    let isFavourite = (from f in this._context.favourites where f.ProductId == id && f.UserId == userid select f).Any()
+                    select new
+                    {
+                        Product = p,
+                        Image = imageURLsGroup.ToList(),
+                        isFavourite = isFavourite
+                    };
+                return result;
+            }
         }
 
         // POST api/values
