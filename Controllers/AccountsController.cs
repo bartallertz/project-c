@@ -158,7 +158,10 @@ namespace projectC.Controllers
                             _context.users.Update(edit);
                             _context.SaveChanges();
                         } else {
-                                    return BadRequest(ModelState);
+                                    var errors = ModelState.Select(x => x.Value.Errors)
+                                        .Where(y=>y.Count>0)
+                                        .ToList();
+                                        return BadRequest(errors);
                                 }  
             }
 
@@ -208,7 +211,10 @@ namespace projectC.Controllers
                             _context.SaveChanges();
                             return Ok("Account Created");
                         } else {
-                                    return BadRequest(ModelState);
+                                    var errors = ModelState.Select(x => x.Value.Errors)
+                                        .Where(y=>y.Count>0)
+                                        .ToList();
+                                        return BadRequest(errors);
                                 }
             }
             else

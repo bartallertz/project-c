@@ -108,7 +108,10 @@ namespace projectC.Controllers
                 }
                 else
                 {
-                    return BadRequest(ModelState);
+                    var errors = ModelState.Select(x => x.Value.Errors)
+                                        .Where(y=>y.Count>0)
+                                        .ToList();
+                                        return BadRequest(errors);
                 }
 
                 return Ok("Account Created.");
@@ -205,7 +208,10 @@ namespace projectC.Controllers
                     }
                     else
                     {
-                        return BadRequest(ModelState);
+                        var errors = ModelState.Select(x => x.Value.Errors)
+                                        .Where(y=>y.Count>0)
+                                        .ToList();
+                                        return BadRequest(errors);
                     }
                 }
 
@@ -221,19 +227,21 @@ namespace projectC.Controllers
         }
         //Add product
         [HttpPost("Product/Add")]
-        public IActionResult ProductAdd(string token, [FromBody]Product p, User u, string name, string Description, float price, string FirstIMG, int stock)
+        public IActionResult ProductAdd(string token, [FromBody]Product p, string name, string Description, float price, string FirstIMG, int stock, int category, int subcategory)
         {
 
 
             bool RoleId = JWTValidator.RoleIDTokenValidation(token);
             if (RoleId)
             {
-                var ProductData = from Product in _context.products
+                var ProductData = from product in _context.products
                                   where (name == p.Name &&
                                   Description == p.Description &&
                                   price == p.Price &&
                                   FirstIMG == p.FirstImg &&
-                                  stock == p.Stock)
+                                  stock == p.Stock &&
+                                  category == p.CategoryId &&
+                                  subcategory == p.SubCategoryId)
                                   select p;
 
                 if (ModelState.IsValid)
@@ -243,7 +251,10 @@ namespace projectC.Controllers
                 }
                 else
                 {
-                    return BadRequest(ModelState);
+                    var errors = ModelState.Select(x => x.Value.Errors)
+                                        .Where(y=>y.Count>0)
+                                        .ToList();
+                                        return BadRequest(errors);
                 }
 
                 return Ok("Product added");
@@ -278,7 +289,10 @@ namespace projectC.Controllers
                 }
                 else
                 {
-                    return BadRequest(ModelState);
+                    var errors = ModelState.Select(x => x.Value.Errors)
+                                        .Where(y=>y.Count>0)
+                                        .ToList();
+                                        return BadRequest(errors);
                 }
 
                 return Ok("Image(s) Added");
@@ -320,7 +334,10 @@ namespace projectC.Controllers
                 }
                 else
                 {
-                    return BadRequest(ModelState);
+                    var errors = ModelState.Select(x => x.Value.Errors)
+                                        .Where(y=>y.Count>0)
+                                        .ToList();
+                                        return BadRequest(errors);
                 }
 
                 return Ok("Product updated");
@@ -350,7 +367,10 @@ namespace projectC.Controllers
                 }
                 else
                 {
-                    return BadRequest(ModelState);
+                    var errors = ModelState.Select(x => x.Value.Errors)
+                                        .Where(y=>y.Count>0)
+                                        .ToList();
+                                        return BadRequest(errors);
                 }
 
                 return Ok("User(s) Deleted");
@@ -379,7 +399,10 @@ namespace projectC.Controllers
                 }
                 else
                 {
-                    return BadRequest(ModelState);
+                    var errors = ModelState.Select(x => x.Value.Errors)
+                                        .Where(y=>y.Count>0)
+                                        .ToList();
+                                        return BadRequest(errors);
                 }
 
                 return Ok("Product(s) Deleted");
@@ -408,7 +431,10 @@ namespace projectC.Controllers
                 }
                 else
                 {
-                    return BadRequest(ModelState);
+                    var errors = ModelState.Select(x => x.Value.Errors)
+                                        .Where(y=>y.Count>0)
+                                        .ToList();
+                                        return BadRequest(errors);
                 }
 
                 return Ok("Images Deleted");

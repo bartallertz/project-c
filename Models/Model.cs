@@ -31,6 +31,18 @@ namespace projectC.model
             .HasForeignKey(k => k.ProductId);
             modelBuilder.Entity<ShoppingCart>()
             .HasKey(k => new { k.ProductId, k.UserId });
+            modelBuilder.Entity<Product>()
+            .HasOne(k => k.Category)
+            .WithMany(k2 => k2.Products)
+            .HasForeignKey(k => k.CategoryId);
+            modelBuilder.Entity<Product>()
+            .HasOne(k => k.SubCategory)
+            .WithMany(k2 => k2.Products)
+            .HasForeignKey(k => k.SubCategoryId);
+            modelBuilder.Entity<SubCategory>()
+            .HasOne(k => k.Category)
+            .WithMany(k2 => k2.SubCategories)
+            .HasForeignKey(k => k.CategoryId);
         }
         public ProjectContext(DbContextOptions<ProjectContext> options) : base(options)
         {
@@ -128,7 +140,7 @@ namespace projectC.model
         [RegularExpression(@"^([a-zA-Z0-9]\s*){2,100}$", ErrorMessage = "Alphanumerical characters allowed, minimum 2 maximum of 100 characters")]
         public string Name { get; set; }
         [Display(Name = "Description")]
-        [StringLength(3000, MinimumLength = 10 ,ErrorMessage = "Max length of the description is 3000 Characters")]
+        [StringLength(3000, MinimumLength = 10 , ErrorMessage = "Max length of the description is 3000 Characters")]
         public string Description { get; set; }
         [Display(Name = "Price")]
         [RegularExpression(@"^[€]?[0-9]*(\.)?[0-9]?[0-9]?$", ErrorMessage = "Not a valid format for Currancy")]
@@ -144,6 +156,8 @@ namespace projectC.model
         [RegularExpression(@"^[0-9]{1,5}$", ErrorMessage = "Not a valid character, Max size = 99999")]
         [Range(0,99999, ErrorMessage = "Only numbers please, can't go past 99999")]
         public int Stock { get; set; }
+        public int CategoryId { get; set; }
+        public int SubCategoryId { get; set; }
     }
 
     public class Category
@@ -171,6 +185,8 @@ namespace projectC.model
         [StringLength(100)]
         [RegularExpression(@"^([a-zA-Z]\s*){2,100}$", ErrorMessage = "Only Letters allowed min and max length of 3,100 respectively")]
         public string SubCategory_Name { get; set; }
+        public List<Product> Products { get; set; }
+        public int CategoryId { get; set; }
     }
     public class ShoppingCart
     {
