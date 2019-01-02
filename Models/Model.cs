@@ -154,7 +154,6 @@ namespace projectC.model
         public SubCategory SubCategory { get; set; }
         [Display(Name = "Stock")]
         [RegularExpression(@"^[0-9]{1,5}$", ErrorMessage = "Not a valid character, Max size = 99999")]
-        [Range(0,99999, ErrorMessage = "Only numbers please, can't go past 99999")]
         public int Stock { get; set; }
         public int CategoryId { get; set; }
         public int SubCategoryId { get; set; }
