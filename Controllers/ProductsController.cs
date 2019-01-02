@@ -150,7 +150,6 @@ namespace projectC.Controllers
         // GET api/values/5
         [HttpGet("{id}")]
         public IQueryable Get(int id, string token) {
-            Console.WriteLine(token);
             if (token == null) {
                 var result = from p in this._context.products
                     join i in this._context.imageURLs
@@ -165,7 +164,6 @@ namespace projectC.Controllers
                 return result;
             } else {
                 int userid = JWTValidator.IDTokenValidation(token);
-                Console.WriteLine(userid);
                 var result = from p in this._context.products
                     join i in this._context.imageURLs
                     on p.Id equals i.ProductId into imageURLsGroup
