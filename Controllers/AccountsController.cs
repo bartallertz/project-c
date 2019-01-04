@@ -97,7 +97,7 @@ namespace projectC.Controllers
         public IActionResult Update(string token, [FromBody]User user)
         {
             if (token == null)
-            {
+            {   
                 token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
             }
 

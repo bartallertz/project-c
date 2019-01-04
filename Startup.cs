@@ -26,7 +26,7 @@ namespace projectC
         public void ConfigureServices(IServiceCollection services)
         {   
             services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
-            services.AddDbContext<ProjectContext>(opt => opt.UseNpgsql("User ID=postgres;Password=admin;Host=localhost;Port=5432;Database=ProjectC13;Pooling=true;"));
+            services.AddDbContext<ProjectContext>(opt => opt.UseNpgsql("User ID=postgres;Password=admin;Host=localhost;Port=5432;Database=ProjectC;Pooling=true;"));
             services.AddMvc();
         }
 
