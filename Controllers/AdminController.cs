@@ -108,18 +108,39 @@ namespace projectC.Controllers
                                phonenumber == u.Telephone_Number)
                                select u;
 
-                if (ModelState.IsValid)
-                {
-                    _context.users.Add(u);
-                    _context.SaveChanges();
-                }
-                else
-                {
-                    var errors = ModelState.Select(x => x.Value.Errors)
-                                        .Where(y=>y.Count>0)
-                                        .ToList();
-                                        return BadRequest(errors);
-                }
+                    if (u.Name == null || u.LastName == null || u.Birthday == null || u.Password == null || u.Gender == null || u.Street_Name == null || u.email == null || u.House_Number == null || u.Addition == null || u.Postalcode == null || u.City == null || u.Telephone_Number == null)
+                        {
+                            return BadRequest("A.U.B Alle velden invullen");
+                        }
+
+                    //Check for potential errors
+                    bool DupeMail = _context.users.Any(Dupe => Dupe.email == u.email);
+                    bool PhoneCheck = _context.users.Any(CheckPhone => CheckPhone.Telephone_Number == u.Telephone_Number);
+
+
+                    //Criteria check
+                    if (DupeMail)
+                    {
+                        return BadRequest("Email bestaat niet of is al in gebruik");
+                    }
+                    if (PhoneCheck)
+                    {
+                        return BadRequest("Telefoon nummer bestaat niet of is al in gebruik");
+                    }
+                    if (DupeMail == false && PhoneCheck == false)
+                    {
+                        if(ModelState.IsValid)
+                                    {
+                                        _context.users.Add(u);
+                                        _context.SaveChanges();
+                                        return Ok("Account Created");
+                                    } else {
+                                                var errors = ModelState.Select(x => x.Value.Errors)
+                                                    .Where(y=>y.Count>0)
+                                                    .ToList();
+                                                    return BadRequest(errors);
+                                            }
+                    }
 
                 return Ok("Account Created.");
             }
@@ -250,6 +271,11 @@ namespace projectC.Controllers
                                   category == p.CategoryId &&
                                   subcategory == p.SubCategoryId)
                                   select p;
+
+                if (p.Name == null || p.Description == null || p.Price == default(float) || p.Price <= 0 || p.FirstImg == null || p.CategoryId <= 0 || p.SubCategoryId <= 0)
+                {
+                    return BadRequest("A.U.B vul alle velden in met geldige waarde (CategoryId, SubCategory en Price moeten groter zijn dan 0)");
+                }
 
                 if (ModelState.IsValid)
                 {

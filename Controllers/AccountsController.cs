@@ -188,6 +188,10 @@ namespace projectC.Controllers
                            phonenumber == u.Telephone_Number)
                            select u;
 
+            if (u.Name == null || u.LastName == null || u.Birthday == null || u.Password == null || u.Gender == null || u.Street_Name == null || u.email == null || u.House_Number == null || u.Addition == null || u.Postalcode == null || u.City == null || u.Telephone_Number == null)
+            {
+                return BadRequest("A.U.B Alle velden invullen");
+            }
 
             //Check for potential errors
             bool DupeMail = _context.users.Any(Dupe => Dupe.email == u.email);

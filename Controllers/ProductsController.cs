@@ -180,24 +180,24 @@ namespace projectC.Controllers
         }
 
         // POST api/values
-        [HttpPost]
-        public IActionResult Post([FromBody]Product p)
-        {
+        // [HttpPost]
+        // public IActionResult Post([FromBody]Product p)
+        // {
 
-            if (p == null)
-            {
-                return NoContent();
-            }
-            else
-            {
-                var a = this._context.products.OrderByDescending(pr => pr.Id).FirstOrDefault();
-                p.Id = a.Id + 1;
-                this._context.Add(p);
-                this._context.SaveChanges();
+        //     if (p == null)
+        //     {
+        //         return NoContent();
+        //     }
+        //     else
+        //     {
+        //         var a = this._context.products.OrderByDescending(pr => pr.Id).FirstOrDefault();
+        //         p.Id = a.Id + 1;
+        //         this._context.Add(p);
+        //         this._context.SaveChanges();
 
-                return Ok();
-            }
-        }
+        //         return Ok();
+        //     }
+        // }
 
         // PUT api/values/5
         [HttpPut("{id}")]

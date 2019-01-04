@@ -63,54 +63,51 @@ namespace projectC.model
     public class User
     {
         public int Id { get; set; }
-        [Display(Name = "First name")]
-        [RegularExpression(@"^[a-zA-Z]+((\s|\-)[a-zA-Z]+)?$", ErrorMessage = "Not a valid character inserted")]
-        [StringLength(30, MinimumLength = 2, ErrorMessage = "Can't be longer then 30 Characters and has to be atleast 2")]
+        [Display(Name = "Voornaam")]
+        [RegularExpression(@"^[a-zA-Z]+((\s|\-)[a-zA-Z]+)?$", ErrorMessage = "AUB Alleen maar letters, geen cijfers of speciale characters.")]
+        [StringLength(30, MinimumLength = 2, ErrorMessage = "Voornaam mag niet kleiner zijn dan 2 en niet groter dan 30 letters AUB.")]
         public string Name { get; set; }
-        [Display(Name = "Last Name")]
-        [RegularExpression(@"^[a-zA-Z]+((\s|\-)[a-zA-Z]+)?$", ErrorMessage = "Not a valid character inserted")]
-        [StringLength(30, MinimumLength = 2, ErrorMessage = "Can't be longer then 30 Characters and has to be atleast 2")]
+        [Display(Name = "Achternaam")]
+        [RegularExpression(@"^[a-zA-Z]+((\s|\-)[a-zA-Z]+)?$", ErrorMessage = "AUB Alleen maar letters, geen cijfers of speciale characters.")]
+        [StringLength(30, MinimumLength = 2, ErrorMessage = "Achternaam mag niet kleiner zijn dan 2 en niet groter dan 30 letters AUB.")]
         public string LastName { get; set; }
-        [Display(Name = "Your Birthday")]
-        // [DataType(DataType.Date, ErrorMessage = "Not a correct date format, MM/DD/YYYY please.")]
-        [RegularExpression(@"^[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}$", ErrorMessage = "Not a correct date format MM/DD/YYYY please")]
+        [Display(Name = "Geboorte Datum")]
+        [RegularExpression(@"^[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}$", ErrorMessage = "In het formaat MM/DD/YYYY AUB.")]
         public string Birthday { get; set; }
-        [Display(Name = "Password")]
+        [Display(Name = "Wachtwoord")]
         [StringLength(40)]
-        [RegularExpression(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,40}$", ErrorMessage = "Invalid Characters only Alphanumerical Characters allowed, has to have atleast 1 number and 1 Capital letter")]
+        [RegularExpression(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,40}$", ErrorMessage = "Wachtwoord moet op z'n minst 8 en maximaal 40 tekens hebben, moet op z'n minst 1 hoofdletter en 1 cijfer in.")]
         public string Password { get; set; }
         public int RoleId { get; set; }
         public List<Favourite> Product { get; set; }
-        [Display(Name = "Gender")]
+        [Display(Name = "Geslacht")]
         [StringLength(6)]
-        [RegularExpression(@"^(?:man|Man|male|Male|woman|Woman|female|Female)$", ErrorMessage = "Male, Man, Female, Woman only please")]
+        [RegularExpression(@"^(?:man|Man|vrouw|Vrouw)$", ErrorMessage = "man, Man, vrouw, Vrouw Alleen AUB.")]
         public string Gender { get; set; }
-        [Display(Name = "Street name")]
+        [Display(Name = "Straatnaam")]
         [StringLength(40)]
-        [RegularExpression(@"^([a-zA-Z]\s*){10,40}$", ErrorMessage = "Only letters allowed minimum of 10 maximum of 40 characters")]
+        [RegularExpression(@"^([a-zA-Z]\s*){10,40}$", ErrorMessage = "Alleen letters minimaal 10 maximaal 40 letters AUB.")]
         public string Street_Name { get; set; }
-        [Display(Name = "Email address")]
-        [EmailAddress(ErrorMessage = "Invalid Email Address")]
+        [Display(Name = "Email adres")]
+        [EmailAddress(ErrorMessage = "Geen geldige email.")]
         public string email { get; set; }
-        [Display(Name = "Number")]
-        [StringLength(6, MinimumLength = 1, ErrorMessage = "has to be bigger then 1 and smaller then 999.999")]
-        [RegularExpression(@"^[+]?\d*$", ErrorMessage = "Only numbers please")]
+        [Display(Name = "Huisnummer")]
+        [RegularExpression(@"^[0-9]{1,6}$", ErrorMessage = "Minmaal 1 en maximaal 6 getallen AUB.")]
         public string House_Number { get; set; }
-        [Display(Name = "Address addition (A/B/1st Floor etc)")]
-        [StringLength(20)]
-        [RegularExpression(@"^([a-zA-Z0-9]\s*){1,20}$", ErrorMessage = "Only Alphanumerical characters minimum 2 and max 30 Characters")]
+        [Display(Name = "Address toevoeging 1st verdieping A/B/C.")]
+        [RegularExpression(@"^([a-zA-Z0-9]\s*){1,20}$", ErrorMessage = "Alleen letters en cijfers minimaal 1 en maximaal 20 tekens.")]
         public string Addition { get; set; }
-        [Display(Name = "Postalcode")]
+        [Display(Name = "Postcode")]
         [StringLength(7)]
-        [RegularExpression(@"^[1-9][0-9]{3}[ ]?(([a-rt-zA-RT-Z][a-zA-Z])|([sS][bce-rt-xBCE-RT-X]))", ErrorMessage = "Not a valid Dutch PostalCode")]
+        [RegularExpression(@"^[1-9][0-9]{3}[ ]?(([a-rt-zA-RT-Z][a-zA-Z])|([sS][bce-rt-xBCE-RT-X]))", ErrorMessage = "Dit is geen geldige postcode, voer een geldige postcode in AUB.")]
         public string Postalcode { get; set; }
-        [Display(Name = "City")]
+        [Display(Name = "Stad")]
         [StringLength(30)]
-        [RegularExpression(@"^([a-zA-Z]\s*){2,30}$", ErrorMessage = "No special characters nor numbers allowed")]
+        [RegularExpression(@"^([a-zA-Z]\s*){2,30}$", ErrorMessage = "Alleen letters toegestaan AUB")]
         public string City { get; set; }
-        [Display(Name = "Phone number")]
+        [Display(Name = "Telefoon nummer")]
         [StringLength(10)]
-        [RegularExpression(@"^([0-9]{10})", ErrorMessage = "Not a valid normal Dutch Phone number")]
+        [RegularExpression(@"^([0-9]{10})", ErrorMessage = "Dit is geen geldig normaal Nederlands telefoon nummer, voer een geldig telefoon nummer in.")]
         public string Telephone_Number { get; set; }
         public Role Role { get; set; }
     
@@ -135,25 +132,24 @@ namespace projectC.model
     public class Product
     {
         public int Id { get; set; }
-        [Display(Name = "Product name")]
-        [StringLength(100)]
-        [RegularExpression(@"^([a-zA-Z0-9]\s*){2,100}$", ErrorMessage = "Alphanumerical characters allowed, minimum 2 maximum of 100 characters")]
+        [Display(Name = "Product naam")]
+        [RegularExpression(@"^([a-zA-Z0-9]\s*){2,300}$", ErrorMessage = "Alleen Letters en cijfers, minimaal 2 maximaal 300 tekens.")]
         public string Name { get; set; }
-        [Display(Name = "Description")]
-        [StringLength(3000, MinimumLength = 10 , ErrorMessage = "Max length of the description is 3000 Characters")]
+        [Display(Name = "Beschrijving")]
+        [StringLength(3000, MinimumLength = 10 , ErrorMessage = "Op z'n minst 10 en maximaal 3000 tekens AUB.")]
         public string Description { get; set; }
-        [Display(Name = "Price")]
-        [RegularExpression(@"^[€]?[0-9]*(\.)?[0-9]?[0-9]?$", ErrorMessage = "Not a valid format for Currancy")]
+        [Display(Name = "Prijs")]
+        [RegularExpression(@"^[€]?[0-9]*(\.)?[0-9]?[0-9]?$", ErrorMessage = "Niet een geldig formaat voor geld.")]
         public float Price { get; set; }
-        [Display(Name = "Url of the first Image of a product")]
-        [StringLength(256, ErrorMessage = "URL cannot be longer then 256 characters")]
+        [Display(Name = "Eerste afbeelding voor een product")]
+        [StringLength(256, ErrorMessage = "URL mag niet langer zijn dan 256 tekens.")]
         public string FirstImg { get; set; }
         public List<ImageURL> imageURLs { get; set; }
         public List<Favourite> Users { get; set; }
         public Category Category { get; set; }
         public SubCategory SubCategory { get; set; }
-        [Display(Name = "Stock")]
-        [RegularExpression(@"^[0-9]{1,5}$", ErrorMessage = "Not a valid character, Max size = 99999")]
+        [Display(Name = "Voorraad")]
+        [RegularExpression(@"^[0-9]{1,5}$", ErrorMessage = "Alleen nummers AUB, minimaal 1 en maximaal 99,999 nummers.")]
         public int Stock { get; set; }
         public int CategoryId { get; set; }
         public int SubCategoryId { get; set; }
@@ -169,8 +165,8 @@ namespace projectC.model
 
     public class ImageURL
     {
-        [Display(Name = "Url of a product image")]
-        [StringLength(256, ErrorMessage = "URL cannot be longer then 256 characters")]
+        [Display(Name = "URL van een image van een product")]
+        [StringLength(256, ErrorMessage = "URL mag niet langer zijn dan 256 tekens.")]
         public string url { get; set; }
         public int Id { get; set; }
         public int ProductId { get; set; }
@@ -180,9 +176,8 @@ namespace projectC.model
     {
         public int Id { get; set; }
         public Category Category { get; set; }
-        [Display(Name = "Subcategory name")]
-        [StringLength(100)]
-        [RegularExpression(@"^([a-zA-Z]\s*){2,100}$", ErrorMessage = "Only Letters allowed min and max length of 3,100 respectively")]
+        [Display(Name = "Subcategory naam")]
+        [RegularExpression(@"^([a-zA-Z]\s*){2,100}$", ErrorMessage = "Alleen letters en minimaal en maximaal 2 en 100 tekens respectivelijk.")]
         public string SubCategory_Name { get; set; }
         public List<Product> Products { get; set; }
         public int CategoryId { get; set; }
