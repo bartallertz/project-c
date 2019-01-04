@@ -190,6 +190,8 @@ namespace projectC.Controllers
             }
             else
             {
+                var a = this._context.products.OrderByDescending(pr => pr.Id).FirstOrDefault();
+                p.Id = a.Id + 1;
                 this._context.Add(p);
                 this._context.SaveChanges();
 

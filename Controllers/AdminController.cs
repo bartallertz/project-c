@@ -66,7 +66,14 @@ namespace projectC.Controllers
             bool RoleId = JWTValidator.RoleIDTokenValidation(token);
             if (RoleId)
             {
-                var query = _context.products.OrderBy(m => p.Id);
+                var query = from pr in _context.products
+                            join i in this._context.imageURLs
+                            on pr.Id equals i.ProductId into imageURLsGroup
+                            let NoI = imageURLsGroup.Count()
+                            select new {
+                                Product = pr,
+                                NumberOfImages = NoI
+                            };
                 return Ok(query);
             }
             else
