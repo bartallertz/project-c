@@ -57,21 +57,39 @@ namespace projectC.Controllers
 
         // POST api/values
         [HttpPost]
-        public IActionResult Post([FromBody]ShoppingCart s)
+        public IActionResult Post([FromBody]ShoppingCart s, int userId, int ProdId, int amount, string token)
         {
-            if (s == null)
+            var ProdDate = (from s2 in _context.ShoppingCarts
+                            where (userId == s2.UserId &&
+                                   ProdId == s2.ProductId)
+                            select s2);
+
+            // checks if userId && ProductId already exists
+            bool DupeUser = _context.ShoppingCarts.Any(Dupe => Dupe.UserId == s.UserId);
+            bool CheckProduct = _context.ShoppingCarts.Any(dupe => dupe.ProductId == s.ProductId);
+
+            if (DupeUser && CheckProduct)
             {
-                return NoContent();
+                    var UserData = (from s1 in _context.ShoppingCarts where s1.UserId == 49  && s1.ProductId == 4 select s1.Amount).ToList();
+
+                               
+              //  int amount1 = Int32.Parse(UserData);
+               // s.Amount = s.Amount + amount1;
+
+                s.Amount = s.Amount + UserData[0];
+               
+                _context.Update(s);
+                _context.SaveChanges();
+
+                return Ok("stock bij gevoegt met je moeder");
             }
             else
             {
                 _context.Add(s);
                 _context.SaveChanges();
-
                 return Ok();
             }
         }
-
         // PUT api/values/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]string value)
