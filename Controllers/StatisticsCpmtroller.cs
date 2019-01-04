@@ -30,7 +30,7 @@ namespace projectC.Controllers
         }
 
         [HttpGet("Products")]
-        public IQueryable GetProductsStatistics(int number)
+        public IQueryable GetProductsStatistics()
         {
             var result = (from m in _context.products orderby m.Stock ascending select m).Take(10);
 
