@@ -104,40 +104,40 @@ namespace projectC.Controllers
             int id = JWTValidator.IDTokenValidation(token);
             var edit = _context.users.Find(id);
 
-            if(user.Password != null)
+            if (user.Password != null)
             {
                 edit.Password = user.Password;
-            } 
-            if(user.Street_Name != null)
+            }
+            if (user.Street_Name != null)
             {
                 edit.Street_Name = user.Street_Name;
-            } 
-            if(user.email != null)
+            }
+            if (user.email != null)
             {
                 edit.email = user.email;
             }
-            if(user.House_Number != null)
+            if (user.House_Number != null)
             {
                 edit.House_Number = user.House_Number;
             }
-            if(user.Addition != null)
+            if (user.Addition != null)
             {
-            edit.Addition = user.Addition;
+                edit.Addition = user.Addition;
             }
-            if(user.Postalcode != null)
+            if (user.Postalcode != null)
             {
                 edit.Postalcode = user.Postalcode;
             }
-            if(user.City != null)
+            if (user.City != null)
             {
                 edit.City = user.City;
             }
-            if(user.Telephone_Number != null)
+            if (user.Telephone_Number != null)
             {
                 edit.Telephone_Number = user.Telephone_Number;
             }
 
-             //Check for potential errors
+            //Check for potential errors
             bool DupeMail = _context.users.Any(Dupe => Dupe.email == user.email);
             bool PhoneCheck = _context.users.Any(CheckPhone => CheckPhone.Telephone_Number == user.Telephone_Number);
 
@@ -153,19 +153,21 @@ namespace projectC.Controllers
             }
             if (DupeMail == false && PhoneCheck == false)
             {
-                if(ModelState.IsValid)
-                        {
-                            _context.users.Update(edit);
-                            _context.SaveChanges();
-                        } else {
-                                    var errors = ModelState.Select(x => x.Value.Errors)
-                                        .Where(y=>y.Count>0)
-                                        .ToList();
-                                        return BadRequest(errors);
-                                }  
+                if (ModelState.IsValid)
+                {
+                    _context.users.Update(edit);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    var errors = ModelState.Select(x => x.Value.Errors)
+                        .Where(y => y.Count > 0)
+                        .ToList();
+                    return BadRequest(errors);
+                }
             }
 
-             return Ok("Account edited");
+            return Ok("Account edited");
         }
 
 
@@ -209,17 +211,21 @@ namespace projectC.Controllers
             }
             if (DupeMail == false && PhoneCheck == false)
             {
-               if(ModelState.IsValid)
-                        {
-                            _context.users.Add(u);
-                            _context.SaveChanges();
-                            return Ok("Account Created");
-                        } else {
-                                    var errors = ModelState.Select(x => x.Value.Errors)
-                                        .Where(y=>y.Count>0)
-                                        .ToList();
-                                        return BadRequest(errors);
-                                }
+                if (ModelState.IsValid)
+                {
+                    _context.users.Add(u);
+                    _context.SaveChanges();
+                    return Ok("Account Created");
+                }
+                else
+                {
+                    var errors = (from error in ModelState.Keys
+                                 select error);
+                        // ModelState.Select(x => x.Value.Errors)
+                        //                 .Where(y=>y.Count>0)
+                        //                 .ToList();
+                    return BadRequest(errors);
+                }
             }
             else
             {
