@@ -24,7 +24,7 @@ namespace projectC.Controllers
         [HttpGet("Users")]
         public int GetUser(int id)
         {
-            var result = (from m in _context.users where m.RoleId == id select m).Count();
+            var result = (from m in _context.users select m).Count();
 
             return result;
         }
@@ -41,7 +41,7 @@ namespace projectC.Controllers
 
         public double GetProductsAvg(int id)
         {
-            var result = (from m in _context.ShoppingCarts where m.ProductId == 4 select m.Amount).Average();
+            var result = (from m in _context.ShoppingCarts where m.ProductId == id select m.Amount).Average();
 
             return result;
         }
