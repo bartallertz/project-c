@@ -75,17 +75,14 @@ namespace projectC.model
         [RegularExpression(@"^[0-9]{1,2}\/[0-9]{1,2}\/[0-9]{4}$", ErrorMessage = "In het formaat MM/DD/YYYY AUB.")]
         public string Birthday { get; set; }
         [Display(Name = "Wachtwoord")]
-        [StringLength(40)]
         [RegularExpression(@"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,40}$", ErrorMessage = "Wachtwoord moet op z'n minst 8 en maximaal 40 tekens hebben, moet op z'n minst 1 hoofdletter en 1 cijfer in.")]
         public string Password { get; set; }
         public int RoleId { get; set; }
         public List<Favourite> Product { get; set; }
         [Display(Name = "Geslacht")]
-        [StringLength(6)]
         [RegularExpression(@"^(?:man|Man|vrouw|Vrouw)$", ErrorMessage = "man, Man, vrouw, Vrouw Alleen AUB.")]
         public string Gender { get; set; }
         [Display(Name = "Straatnaam")]
-        [StringLength(40)]
         [RegularExpression(@"^([a-zA-Z]\s*){10,40}$", ErrorMessage = "Alleen letters minimaal 10 maximaal 40 letters AUB.")]
         public string Street_Name { get; set; }
         [Display(Name = "Email adres")]
@@ -98,15 +95,12 @@ namespace projectC.model
         [RegularExpression(@"^([a-zA-Z0-9]\s*){1,20}$", ErrorMessage = "Alleen letters en cijfers minimaal 1 en maximaal 20 tekens.")]
         public string Addition { get; set; }
         [Display(Name = "Postcode")]
-        [StringLength(7)]
         [RegularExpression(@"^[1-9][0-9]{3}[ ]?(([a-rt-zA-RT-Z][a-zA-Z])|([sS][bce-rt-xBCE-RT-X]))", ErrorMessage = "Dit is geen geldige postcode, voer een geldige postcode in AUB.")]
         public string Postalcode { get; set; }
         [Display(Name = "Stad")]
-        [StringLength(30)]
         [RegularExpression(@"^([a-zA-Z]\s*){2,30}$", ErrorMessage = "Alleen letters toegestaan AUB")]
         public string City { get; set; }
         [Display(Name = "Telefoon nummer")]
-        [StringLength(10)]
         [RegularExpression(@"^([0-9]{10})", ErrorMessage = "Dit is geen geldig normaal Nederlands telefoon nummer, voer een geldig telefoon nummer in.")]
         public string Telephone_Number { get; set; }
         public Role Role { get; set; }
