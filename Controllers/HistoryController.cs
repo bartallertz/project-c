@@ -20,6 +20,26 @@ namespace projectC.Controllers
             this._context = context;
         }
 
+        public void DeleteAll(int userId)
+        {
+            var remove = (from a_b in _context.ShoppingCarts
+                          where a_b.UserId == userId
+                          select a_b).ToList();
+
+            foreach (var item in remove)
+            {
+                if (item != null)
+                {
+                    _context.ShoppingCarts.Remove(item);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    Unauthorized();
+                }
+            }
+        }
+
         [HttpGet]
         public IQueryable Get(string token)
         {
@@ -35,7 +55,7 @@ namespace projectC.Controllers
         [HttpPost("Update")]
         public IActionResult UpdateHistory(string token)
         {
-
+            string Total = "";
             int id = JWTValidator.IDTokenValidation(token);
             var result = from s in this._context.ShoppingCarts
                          where s.UserId == id
@@ -50,22 +70,24 @@ namespace projectC.Controllers
                 history.UserId = item.UserId;
                 history.Status = "Pending";
                 _context.Add(history);
-                string GetMail()
-                {
-                    var mailinfo = (from u in this._context.users
-                                   where u.Id == id
-                                   select u.email).First();
-                    return mailinfo;
-                }
                 string GetProduct()
                 {
                     var Productname = (from p in this._context.products
-                                      where history.ProductId == p.Id
-                                      select p.Name).First();
+                                       where history.ProductId == p.Id
+                                       select p.Name).First();
                     return Productname;
                 }
-                Mail.MailProduct.PurchaseMail(GetMail(), GetProduct());
+                Total = Total + "<li>" + GetProduct() + "</li>";
             }
+            string GetMail()
+            {
+                var mailinfo = (from u in this._context.users
+                                where u.Id == id
+                                select u.email).First();
+                return mailinfo;
+            }
+            Mail.MailProduct.PurchaseMail(GetMail(), Total);
+            DeleteAll(id);
             _context.SaveChanges();
             return Ok("Geschiedenis bijgewerkt");
         }

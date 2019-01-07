@@ -81,7 +81,7 @@ namespace projectC.Controllers
         // DELETE api/values/5
 
         [HttpDelete("{userId}/{productId}")]
-        public void Delete(int userId, int productId)
+        public void DeleteSingle(int userId, int productId)
         {
             var remove = (from a_b in _context.ShoppingCarts
                           where a_b.UserId == userId && a_b.ProductId == productId
@@ -94,7 +94,7 @@ namespace projectC.Controllers
             }
         }
         [HttpDelete("d/{userId}")]
-        public void Delete2(int userId)
+        public void DeleteAll(int userId)
         {
             var remove = (from a_b in _context.ShoppingCarts
                           where a_b.UserId == userId

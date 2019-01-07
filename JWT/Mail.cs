@@ -20,10 +20,10 @@ namespace projectC.Mail
                 var mail = new MailMessage()
                 {
                     From = new MailAddress(email),
-                    Subject = Productname,
-                    Body = "Bedankt voor het kopen van " + Productname + ". Deze mail is verstuurd ter bevestiging van uw aankoop."
+                    Subject = "Bevestiging Aankopen",
+                    Body = "<img src='https://i.imgur.com/nWIih6I.png' alt='StudentShop'/><br/>Bedankt voor het kopen van: <br/>" + "<ul>" + Productname + "</ul>" + "Deze mail is verstuurd ter bevestiging van uw aankoop."
                 };
-
+                mail.IsBodyHtml = true;
                 mail.To.Add(new MailAddress(email));
                 var client = new SmtpClient()
                 {
