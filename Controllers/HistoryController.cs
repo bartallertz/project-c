@@ -35,8 +35,21 @@ namespace projectC.Controllers
                 }
                 else
                 {
-                    Unauthorized();
+                    BadRequest();
                 }
+            }
+        }
+        public void UpdateStock(string token)
+        {
+            int id = JWTValidator.IDTokenValidation(token);
+            var result = from p in this._context.products
+                         from s in this._context.ShoppingCarts
+                         where p.Id == s.ProductId && s.UserId == id
+                         select new { p, s };
+
+            foreach (var item in result)
+            {
+                item.p.Stock = item.p.Stock - item.s.Amount;
             }
         }
 
@@ -86,6 +99,7 @@ namespace projectC.Controllers
                                 select u.email).First();
                 return mailinfo;
             }
+            UpdateStock(token);
             Mail.MailProduct.PurchaseMail(GetMail(), Total);
             DeleteAll(id);
             _context.SaveChanges();
