@@ -51,40 +51,22 @@ namespace projectC.Controllers
         public IQueryable GetTop10Fav()
         {
 
-            var result = (from u in _context.users
-                          let b = (
-                              from ab in _context.favourites
-                              from bs in _context.products
-                              where ab.UserId == u.Id && ab.ProductId == bs.Id
-                              select bs)
-                          select new
-                          {
-                              User = u,
-                              Product = b.Count()
-                              
-                              
-                          });
-
-
-
-            return result;
-        }
-         [HttpGet("Fav2")]
-        public IQueryable GetTop10Fav2()
-        {
-            
-           var result = (from m in _context.favourites
-                          group m by m.ProductId into g
-                         let count = g.Count() orderby count descending select new
+             var result = (from m in _context.favourites
+                          group m by m.ProductId into Fav
+                         let count = Fav.Count() orderby count descending select new
                          {
-                            ProductId = g.Count()
+                             Fav,
+                            Aantal_keer = Fav.Count()
                          }).Take(10);
 
 
            
             return result;
+
+
+
         }
-       
+      
     }
 }
 
