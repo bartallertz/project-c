@@ -22,7 +22,7 @@ namespace projectC.Controllers
         }
 
         [HttpGet("Users")]
-        public int GetUser(int id)
+        public int GetUser()
         {
             var result = (from m in _context.users select m).Count();
 
@@ -32,6 +32,7 @@ namespace projectC.Controllers
         [HttpGet("Products")]
         public IQueryable GetProductsStatistics()
         {
+            // get 10 lowest stocked items from database
             var result = (from m in _context.products orderby m.Stock ascending select m).Take(10);
 
             return result;
@@ -45,6 +46,45 @@ namespace projectC.Controllers
 
             return result;
         }
+
+        [HttpGet("Fav")]
+        public IQueryable GetTop10Fav()
+        {
+
+            var result = (from u in _context.users
+                          let b = (
+                              from ab in _context.favourites
+                              from bs in _context.products
+                              where ab.UserId == u.Id && ab.ProductId == bs.Id
+                              select bs)
+                          select new
+                          {
+                              User = u,
+                              Product = b.Count()
+                              
+                              
+                          });
+
+
+
+            return result;
+        }
+         [HttpGet("Fav2")]
+        public IQueryable GetTop10Fav2()
+        {
+            
+           var result = (from m in _context.favourites
+                          group m by m.ProductId into g
+                         let count = g.Count() orderby count descending select new
+                         {
+                            ProductId = g.Count()
+                         }).Take(10);
+
+
+           
+            return result;
+        }
+       
     }
 }
 
