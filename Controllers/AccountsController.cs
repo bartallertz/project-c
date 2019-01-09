@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security;
 using projectC.JWT;
+using projectC.Mail;
 
 namespace projectC.Controllers
 {
@@ -215,7 +216,8 @@ namespace projectC.Controllers
                 {
                     _context.users.Add(u);
                     _context.SaveChanges();
-                    return Ok("Account Created");
+                    MailRegister.RegisterMail(u.email, u.Name, u.LastName);
+                    return Ok("Account aangemaakt");
                 }
                 else
                 {

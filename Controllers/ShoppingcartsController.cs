@@ -18,8 +18,7 @@ namespace projectC.Controllers
             this._context = context;
         }
 
-        // GET api/shoppingcarts    
-        // id = UserId
+
         [HttpGet("MyCart")]
         public IQueryable Get(string token)
         {
@@ -35,7 +34,7 @@ namespace projectC.Controllers
                          from u_p in _context.ShoppingCarts
                          where u.Id == id && u_p.ProductId == p.Id
                          select p;
-            
+
             return result;
         }
 
@@ -99,7 +98,7 @@ namespace projectC.Controllers
         // DELETE api/values/5
 
         [HttpDelete("{userId}/{productId}")]
-        public void Delete(int userId, int productId)
+        public void DeleteSingle(int userId, int productId)
         {
             var remove = (from a_b in _context.ShoppingCarts
                           where a_b.UserId == userId && a_b.ProductId == productId
@@ -112,7 +111,7 @@ namespace projectC.Controllers
             }
         }
         [HttpDelete("d/{userId}")]
-        public void Delete2(int userId)
+        public void DeleteAll(int userId)
         {
             var remove = (from a_b in _context.ShoppingCarts
                           where a_b.UserId == userId
