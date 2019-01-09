@@ -78,7 +78,13 @@ namespace projectC.Controllers
 
             var result = from h in this._context.History
                          where h.UserId == id
-                         select h;
+                         select new
+                         {
+                             productName = h.Product.Name,
+                             amount = h.Amount,
+                             totalPrice = (double)h.Product.Price * (double)h.Amount,
+                             image = h.Product.FirstImg
+                         };
 
             return result;
         }
