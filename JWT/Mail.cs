@@ -57,7 +57,7 @@ namespace projectC.Mail
                 {
                     From = new MailAddress(email),
                     Subject = "Registratie succesvol",
-                    Body = "Beste " + firstname + " " + lastname + ",\n" + "Bedankt voor het registreren bij onze studentenshop."
+                    Body = "<img src='https://i.imgur.com/nWIih6I.png' alt='StudentShop'/><br/>Beste " + firstname + " " + lastname + ",\n" + "Bedankt voor het registreren bij onze studentenshop."
                 };
 
                 mail.To.Add(new MailAddress(email));
