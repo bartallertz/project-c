@@ -29,9 +29,10 @@ namespace projectC.Controllers
         {
 
             bool RoleId = JWTValidator.RoleIDTokenValidation(token);
+            int UserId = JWTValidator.IDTokenValidation(token);
             if (RoleId)
             {
-                var query = _context.users.OrderBy(m => u.Id);
+                var query = _context.users.Where(f => f.Id != UserId).OrderBy(m => u.Id);
                 return Ok(query);
             }
             else
