@@ -29,8 +29,6 @@ namespace projectC.model
             .HasOne(k => k.Product)
             .WithMany(k2 => k2.imageURLs)
             .HasForeignKey(k => k.ProductId);
-            modelBuilder.Entity<ShoppingCart>()
-            .HasKey(k => new { k.ProductId, k.UserId });
             modelBuilder.Entity<Product>()
             .HasOne(k => k.Category)
             .WithMany(k2 => k2.Products)
@@ -43,6 +41,13 @@ namespace projectC.model
             .HasOne(k => k.Category)
             .WithMany(k2 => k2.SubCategories)
             .HasForeignKey(k => k.CategoryId);
+            modelBuilder.Entity<ShoppingCart>()
+            .HasKey(k => new { k.ProductId, k.UserId });
+            modelBuilder.Entity<History>()
+            .HasKey(k => new { k.Id });
+            modelBuilder.Entity<History>()
+            .Property(i => i.Status)
+            .HasDefaultValue("Pending");
         }
         public ProjectContext(DbContextOptions<ProjectContext> options) : base(options)
         {
@@ -56,6 +61,7 @@ namespace projectC.model
         public DbSet<Role> roles { get; set; }
         public DbSet<Favourite> favourites { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+        public DbSet<History> History { get; set; }
 
 
     }
@@ -187,5 +193,15 @@ namespace projectC.model
         public int Amount { get; set; }
 
     }
-
+    public class History
+    {
+        public int Id { get; set; }
+        public int UserId { get; set; }
+        public int ProductId { get; set; }
+        public User User { get; set; }
+        public Product Product { get; set; }
+        public int Amount { get; set; }
+        public string Date { get; set; }
+        public string Status { get; set; }
+    }
 }
