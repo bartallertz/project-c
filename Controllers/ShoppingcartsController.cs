@@ -18,8 +18,7 @@ namespace projectC.Controllers
             this._context = context;
         }
 
-        // GET api/shoppingcarts    
-        // id = UserId
+
         [HttpGet("MyCart")]
         public IQueryable Get(string token)
         {
@@ -35,7 +34,7 @@ namespace projectC.Controllers
                          from u_p in _context.ShoppingCarts
                          where u.Id == id && u_p.ProductId == p.Id
                          select p;
-            
+
             return result;
         }
 

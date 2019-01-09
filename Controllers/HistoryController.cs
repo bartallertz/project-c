@@ -19,6 +19,20 @@ namespace projectC.Controllers
         {
             this._context = context;
         }
+        // bool CheckRequestedAmount(int Amount, int ProductId)
+        // {
+        //     var Stock = (from p in this._context.products
+        //                  where p.Id == ProductId
+        //                  select p.Stock).Single();
+        //     if (Amount <= Stock)
+        //     {
+        //         return true;
+        //     }
+        //     else
+        //     {
+        //         return false;
+        //     }
+        // }
 
         public void DeleteAll(int userId)
         {
@@ -50,6 +64,10 @@ namespace projectC.Controllers
             foreach (var item in result)
             {
                 item.p.Stock = item.p.Stock - item.s.Amount;
+                if (item.p.Stock < 0)
+                {
+                    item.p.Stock = 0;
+                }
             }
         }
 
@@ -81,7 +99,7 @@ namespace projectC.Controllers
                 history.Date = DateTime.Now.ToString();
                 history.ProductId = item.ProductId;
                 history.UserId = item.UserId;
-                history.Status = "Pending";
+                history.Status = "Pending";              
                 _context.Add(history);
                 string GetProduct()
                 {
@@ -90,7 +108,7 @@ namespace projectC.Controllers
                                        select p.Name).First();
                     return Productname;
                 }
-                Total = Total + "<li>" + GetProduct() + "</li>";
+                Total = Total + "<li>" + GetProduct() + " " + history.Amount.ToString() + "x" + "</li>";
             }
             string GetMail()
             {
