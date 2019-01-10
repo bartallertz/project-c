@@ -118,7 +118,7 @@ namespace projectC.Controllers
                 _context.SaveChanges();
             }
         }
-        [HttpDelete("d/{userId}")]
+        [HttpDelete("d")]
         public void DeleteAll(string token)
         {
             int id = JWTValidator.IDTokenValidation(token);
