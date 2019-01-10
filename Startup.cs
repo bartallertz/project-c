@@ -24,7 +24,7 @@ namespace projectC
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {   
+        {
             services.AddCors(options => options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
             services.AddDbContext<ProjectContext>(opt => opt.UseNpgsql("User ID=postgres;Password=Sarwar98;Host=localhost;Port=5432;Database=ProjectC1;Pooling=true;"));
             services.AddMvc();

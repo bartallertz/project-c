@@ -54,40 +54,47 @@ namespace projectC.Controllers
             return result;
         }
 
-        // POST api/values
+         // POST api/values
         [HttpPost]
-        public IActionResult Post([FromBody]ShoppingCart s, int userId, int ProdId, int amount, string token)
+        public IActionResult Post([FromBody]ShoppingCart s, string token)
         {
+            int id = JWTValidator.IDTokenValidation(token);
+
             var ProdDate = (from s2 in _context.ShoppingCarts
-                            where (userId == s2.UserId &&
-                                   ProdId == s2.ProductId)
+                            where (id == s2.UserId &&
+                                   s.ProductId == s2.ProductId)
                             select s2);
 
-            // checks if userId && ProductId already exists
-            bool DupeUser = _context.ShoppingCarts.Any(Dupe => Dupe.UserId == s.UserId);
-            bool CheckProduct = _context.ShoppingCarts.Any(dupe => dupe.ProductId == s.ProductId);
-
-            if (DupeUser && CheckProduct)
+            if (s.UserId != id)
             {
-                    var UserData = (from s1 in _context.ShoppingCarts where s1.UserId == 49  && s1.ProductId == 4 select s1.Amount).ToList();
+                Unauthorized();
+            }
 
-                               
-              //  int amount1 = Int32.Parse(UserData);
-               // s.Amount = s.Amount + amount1;
+            //checking for dupe users
+            bool DupeUser = _context.ShoppingCarts.Any(dupe => dupe.UserId == id);
+            bool DupeProd = _context.ShoppingCarts.Any(dupe => dupe.ProductId == s.ProductId);
+
+
+
+
+            if (DupeUser && DupeProd)
+            {
+                var UserData = (from s1 in _context.ShoppingCarts where s1.UserId == id && s1.ProductId == s.ProductId select s1.Amount).ToList();
 
                 s.Amount = s.Amount + UserData[0];
-               
+                s.UserId = id;
                 _context.Update(s);
                 _context.SaveChanges();
-
-                return Ok("stock bij gevoegt met je moeder");
             }
             else
             {
+                s.UserId = id;
                 _context.Add(s);
                 _context.SaveChanges();
-                return Ok();
             }
+
+
+            return Ok();
         }
         // PUT api/values/5
         [HttpPut("{id}")]

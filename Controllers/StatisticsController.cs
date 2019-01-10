@@ -22,28 +22,73 @@ namespace projectC.Controllers
         }
 
         [HttpGet("Users")]
-        public int GetUser(int id)
+        public IActionResult GetUser(string token)
         {
-            var result = (from m in _context.users select m).Count();
+            bool RoleId = JWTValidator.RoleIDTokenValidation(token);
 
-            return result;
+            if (RoleId)
+            {
+
+
+                var result = (from m in _context.users select m).Count();
+
+                return Ok(result);
+            }
+            return Unauthorized();
         }
 
         [HttpGet("Products")]
-        public IQueryable GetProductsStatistics()
+        public IActionResult GetProductsStatistics(string token)
         {
-            var result = (from m in _context.products orderby m.Stock ascending select m).Take(10);
+            bool RoleId = JWTValidator.RoleIDTokenValidation(token);
 
-            return result;
+            if (RoleId)
+            {
+
+
+                var result = (from m in _context.products orderby m.Stock ascending select m).Take(10);
+
+                return Ok(result);
+            }
+            return Unauthorized();
         }
 
-        [HttpGet("ProductSpend")]
-
-        public double GetProductsAvg(int id)
+       
+        
+        [HttpGet("Pending")]
+        public IActionResult Getpending(string token)
         {
-            var result = (from m in _context.ShoppingCarts where m.ProductId == id select m.Amount).Average();
+            bool RoleId = JWTValidator.RoleIDTokenValidation(token);
 
-            return result;
+            if (RoleId)
+            {
+                var result = (from m in _context.History where m.Status == "Pending" select m).Count();
+
+
+
+                return Ok(result);
+            }
+            return Unauthorized();
+
+        }
+        [HttpGet("GetDelivered")]
+        public IActionResult GetDelivered(string token)
+        {
+            bool RoleId = JWTValidator.RoleIDTokenValidation(token);
+
+
+            if (RoleId)
+            {
+                var result = (from m in _context.History where m.Status == "Delivered" select m).Count();
+
+
+
+                return Ok(result);
+            }
+            return Unauthorized();
+
+
+
         }
     }
 }
