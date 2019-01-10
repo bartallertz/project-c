@@ -104,11 +104,12 @@ namespace projectC.Controllers
 
         // DELETE api/values/5
 
-        [HttpDelete("{userId}/{productId}")]
-        public void DeleteSingle(int userId, int productId)
+        [HttpDelete("{productId}")]
+        public void DeleteSingle(int productId, string token)
         {
+            int id = JWTValidator.IDTokenValidation(token);
             var remove = (from a_b in _context.ShoppingCarts
-                          where a_b.UserId == userId && a_b.ProductId == productId
+                          where a_b.UserId == id && a_b.ProductId == productId
                           select a_b).FirstOrDefault();
 
             if (remove != null)
@@ -118,10 +119,11 @@ namespace projectC.Controllers
             }
         }
         [HttpDelete("d/{userId}")]
-        public void DeleteAll(int userId)
+        public void DeleteAll(string token)
         {
+            int id = JWTValidator.IDTokenValidation(token);
             var remove = (from a_b in _context.ShoppingCarts
-                          where a_b.UserId == userId
+                          where a_b.UserId == id
                           select a_b).ToList();
 
             foreach (var item in remove)
