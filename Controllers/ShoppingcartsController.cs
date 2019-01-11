@@ -34,7 +34,7 @@ namespace projectC.Controllers
                          from u_p in _context.ShoppingCarts
                          where u.Id == id && u_p.ProductId == p.Id
                          select new {
-                             u,
+                             p,
                              u_p
                          };
 
