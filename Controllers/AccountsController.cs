@@ -221,11 +221,9 @@ namespace projectC.Controllers
                 }
                 else
                 {
-                    var errors = (from error in ModelState.Keys
-                                 select error);
-                        // ModelState.Select(x => x.Value.Errors)
-                        //                 .Where(y=>y.Count>0)
-                        //                 .ToList();
+                    var errors = ModelState.Select(x => x.Value.Errors)
+                        .Where(y => y.Count > 0)
+                        .ToList();
                     return BadRequest(errors);
                 }
             }
