@@ -263,6 +263,7 @@ namespace projectC.Controllers
             bool RoleId = JWTValidator.RoleIDTokenValidation(token);
             if (RoleId)
             {
+                var a = this._context.products.OrderByDescending(pr => pr.Id).FirstOrDefault();
                 var ProductData = from product in _context.products
                                   where (name == p.Name &&
                                   Description == p.Description &&
@@ -272,6 +273,7 @@ namespace projectC.Controllers
                                   category == p.CategoryId &&
                                   subcategory == p.SubCategoryId)
                                   select p;
+                                p.Id = a.Id + 1;
 
                 if (p.Name == null || p.Description == null || p.Price == default(float) || p.Price <= 0 || p.FirstImg == null || p.CategoryId <= 0 || p.SubCategoryId <= 0)
                 {
