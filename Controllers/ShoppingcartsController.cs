@@ -54,7 +54,7 @@ namespace projectC.Controllers
             return result;
         }
 
-         // POST api/values
+        // POST api/values
         [HttpPost]
         public IActionResult Post([FromBody]ShoppingCart s, string token)
         {
@@ -104,11 +104,18 @@ namespace projectC.Controllers
 
         // DELETE api/values/5
 
-        [HttpDelete("{userId}/{productId}")]
-        public void DeleteSingle(int userId, int productId)
+        [HttpDelete("RemoveShoppingCart/{productId}")]
+        public void DeleteSingle(string token, int productId)
         {
+            if (token == null)
+            {
+                token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
+            }
+
+            int id = JWTValidator.IDTokenValidation(token);
+
             var remove = (from a_b in _context.ShoppingCarts
-                          where a_b.UserId == userId && a_b.ProductId == productId
+                          where a_b.UserId == id && a_b.ProductId == productId
                           select a_b).FirstOrDefault();
 
             if (remove != null)
@@ -117,11 +124,17 @@ namespace projectC.Controllers
                 _context.SaveChanges();
             }
         }
-        [HttpDelete("d/{userId}")]
-        public void DeleteAll(int userId)
+        [HttpDelete("RemoveShoppingCart")]
+        public void DeleteAll(string token)
         {
+
+            if (token == null)
+            {
+                token = "eyJFTUFJTCI6IiIsIklEIjoiMCIsIlJPTEUgSUQiOiIxIn0=";
+            }
+            int id = JWTValidator.IDTokenValidation(token);
             var remove = (from a_b in _context.ShoppingCarts
-                          where a_b.UserId == userId
+                          where a_b.UserId == id
                           select a_b).ToList();
 
             foreach (var item in remove)
