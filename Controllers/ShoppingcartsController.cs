@@ -33,7 +33,10 @@ namespace projectC.Controllers
                          from p in _context.products
                          from u_p in _context.ShoppingCarts
                          where u.Id == id && u_p.ProductId == p.Id
-                         select u_p;
+                         select new {
+                             p,
+                             u_p
+                         };
 
             return result;
         }
