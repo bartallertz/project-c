@@ -139,7 +139,7 @@ namespace projectC.model
         [StringLength(3000, MinimumLength = 10 , ErrorMessage = "Op z'n minst 10 en maximaal 3000 tekens AUB.")]
         public string Description { get; set; }
         [Display(Name = "Prijs")]
-        [RegularExpression(@"\d{1,3}(?:[.,]\d{3})*(?:[.,]\d{2})", ErrorMessage = "Niet een geldig formaat voor geld.")]
+        [RegularExpression(@"^\d+(.\d{1,2})?$", ErrorMessage = "Niet een geldig formaat voor geld.")]
         public float Price { get; set; }
         [Display(Name = "Eerste afbeelding voor een product")]
         [StringLength(256, ErrorMessage = "URL mag niet langer zijn dan 256 tekens.")]
