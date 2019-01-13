@@ -83,7 +83,9 @@ namespace projectC.Controllers
                              productName = h.Product.Name,
                              amount = h.Amount,
                              totalPrice = (double)h.Product.Price * (double)h.Amount,
-                             image = h.Product.FirstImg
+                             image = h.Product.FirstImg,
+                             purchaseDate = h.Date,
+                             status = h.Status
                          };
 
             return result;
